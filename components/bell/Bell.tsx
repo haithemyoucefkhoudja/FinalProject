@@ -1,6 +1,5 @@
 'use client'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Form from './Form.tsx'
 import { useState } from 'react'
 import {faBell} from "@fortawesome/free-solid-svg-icons"
 export default function Home() {
