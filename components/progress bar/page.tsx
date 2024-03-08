@@ -8,7 +8,7 @@ export default function Home() {
   const progressBarStyle = {
     width: `${progress}%` // Set the width based on the progress state
   };
-   const handleInputChange = (event) => {
+   const handleInputChange = (event: any) => {
     setProgress(event.target.value)
     
   };
