@@ -1,5 +1,6 @@
 
-export default function Form({send}){
+export default function Form({ send }: { send: any }) {
+@ts-ignore
 const handleClick = () => {
      var data="doesn't matter"
      send(data);
