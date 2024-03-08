@@ -1,6 +1,6 @@
 'use client'
 
-import Form from './Form.tsx'
+
 import { useState } from 'react'
 export default function Home() {
   const [progress,setProgress]=useState(70)
