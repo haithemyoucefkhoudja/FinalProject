@@ -7,10 +7,10 @@ import Dropdown from './dropdown.tsx'
 export default function Home() {
   const [forState,setForState]=useState(1)
   const [typeState,setTypeState]=useState(1)
-  const handleDataFromFor=(data)=>{
+  const handleDataFromFor=(data:any)=>{
     setForState(data)
   }
-  const handleDataFromType=(data)=>{
+  const handleDataFromType=(data:any)=>{
     setTypeState(data)
   }
   const turn_off = {
