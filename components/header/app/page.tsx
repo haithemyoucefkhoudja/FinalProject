@@ -1,6 +1,6 @@
 'use client'
 
-import Bell from 'Bell.tsx'
+import Bell from './Bell.tsx'
 import { useState } from 'react'
 export default function Home() {
   
