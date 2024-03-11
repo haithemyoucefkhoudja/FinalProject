@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react'
 import {faBell} from "@fortawesome/free-solid-svg-icons"
 export default function Bell() {
-  var number_of_notifications=2;
+  var number_of_notifications=10;
   return (
 
        <div className="flex items-center justify-center size-8 bg-white rounded">
