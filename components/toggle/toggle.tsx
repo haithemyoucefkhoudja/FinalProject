@@ -1,4 +1,4 @@
-export default function toggle(props){
+export default function toggle(props:any){
 	const handleClickOne=()=>{
 	props.setForState(1)	
 	}
