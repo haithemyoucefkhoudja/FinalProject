@@ -27,7 +27,7 @@ interface DraggableMarkerProps {
         dragend() {
           const marker = markerRef.current
           if (marker != null) {
-            const latlng = marker.getLatLng();
+            const latlng = (marker as any).getLatLng();
             updateExternalState(externalmarker.id, [latlng.lat, latlng.lng])
             setPosition([latlng.lat, latlng.lng])
           }

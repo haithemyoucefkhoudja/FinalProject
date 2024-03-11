@@ -2,15 +2,17 @@
 import L from "leaflet";
 import "leaflet-routing-machine";
 import 'leaflet/dist/leaflet.css'
-import { useEffect, useRef, useState } from "react";
+import { FC, useEffect, useRef } from "react";
 import { useMap } from "react-leaflet";
-const RoutingMachine = ({coords, updateExternalState}:{coords:[number, number], updateExternalState: (newCords: [number, number]) => void}) => {  
-  const Ref = useRef(null);
+import { RoutingMachineProps } from "./types/Routingmachine";
+
+const RoutingMachine = ({ coords, updateExternalState }:RoutingMachineProps) => {
+  const Ref = useRef<any>(null);
   const map = useMap();
 
   useEffect(() => {
     // Initialize the Leaflet Routing Machine control
-    const instance = L.Routing.control({
+    const instance = (L as any).Routing.control({
       waypoints: [],
       lineOptions: {
         styles: [{ color: "#6FA1EC", weight: 4 }]
@@ -61,6 +63,8 @@ const RoutingMachine = ({coords, updateExternalState}:{coords:[number, number], 
     const intervalId = setInterval(updatewaypoints, 10000);
     // Cleanup the interval on component unmount
     return () => clearInterval(intervalId);
-  }, [map]);}
+  }, [map]);
+  return <></>
+}
 
 export default RoutingMachine;

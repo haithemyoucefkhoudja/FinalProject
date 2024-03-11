@@ -60,7 +60,7 @@ const Map = () => {
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
                 <RoutingMachine coords={coord} updateExternalState={updateExternalState} />
-                <RelationalRoutingMachine coords={coord}></RelationalRoutingMachine>
+                <RelationalRoutingMachine coords={coord} updateExternalState={updateExternalState}></RelationalRoutingMachine>
             </MapContainer></>)}
         </div>
     )

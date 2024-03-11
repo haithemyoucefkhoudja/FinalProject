@@ -1,16 +1,14 @@
 'use client'
-
 import L from 'leaflet'
 import MarkerShadow from 'leaflet/dist/images/marker-shadow.png'
 import 'leaflet/dist/leaflet.css'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import { useState } from 'react'
-import RoutingMachine from '@/components/RoutingMachine'
 import RelationalRoutingMachine from './RelationalRouting'
 
 const Map = () => {
 
-    const [coord, setCoord] = useState([51.505, -0.09])
+    const [coord, setCoord] = useState<[number, number]>([51.505, -0.09])
 
     const SearchLocation = () => {
         return (
@@ -64,7 +62,7 @@ const Map = () => {
                         A pretty CSS3 popup. <br /> Easily customizable.
                     </Popup>
                 </Marker>
-                <RelationalRoutingMachine coords={[36,5]} />
+                <RelationalRoutingMachine coords={[36,5]} updateExternalState={()=> {}} />
             </MapContainer>
         </div>
     )

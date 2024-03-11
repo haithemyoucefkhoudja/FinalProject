@@ -19,13 +19,14 @@ const depots = [
   // ... more depots
 ];
 const generateWaypoints = () => {
-  const waypointsByFactory = {};
+  
+  const waypointsByFactory:Map<string, L.LatLng[]> = new Map();
 
   factories.forEach(factory => {
-      waypointsByFactory[factory.id] = [L.latLng(factory.coords[0], factory.coords[1])];
+      waypointsByFactory.set(String(factory.id), [L.latLng(factory.coords[0], factory.coords[1])]);
       const relatedDepots = depots.filter(depot => depot.factoryId === factory.id);
       relatedDepots.forEach(depot => {
-          waypointsByFactory[factory.id].push(L.latLng(depot.coords[0], depot.coords[1]));
+        waypointsByFactory.get(String(factory.id))!.push(L.latLng(depot.coords[0], depot.coords[1]));
       });
   });
 
@@ -72,14 +73,14 @@ const RelationalRoutingMachine = ({coords, updateExternalState}:{coords:[number,
     const waypointsByFactory = generateWaypoints();
 
     Object.keys(waypointsByFactory).forEach(factoryId => {
-      const factoryWaypoints = waypointsByFactory[factoryId];
-      console.log(factoryWaypoints)
+      const factoryWaypoints = waypointsByFactory.get(String(factoryId));
+      
       // Customize route line options for each factory if needed
       const lineOptions = {
           styles: [{ color: '#6FA1EC', weight: 4 }] 
       };
 
-      L.Routing.control({
+      (L as any).Routing.control({
           waypoints: factoryWaypoints,
           routeWhileDragging: true,
           lineOptions: lineOptions,        
@@ -122,6 +123,8 @@ const RelationalRoutingMachine = ({coords, updateExternalState}:{coords:[number,
     const intervalId = setInterval(updatewaypoints, 10000);
     // Cleanup the interval on component unmount
     return () => clearInterval(intervalId);*/
-  }, [map]);}
+  }, [map]);
+return <></>
+}
 
 export default RelationalRoutingMachine;
