@@ -29,7 +29,6 @@ const generateWaypoints = () => {
         waypointsByFactory.get(String(factory.id))!.push(L.latLng(depot.coords[0], depot.coords[1]));
       });
   });
-
   return waypointsByFactory;
 };
 const RelationalRoutingMachine = ({coords, updateExternalState}:{coords:[number, number], updateExternalState: (newCords: [number, number]) => void}) => {  
@@ -71,13 +70,14 @@ const RelationalRoutingMachine = ({coords, updateExternalState}:{coords:[number,
     // Set the control instance to the Ref
     //Ref.current = instance;
     const waypointsByFactory = generateWaypoints();
+    console.log(waypointsByFactory)
 
     Object.keys(waypointsByFactory).forEach(factoryId => {
       const factoryWaypoints = waypointsByFactory.get(String(factoryId));
       
       // Customize route line options for each factory if needed
       const lineOptions = {
-          styles: [{ color: '#6FA1EC', weight: 4 }] 
+          styles: [{ color: '#6FC1EC', weight: 4 }] 
       };
 
       (L as any).Routing.control({
