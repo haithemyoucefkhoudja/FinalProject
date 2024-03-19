@@ -16,7 +16,22 @@ interface DraggableMarkerProps {
     icon: Icon<IconOptions> | undefined;
     updateExternalState: (id:number,newCords: [number, number]) => void;
   }
-  
+  const Products = [
+    {
+       p_name: "Milk",
+       p_quantity: 200,
+       p_unit_price: 11,
+       p_soft_limit: 250,
+       p_hard_limit: 90
+     },
+     {
+       p_name: "Yogurt",
+       p_quantity: 20,
+       p_unit_price: 20,
+       p_soft_limit: 150,
+       p_hard_limit: 75
+     }
+   ]
   const DraggableMarker: React.FC<DraggableMarkerProps> = ({ externalmarker, icon, updateExternalState }) => {
     const [draggable, setDraggable] = useState(true);
     const [position, setPosition] = useState<[number, number]>(externalmarker.geocode)
@@ -48,7 +63,7 @@ interface DraggableMarkerProps {
         ref={markerRef}>
         
         <Popup minWidth={90} closeOnEscapeKey={true}>
-        <LeafletTable></LeafletTable>
+        <LeafletTable Products={Products} name=''></LeafletTable>
         </Popup>
       </Marker>
     )
