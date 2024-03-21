@@ -128,20 +128,8 @@ var customIcon = new Icon({
       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
     />
     
-    {Warehouse.map((warehouse:IWarehouse, index) => {
-          return (
-            <WareHouseMarker
-              key={index * 2}
-              externalmarker={warehouse}
-              icon={customIcon}
-            >
-            </WareHouseMarker>
-          );
-    })}
-    {shippingRoutes.map((route, index)=>{
-      return(
-        <ShippingRoute route={route} key={index * 20}></ShippingRoute>
-      )
+    {shippingRoutes.map((route, index) => {
+      return (<ShippingRoute route={route} key={index}/>)
     })}
             </MapContainer>
         </div>

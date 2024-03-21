@@ -1,4 +1,3 @@
-import { Functionalities } from '@/components/component/functionalities';
 import dynamic from 'next/dynamic'
 
 const Map = dynamic(() => import('../../../components/Map/Places'), {
@@ -8,7 +7,7 @@ const Map = dynamic(() => import('../../../components/Map/Places'), {
 export default function Home() {
   return (
     <main>
-     <Functionalities />
+     <Map />
     </main>
   )
 }
