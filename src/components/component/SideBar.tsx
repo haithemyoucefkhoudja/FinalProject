@@ -1,10 +1,10 @@
 "use client"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { ResponsiveLine } from "@nivo/line"
 import { useState } from "react"
 import { useWidth } from "@/hooks/windowWidth"
-import {Sidebar, Package2Icon, LineChartIcon, UsersIcon, MapIcon, RouteIcon} from "lucide-react"
+import {Sidebar, Package2Icon, LineChartIcon, UsersIcon, MapIcon, RouteIcon, LogOut} from "lucide-react"
+import { signOut } from "next-auth/react"
 export function SideBar({
   children, // will be a page or nested layout
 }: {
@@ -72,6 +72,9 @@ export function SideBar({
         <header className="flex h-16 items-center gap-4 border-b bg-white px-6 ">
         <Button className="ml-auto h-8 w-8" size="icon" variant="outline" onClick={()=> {setHidden(!isHidden)}}>
               <Sidebar className="h-4 w-4" />
+        </Button>
+        <Button className="ml-auto h-8 w-8" size="icon" variant="outline" onClick={()=>signOut()}>
+          <LogOut/>
         </Button>
           <div className="w-full flex-1">
           </div>
