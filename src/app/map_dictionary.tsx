@@ -10,24 +10,24 @@ const F_data = [
   { url: "/", title: "item 7" },
   { url: "/", title: "item 8" },
   { url: "/", title: "item 9" },
-  { url: "/", title: "item 10" }, 
+  { url: "/", title: "item 10" },
   { url: "/", title: "item 11" }
 ];
     return (
-    	<div className="custom-scrollbar border-2 border-black w-[12vw] max-h-[50vh] h-[50vh] rounded absolute top-[15vh] right-[2vw] flex flex-col items-center p-[0.5rem] ">
-    	<h2 className="text-green-500 text-[2rem]">-Factories-</h2>
+    	<div className="custom-scrollbar border-2 border-black w-[12vw] max-h-[50vh] h-[50vh] rounded absolute top-[15vh] right-[2vw] flex flex-col items-center p-[0.5rem] bg-white">
+    	<h2 className="text-green-500 text-[1.8rem]">-Factories-</h2>
     	<div className="text-blue-500 custom-scrollbar flex flex-col items-center text-[1.5rem] w-[75%] max-h-[10vh] overflow-y-auto ">
     		{F_data.map(item => ( 
           <Link href={item.url}>{item.title}</Link>
         ))}
     	</div>
-    	<h2 className="text-green-500 text-[2rem]">-Warehouses-</h2>
+    	<h2 className="text-green-500 text-[1.8rem]">-Warehouses-</h2>
     	<div className="text-blue-500 custom-scrollbar flex flex-col items-center text-[1.5rem] w-[75%] max-h-[10vh] overflow-y-auto">
     		{F_data.map(item => ( 
           <Link href={item.url}>{item.title}</Link>
           ))}
     	</div>
-    	<h2 className="text-green-500 text-[2rem]">-Shipments-</h2>
+    	<h2 className="text-green-500 text-[1.8rem]">-Shipments-</h2>
     	<div className="text-blue-500 custom-scrollbar flex flex-col items-center text-[1.5rem] w-[75%] max-h-[10vh] overflow-y-auto">
     		{F_data.map(item => ( 
           <Link href={item.url}>{item.title}</Link>

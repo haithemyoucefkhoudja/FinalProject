@@ -2,7 +2,7 @@
 
 import Bell from './Bell.tsx'
 import Map_dict from './map_dictionary.tsx'
-import Truck_info_card from './truck_info_card.tsx'
+import Side_bar from './SideBar.tsx'
 import { useState } from 'react'
 export default function Home() {
   
@@ -14,7 +14,7 @@ export default function Home() {
       <div className="flex align-items justify-between w-1/7"><Bell/><p>Name</p></div>
   </header>
   <Map_dict />
-  <Truck_info_card/>  
+  <Side_bar />
 
 
   </div>

@@ -1,5 +1,5 @@
 'use client'
-
+import './globals.css';
 
 import { useState } from 'react'
 export default function Home() {
@@ -16,11 +16,12 @@ export default function Home() {
   <>
   <div className="flex justify-center items-center h-screen test flex-col">
     <input type="text" onChange={handleInputChange} placeholder="this is for testing purposes"/>
-    <div className="flex items-center progress-bar-outer">  
-      <div className="progress-bar-inner" style={progressBarStyle}>
+    <div className="flex items-center w-[30vw] h-[5vh] border-[2px] border-black rounded-[1rem] relative overflow-hidden">  
+      <div className="h-[80%] width-[30%] m-[1vh] rounded-[0.7rem] bg-gradient-to-br from-green-600 to-indigo-800 " style={progressBarStyle}>
       </div>
     </div>
   </div>
+  <p>test</p>
   </>
   );
 }
