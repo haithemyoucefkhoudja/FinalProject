@@ -10,7 +10,7 @@ export async function verifyCaptcha(token: string | null) {
     const responseData = await response.json();
   
     if (responseData.success) {
-      return "success!";
+      return responseData;
     } else {
       throw new Error("Failed Captcha");
     }

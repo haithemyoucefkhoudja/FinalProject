@@ -1,22 +1,8 @@
 import LoginForm from "@/components/auth/LoginForm";
 
-// Define the structure of searchParams
-interface SearchParams {
-  register?:string;
-  error?:string
-}
-
-// Use these interfaces in your component's props
-interface PageProps {
-  
-  searchParams: SearchParams;
-}
-export default async function Login({searchParams}:PageProps) {
-  const register = typeof searchParams.register === 'string' ? searchParams.register : null;
-  
-  const urlSearchParams = typeof searchParams.error ? searchParams.error : null;
-    return (<div style={{height:"100vh"}}>
-    <LoginForm register={register} errorParam={urlSearchParams} />
-    
+export default async function Login() {
+    return (
+    <div className="flex flex-col px-6   h-fit py-12 xsm:py-0 md:py-6 lg:py-8  items-center justify-center space-y-4  md:min-h-0 md:space-y-0 mx-auto rounded-xl mt-10  w-fit  shadow-lg ">
+      <LoginForm />
     </div>);
 }

@@ -1,113 +1,137 @@
 "use client";
-import {  useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form";
+import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import ReCAPTCHA from "react-google-recaptcha";
+import { useRef, useState } from "react";
 import { verifyCaptcha } from "@/actions/VeirfyCaptcha";
-import { Roboto } from "next/font/google";
 
-const roboto = Roboto({
-  subsets: ['latin'],
-  weight: "400"
-})
+const FormSchema = z.object({
+  email: z
+  .string()
+  .min(1, "Email is required!")
+  .email("Invalid email!"),
+  password: z
+    .string()
+    .min(1, "Password is required!")
+    .min(4, "Password must have than 4 characters!")
+    .regex(new RegExp(".*[A-Z].*"), { message: "Must conatain one uppercase character" })
+    .regex(new RegExp(".*\\d.*"), { message: "Must contains one number" })
+    .regex(new RegExp(".*[`~<>?,./!@#$%^&*()\\-_+=\"'|{}\\[\\];:\\\\].*"), {message: "Must contain one special character"}),
+});
 
-  // Define types for your state variables if necessary
-interface UserForm {
-    email: string;
-    password: string;
-  }
-  const map = new Map<string, string>([
-    ['CredentialsSignin', 'wrong credentials']
-]);
-  export default function LoginForm({register, errorParam}:{register:string | null, errorParam:string | null| undefined}) {
-    const recaptchaRef = useRef<ReCAPTCHA>(null);    
+const LoginForm = () => {
     const [isVerified, setIsverified] = useState<boolean>(false);
-    const [userForm, setUserForm] = useState<UserForm>({
+    const [isLoading, setIsLoding] = useState<boolean>(false);
+    const recaptchaRef = useRef<ReCAPTCHA>(null);    
+
+  const router = useRouter();
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
       email: "",
       password: "",
-    });
-    const [error, setError] = useState<string>(errorParam ? errorParam && map.get(errorParam) || ' ' : ' ');
-    const router = useRouter();
-    async function handleCaptchaSubmission(token: string | null) {
+    },
+  });
+  const handleCaptchaSubmission = async  (token: string | null) => {
 
-      try {
-        await verifyCaptcha(token);
-        
-        setIsverified(true);
-      } catch (error) {
-        setIsverified(false);
-      }
-    }
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      if(!isVerified)
-      return;
-      const {email, password } = userForm;
-    if (!email || !password) {
-      setError(" enter credentials ");
-      return;
-    }
-    if (password.length < 6)
-    {
-      setError("password too short");
-      return;
-    }
     try {
-        const res = await signIn("credentials", {
-          email:email,
-          password:password,
-        });
-        if (res?.error) {
-          setError("credentials error");
-          return;
-        }
-        if (res?.url) router.push(res.url, {scroll:false});
-      } catch (error) {
-        console.log(error);
-      }
+      const callBack = await verifyCaptcha(token);
+      console.log('Callback', callBack);
+      setIsverified(true);
+    } catch (error) {
+      setIsverified(false);
+    }
+}
+  const onSubmit = async (values: z.infer<typeof FormSchema>) => {
     
+    if(!isVerified)
+        return;
+    setIsLoding(true);
+    const loginData = await signIn("credentials", {
+      email: values.email,
+      password: values.password,
+      redirect: false,
+    });
+
+    if (loginData?.error) {
+        alert('Oops Something Wrong Happened');
+        setIsLoding(false);
+    } else {
+      router.refresh();
+      router.push("/Dashboard");
+    }
   };
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
-    setUserForm((prev) => ({ ...prev, [id]: value }));
-  };
-  /*
-  <input type="text"
-        placeholder="name"
-         id="name"
-         onChange={handleChange}
-          classNameName="auth-input" />*/
+
   return (
-    <div className="flex  h-fit py-12 xsm:py-0 md:py-6 lg:py-8  items-center justify-center space-y-4 md:flex-row md:min-h-0 md:space-y-0 mx-auto rounded-xl mt-10 bg-white w-fit  shadow-lg ">
-  <form className={`grid  grid-cols-1`} onSubmit={handleSubmit}>
-    <label>
-        <input type="text"
-        id="email"
-        onChange={handleChange}
-         className={` border-2 border-cyan-950`}  required/>
-        <span className={roboto.className}>Email</span>
-    </label> 
-    <label>
-        <input type="password"
-        id="password"
-        onChange={handleChange}
-         className={`border-2 border-cyan-950`} required/>
-        <span className={roboto.className}>Password</span>
-    </label>
-    <button className={``} type="submit" >Login</button>
-    {error &&
-        <p className={``} style={{color:"red"}}>
-              {error}
-            </p>
-          }
-    <ReCAPTCHA
+    <Form {...form} >
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6">
+        <div className="space-y-2">
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email:</FormLabel>
+                <FormControl>
+                  <Input placeholder="mail@example.com" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password:</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Enter your password"
+                    type="password"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage  />
+              </FormItem>
+            )}
+          />
+        </div>
+        <ReCAPTCHA
             sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
             ref={recaptchaRef}
             onChange={handleCaptchaSubmission}
-          />
-    
-</form>
+          />  
+        <p className="text-center text-md text-gray-600 mt-5">
+        If you don&apos;t have an account, please.
+        <Link className="text-blue-500 hover:underline ml-1" href="/signup">
+          Sign up
+        </Link>
+            </p>
+        <Button  size='full' type="submit" isloading={isLoading}>
+          Login
+        </Button>
+        
+      
+      
+      </form>
 
-</div>
-  
-)}
+    </Form>
+  );
+};
+
+export default LoginForm;

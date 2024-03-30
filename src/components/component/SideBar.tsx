@@ -5,7 +5,7 @@ import { useState } from "react"
 import { useWidth } from "@/hooks/windowWidth"
 import {Sidebar, Package2Icon, LineChartIcon, UsersIcon, MapIcon, RouteIcon, LogOut} from "lucide-react"
 import { signOut } from "next-auth/react"
-export function SideBar({
+export default function SideBar({
   children, // will be a page or nested layout
 }: {
   children: React.ReactNode
