@@ -1,4 +1,4 @@
-
+"use client";
 import { CardDescription, CardTitle, CardHeader, CardContent, Card } from "@/components/ui/card"
 import { TableHead, TableRow, TableHeader, TableCell, TableBody, Table } from "@/components/ui/table"
 import { ResponsiveLine } from "@nivo/line"
@@ -6,8 +6,8 @@ export function Charts(){
     return(
         <>
     <div className="grid md:grid-cols-2 gap-6">
-    <Card>
-      <CardHeader>
+    <Card >
+      <CardHeader className=" p-6 flex-col space-y-2">
         <CardDescription>Net Sales</CardDescription>
         <CardTitle>$1,234.56</CardTitle>
       </CardHeader>
@@ -16,7 +16,7 @@ export function Charts(){
       </CardContent>
     </Card>
     <Card>
-      <CardHeader>
+      <CardHeader className=" p-6 flex-col space-y-2">
         <CardDescription>Gross Profit</CardDescription>
         <CardTitle>$5,432.10</CardTitle>
       </CardHeader>
@@ -26,7 +26,7 @@ export function Charts(){
     </Card>
   </div>
   <Card>
-    <CardHeader>
+    <CardHeader className=" p-6 flex-col space-y-2">
       <CardDescription>Gross Margin</CardDescription>
       <CardTitle>45%</CardTitle>
     </CardHeader>
@@ -35,7 +35,7 @@ export function Charts(){
     </CardContent>
   </Card>
   <Card>
-    <CardHeader>
+    <CardHeader className=" p-6 flex-col space-y-2">
       <CardTitle>Drivers</CardTitle>
       <CardDescription>Performance Metrics</CardDescription>
     </CardHeader>

@@ -5,6 +5,8 @@ import "./globals.css";
 //_app.js 
 import '@fortawesome/fontawesome-svg-core/styles.css'; //importing font awesome css
 import { config } from '@fortawesome/fontawesome-svg-core';
+import { SessionProvider } from "next-auth/react";
+import { NextAuthProvider } from "@/components/providers/providers";
 config.autoAddCss = false; // Tell Font Awesome to skip adding the CSS automatically since it's being imported above
 
 
@@ -58,7 +60,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <NextAuthProvider>
+        <body className={`${inter.className}`}>
+          {children}
+        </body>
+      </NextAuthProvider>
     </html>
   );
 }

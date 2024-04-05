@@ -15,6 +15,13 @@ import { Label } from "@/components/ui/label"
 
 const Form = FormProvider
 
+/*
+  * This defines a generic type for the value stored within the FormFieldContext.
+  * TFieldValues represents the type of the overall form values, defaulting to FieldValues from react-hook-form.
+  * TName represents the type of the field name, which should be a valid path within the TFieldValues object.
+  * The context value itself is an object with a single property, name, holding the name of the current form field.
+*/
+
 type FormFieldContextValue<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
@@ -22,10 +29,20 @@ type FormFieldContextValue<
   name: TName
 }
 
+/*
+  * a new React Context is created using the FormFieldContextValue type.
+  * It's initialized with an empty object as the default value, ensuring type safety.
+*/
+
 const FormFieldContext = React.createContext<FormFieldContextValue>(
   {} as FormFieldContextValue
 )
-
+/*
+  * This component is a wrapper around the react-hook-form's Controller component.
+  * It uses generics similar to FormFieldContextValue to ensure type safety.
+  * The key functionality is providing the name of the field to the FormFieldContext using the FormFieldContext.Provider.
+  * Any child components within this FormField can access the field's name through the context.
+*/
 const FormField = <
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
@@ -42,6 +59,7 @@ const FormField = <
 const useFormField = () => {
   const fieldContext = React.useContext(FormFieldContext)
   const itemContext = React.useContext(FormItemContext)
+  
   const { getFieldState, formState } = useFormContext()
 
   const fieldState = getFieldState(fieldContext.name, formState)
@@ -106,7 +124,7 @@ const FormControl = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof Slot>
 >(({ ...props }, ref) => {
   const { error, formItemId, formDescriptionId, formMessageId } = useFormField()
-
+  
   return (
     <Slot
       ref={ref}
@@ -121,24 +139,8 @@ const FormControl = React.forwardRef<
     />
   )
 })
+
 FormControl.displayName = "FormControl"
-
-const FormDescription = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
->(({ className, ...props }, ref) => {
-  const { formDescriptionId } = useFormField()
-
-  return (
-    <p
-      ref={ref}
-      id={formDescriptionId}
-      className={cn("text-sm text-muted-foreground", className)}
-      {...props}
-    />
-  )
-})
-FormDescription.displayName = "FormDescription"
 
 const FormMessage = React.forwardRef<
   HTMLParagraphElement,
@@ -155,13 +157,14 @@ const FormMessage = React.forwardRef<
     <p
       ref={ref}
       id={formMessageId}
-      className={cn(`text-sm  font-medium text-red-500`, className)}
+      className={cn(`text-sm font-medium text-red-500`, className)}
       {...props}
     >
       {body}
     </p>
   )
 })
+
 FormMessage.displayName = "FormMessage"
 
 export {
@@ -170,7 +173,6 @@ export {
   FormItem,
   FormLabel,
   FormControl,
-  FormDescription,
   FormMessage,
   FormField,
 }

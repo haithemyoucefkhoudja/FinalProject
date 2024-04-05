@@ -9,21 +9,21 @@ const fakeUsers: IUser[] = [
     {
         id: "c98e55d2-1163-4a6d-a7fc-0466b9d849aa",
         name: "Haithem",
-        password: "123dsd",
-        email: "haithemyk@gmail.com",
+        password: "123Dsd@",
+        email: "youcefkhoudjahaithem@gmail.com",
         role: "Mod" 
     },
     {
         id: "8c534938-9f61-4eb6-8484-7a8e665c1095",
         name: "Angry",
-        password: "123dsd",
+        password: "123Dsd@",
         email: "AngryWolf@gmail.com",
         role: "Gay" 
     },
     {
         id: "070552ea-4868-4081-b6e8-dafa0d42f6b8",
         name: "helios4",
-        password: "123dsd",
+        password: "123Dsd@",
         email: "helios@gmail.com",
         role: "Admin" 
     }

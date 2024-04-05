@@ -18,7 +18,7 @@ export default withAuth(
 
     if (isLoginPage) {
       if (isAuth) {
-        return NextResponse.redirect(new URL('/', req.url));
+        return NextResponse.redirect(new URL('/Dashboard', req.url));
       }
       return NextResponse.next();
     }

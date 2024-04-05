@@ -14,11 +14,11 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useRef, useState } from "react";
 import { verifyCaptcha } from "@/actions/VeirfyCaptcha";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 const FormSchema = z.object({
   email: z
   .string()
@@ -34,11 +34,10 @@ const FormSchema = z.object({
 });
 
 const LoginForm = () => {
-    const [isVerified, setIsverified] = useState<boolean>(false);
     const [isLoading, setIsLoding] = useState<boolean>(false);
-    const recaptchaRef = useRef<ReCAPTCHA>(null);    
-
-  const router = useRouter();
+    const [Globalerror, setError] = useState<string | null>(null);
+    
+    const recaptchaRef = useRef<ReCAPTCHA>(null);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -49,36 +48,43 @@ const LoginForm = () => {
   const handleCaptchaSubmission = async  (token: string | null) => {
 
     try {
-      const callBack = await verifyCaptcha(token);
-      console.log('Callback', callBack);
-      setIsverified(true);
-    } catch (error) {
-      setIsverified(false);
+      await verifyCaptcha(token);
+    } catch (error:any) {
+      
     }
 }
   const onSubmit = async (values: z.infer<typeof FormSchema>) => {
-    
-    if(!isVerified)
-        return;
+    const captchaValue = recaptchaRef.current?.getValue()
+    if (!captchaValue)
+      {
+        setError('Please verify the reCAPTCHA!')
+        return; 
+      }
+
     setIsLoding(true);
     const loginData = await signIn("credentials", {
       email: values.email,
       password: values.password,
-      redirect: false,
+     
     });
 
     if (loginData?.error) {
-        alert('Oops Something Wrong Happened');
+        setError(loginData.error);
         setIsLoding(false);
-    } else {
-      router.refresh();
-      router.push("/Dashboard");
     }
   };
+  
 
   return (
     <Form {...form} >
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6">
+        
+      <p className="text-center text-md text-gray-600 mt-5">
+        If you don&apos;t have an account, please.
+        <Link className="text-blue-500 hover:underline ml-1" href="/signup">
+          Sign up
+        </Link>
+            </p>
         <div className="space-y-2">
           <FormField
             control={form.control}
@@ -111,23 +117,24 @@ const LoginForm = () => {
             )}
           />
         </div>
-        <ReCAPTCHA
+        <ReCAPTCHA 
             sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
             ref={recaptchaRef}
             onChange={handleCaptchaSubmission}
+            
           />  
-        <p className="text-center text-md text-gray-600 mt-5">
-        If you don&apos;t have an account, please.
-        <Link className="text-blue-500 hover:underline ml-1" href="/signup">
-          Sign up
-        </Link>
-            </p>
+              {Globalerror &&
+              <div className=" flex items-center space-x-4">
+                <FontAwesomeIcon icon={faExclamationCircle} color="red"/>
+                  <p className="text-red-500">
+                    {Globalerror}
+                  </p>
+            </div>
+            }
         <Button  size='full' type="submit" isloading={isLoading}>
           Login
         </Button>
-        
-      
-      
+
       </form>
 
     </Form>
