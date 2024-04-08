@@ -5,15 +5,29 @@ import { useState } from "react"
 import { useWidth } from "@/hooks/windowWidth"
 import {Sidebar, Package2Icon, LineChartIcon, UsersIcon, MapIcon, RouteIcon, User} from "lucide-react"
 import Header from "../ui/header"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card"
 import UserCard from "./userCard"
+import { useSidebar } from "@/context/SideBarContext"
+import useRouterSegments from "@/hooks/pathhook"
+import * as Lucid from 'lucide-react'
 export default function SideBar({
   children, // will be a page or nested layout
 }: {
   children: React.ReactNode
 }) {
   const [isHidden, setHidden] = useState(true);
-  {/*${isHidden ? 'lg:grid-cols-[0px_1fr]' : 'lg:grid-cols-[280px_1fr]'}*/}
+  /*
+  ^: Matches the beginning of the string.
+  \/: Matches a forward slash (escaped with \).
+  ([^/]+): Matches one or more characters that are not forward slashes. This captures the first route segment.
+  \/: Matches another forward slash.
+  ([^/]+): Matches one or more characters that are not forward slashes. This captures the second route segment.
+
+*/
+  const { sidebarItems} = useSidebar();
+  const routes = useRouterSegments();
+  const pathName = '/' + routes?.firstRoute + '/' + routes?.secondRoute + '/' + routes?.thirdRoute;
+  const relevantItems = sidebarItems['/' + routes?.firstRoute + '/' + routes?.secondRoute] || [];
+  
   // Width of the active window
   const  windowWidth = useWidth()
   return (
@@ -30,8 +44,17 @@ export default function SideBar({
           <div className="flex-1 overflow-auto py-2">
             
             <nav className="grid items-start px-4 text-sm font-medium">
+            {relevantItems.map((item) => (
+        <Link
+        className={`flex items-center gap-3 rounded-lg  px-3 py-2 ${item.href === pathName ? 'text-gray-900 bg-gray-100' : 'text-gray-500' }   transition-all hover:text-gray-900`}
+        href="#" key={item.href}
+      >
+        {<>{item.icon}</>}
+        {item.label}
+      </Link>
+    ))}
               <Link
-                className="flex items-center gap-3 rounded-lg bg-gray-100 px-3 py-2 text-gray-900  transition-all hover:text-gray-900 "
+                className={`flex items-center gap-3 rounded-lg bg-gray-100 px-3 py-2 text-gray-900  transition-all hover:text-gray-900`}
                 href="#"
               >
                 <LineChartIcon className="h-4 w-4" />
@@ -81,13 +104,14 @@ export default function SideBar({
 
       <main className={`flex flex-col max-h-screen flex-grow ${isHidden ? 'w-full' : ''}`}>
         <Header />
-        <div className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6 overflow-y-auto ">
+        <section className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6 overflow-y-auto ">
           {children}
-        </div>
+        </section>
       </main>
     </div>
   )
 }
+
 
 
 
