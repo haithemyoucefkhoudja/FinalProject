@@ -5,6 +5,7 @@ interface RouteSegments {
   firstRoute: string;
   secondRoute: string;
   thirdRoute: string;
+  pathname: string;
 }
 
 export default function useRouterSegments(): RouteSegments | null {
@@ -17,7 +18,7 @@ export default function useRouterSegments(): RouteSegments | null {
     const secondRoute = match[2];
     const thirdRoute = match[3];
 
-    return { firstRoute, secondRoute, thirdRoute };
+    return { pathname, firstRoute, secondRoute, thirdRoute };
   }
 
   return null; 

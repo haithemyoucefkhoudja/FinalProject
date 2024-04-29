@@ -13,8 +13,29 @@ export default function Header() {
               <span>Mang Inc</span>
         </Link>
         <div className='flex '>
+              <Link
+                className="flex items-center gap-3  rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 "
+                href="/Dashboard/Map/Inventories"
+              >
+                <MapIcon className="h-4 w-4" />
+                Map
+              </Link>
+              <Link
+                className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 "
+                href="/Dashboard/Tables/Company"
+              >
+                <Table className="h-4 w-4" />
+                Tables
+              </Link>
+              <Link
+                className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 "
+                href="/Dashboard/Shipments/Current"
+              >
+                <Package2Icon className="h-4 w-4" />
+                Shipments
+              </Link>
         <Link
-            className="flex items-center gap-3 rounded-lg bg-gray-100 px-3 py-2 text-gray-900  transition-all hover:text-gray-900 "
+            className="flex items-center gap-3 rounded-lg  px-3 py-2 text-gray-500  transition-all hover:text-gray-900 "
               href="/Dashboard/Stats/Company"
               >
                 <LineChartIcon className="h-4 w-4" />
@@ -22,32 +43,14 @@ export default function Header() {
               </Link>
               <Link
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 "
-                href="#"
+                href="/Dashboard/Management/Company"
               >
                 <LayoutGrid className="h-4 w-4" />
                 Management
               </Link>
-              <Link
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 "
-                href="#"
-              >
-                <Package2Icon className="h-4 w-4" />
-                Shipments
-              </Link>
-              <Link
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 "
-                href="#"
-              >
-                <Table className="h-4 w-4" />
-                Table
-              </Link>
-              <Link
-                className="flex items-center gap-3  rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 "
-                href="#"
-              >
-                <MapIcon className="h-4 w-4" />
-                Map
-              </Link>
+              
+              
+              
         </div>
         <div className='flex items-center flex-1 justify-end'>
             

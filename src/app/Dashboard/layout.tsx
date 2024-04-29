@@ -1,13 +1,18 @@
 import { SidebarProvider } from "@/context/SideBarContext"
 
+import SideBar  from "@/components/component/SideBar"
+import { ReactNode } from "react"
 export default function DashboardLayout({
     children, // will be a page or nested layout
   }: {
-    children: React.ReactNode
+    children: ReactNode
   }) {
     return (
       <SidebarProvider>
-        {children}  
+          <SideBar>
+              {children}
+          </SideBar>
       </SidebarProvider>
     )
   }
+
