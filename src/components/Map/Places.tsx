@@ -6,7 +6,6 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import { Icon, IconOptions,} from 'leaflet'
 import LeafletTable from './Table'
 import { IProduct } from './types/product'
-import ShippingRoute from './shippingRoute'
 import { route } from './types/route'
 type Coords = [number, number]; // A tuple with latitude and longitude
 
@@ -116,7 +115,7 @@ var customIcon = new Icon({
     
 })
     return (
-        <div className="min-h-full">
+        <div className="min-h-full z-0">
             <MapContainer className=' min-h-full min-w-full' center={[35.8689, 7.1108]} zoom={13} scrollWheelZoom={false}>
                  <TileLayer
       attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
