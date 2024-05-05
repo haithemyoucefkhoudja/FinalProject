@@ -12,5 +12,6 @@ export default async function Login() {
           </header>
           <LoginForm />
         </div>
-    </section>);
+    </section>
+    );
 }

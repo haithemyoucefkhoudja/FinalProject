@@ -1,6 +1,5 @@
 "use client"
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
 import { useState } from "react"
 import { useWidth } from "@/hooks/windowWidth"
 import {Sidebar} from "lucide-react"
@@ -32,14 +31,14 @@ export default function SideBar({
   const  windowWidth = useWidth()
   return (
     <div className={`flex  min-h-screen w-full `}>
-      <aside className={`bg-white ${windowWidth < 1024 ? 'border-r-2' : ''}  flex flex-1 flex-col z-10 h-screen transition-transform transition-width transform ease-in-out duration-300 lg:relative absolute ${isHidden ? '-translate-x-full w-0' : ' -translate-x-0  min-w-[280px] max-w-[280px]'}`}>
+      <aside className={`bg-white ${windowWidth < 1024 ? 'border-r-2' : ''}  flex flex-1 flex-col z-10 h-screen transition-transform transition-width transform ease-in-out duration-300 lg:relative absolute ${isHidden ? '-translate-x-full w-0' : ' -translate-x-0 z-50  min-w-[280px] max-w-[280px]'}`}>
         <div className="flex  flex-col gap-2 bg-white">
         
           {windowWidth < 1024 &&<div className={`flex h-16 items-center border-b px-6 ${isHidden ? 'hidden' : ''} `}>
               
-              <Button  className={`ml-auto h-8 w-8`} size="icon" variant="outline" onClick={()=> {setHidden(!isHidden)}}>
+              <button  className="ml-auto h-8 w-8 border border-gray-200 bg-white hover:bg-gray-100 hover:text-gray-900 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 " onClick={()=> {setHidden(!isHidden)}}>
                 <Sidebar className="h-4 w-4"></Sidebar>
-              </Button>
+              </button>
             </div>}
           <div className="flex-1 overflow-auto py-2">
             
@@ -63,11 +62,11 @@ export default function SideBar({
         <UserCard isHidden={isHidden}></UserCard>
       </aside>
       
-      <div className=" flex flex-col w-5 items-center justify-center ml-2">
+      <div className=" flex flex-col w-8 items-center justify-center ml-2">
         <div className=" bg-gray-300 w-[2px] h-4" />
-        <Button className=" h-8 w-8 my-auto outline-none" size="icon" variant="outline" onClick={()=> {setHidden(!isHidden)}}>
+        <button className="mx-auto h-8 w-8 border border-gray-200 bg-white hover:bg-gray-100 hover:text-gray-900 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 focus-visible:ring-offset-2"  onClick={()=> {setHidden(!isHidden)}}>
                   <Sidebar className="h-4 w-4" />
-        </Button>
+        </button>
         <div className=" bg-gray-300 w-[2px] flex-1 " />
       </div>
 

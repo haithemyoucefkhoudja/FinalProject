@@ -6,6 +6,8 @@ const Map = dynamic(() => import('@/components/Map/Places'), {
 
 export default function Home() {
   return (
-     <Map />
+      <main className='z-0'>
+        <Map />
+      </main>
   )
 }

@@ -6,28 +6,18 @@ import {
   ControllerProps,
   FieldPath,
   FieldValues,
-  FormProvider,
   useFormContext,
 } from "react-hook-form"
 
 import { cn } from "@/lib/utils"
 import { Label } from "@/components/ui/label"
 
-const Form = FormProvider
-
-/*
-  * This defines a generic type for the value stored within the FormFieldContext.
-  * TFieldValues represents the type of the overall form values, defaulting to FieldValues from react-hook-form.
-  * TName represents the type of the field name, which should be a valid path within the TFieldValues object.
-  * The context value itself is an object with a single property, name, holding the name of the current form field.
-*/
-
-type FormFieldContextValue<
-  TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+type FormFieldContextValue <TFieldValues extends FieldValues = FieldValues ,
+TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 > = {
-  name: TName
+  name:TName
 }
+
 
 /*
   * a new React Context is created using the FormFieldContextValue type.
@@ -49,6 +39,7 @@ const FormField = <
 >({
   ...props
 }: ControllerProps<TFieldValues, TName>) => {
+  
   return (
     <FormFieldContext.Provider value={{ name: props.name }}>
       <Controller {...props} />
@@ -69,7 +60,7 @@ const useFormField = () => {
   }
 
   const { id } = itemContext
-
+  console.log('id:',id)
   return {
     id,
     name: fieldContext.name,
@@ -106,7 +97,7 @@ const FormLabel = React.forwardRef<
   React.ElementRef<typeof LabelPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
 >(({ className, ...props }, ref) => {
-  const { error, formItemId } = useFormField()
+  const { formItemId } = useFormField()
 
   return (
     <Label
@@ -136,7 +127,8 @@ const FormControl = React.forwardRef<
       }
       aria-invalid={!!error}
       {...props}
-    />
+    >
+      </Slot>
   )
 })
 
@@ -169,7 +161,6 @@ FormMessage.displayName = "FormMessage"
 
 export {
   useFormField,
-  Form,
   FormItem,
   FormLabel,
   FormControl,

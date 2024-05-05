@@ -1,26 +1,25 @@
-import NextAuth, {NextAuthOptions} from 'next-auth';
+import NextAuth, {NextAuthOptions, Session} from 'next-auth';
 import CredentialsProvider from "next-auth/providers/credentials";
-import { IUser } from "@/types/user"; // Make sure this is the correct import path for your IUser interface
-import isUser from "@/actions/FetchUser"; // Adjust the import path to where your isUser function is defined
+import { IUser } from "@/types/user"; 
+import isUser from "@/actions/FetchUser"; 
+import { JWT } from 'next-auth/jwt';
 
+// authOptions Object
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
-        // The name to display on the sign in form (e.g. "Sign in with...")
+        // `name` of the type of the authentication 
         name: "Credentials",
-        // `credentials` is used to generate a form on the sign in page.
-        // You can specify which fields should be submitted, by adding keys to the `credentials` object.
-        // e.g. domain, username, password, 2FA token, etc.
-        // You can pass any HTML attribute to the <input> tag through the object.
+        // `credentials` to specifies the types of credentials that NextAuht will accept
         credentials: {
-          email: { label: "Email", type: "text", placeholder: " " },
+          email: { label: "Email", type: "email", placeholder: " " },
           password: { label: "Password", type: "password" }
         },
+        // `authorize` handler function that accept `credentials` provided by the user via req
         async authorize(credentials, req) {
        // Ensure that both email and password are provided
        if (credentials) {
         try {
-          // Adjust your isUser function to match this signature if needed
           const user: IUser | null = await isUser({ credentials });
           if (user) {
             // Cast the user to the correct type for next-auth
@@ -48,7 +47,7 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        // Cast the user object to your IUser interface
+        // Cast the user object to  IUser interface
             const typedUser = user as IUser;
         token.user = {
           id: typedUser.id,
@@ -59,9 +58,9 @@ export const authOptions: NextAuthOptions = {
       }
       return token;
     },
-    async session({ session, token }) {
+    async session({ session, token }:{session:Session, token:JWT}) {
       if (token && token.user) {
-        session.user = token.user
+        session.user = token.user as IUser
       }
       return session;
     },
