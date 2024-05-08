@@ -31,7 +31,7 @@ const fakeUsers: IUser[] = [
 
 export default async function isUser({ credentials }: { credentials: Credentials }): Promise<IUser | null> {
   try {
-
+    console.log(credentials)
     const user: IUser | null =  fakeUsers.filter( user=> user?.email == credentials.email)[0];
 
     if (!user) {
