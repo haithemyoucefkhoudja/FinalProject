@@ -1,17 +1,18 @@
-import SideBar  from "@/components/component/SideBar"
+import { SidebarProvider } from "@/context/SideBarContext"
 
+import SideBar  from "@/components/component/SideBar"
+import { ReactNode } from "react"
 export default function DashboardLayout({
     children, // will be a page or nested layout
   }: {
-    children: React.ReactNode
+    children: ReactNode
   }) {
     return (
-        // inside SideBar you have to replace Links with buttons*/
-        // each button will perform Action On Page (children) good luck homie
-        <SideBar>
-            <section>
-                {children}
-            </section>
-      </SideBar>
+      <SidebarProvider>
+          <SideBar>
+              {children}
+          </SideBar>
+      </SidebarProvider>
     )
   }
+

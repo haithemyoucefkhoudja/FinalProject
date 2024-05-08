@@ -2,7 +2,7 @@
 import L from "leaflet";
 import "leaflet-routing-machine";
 import 'leaflet/dist/leaflet.css'
-import { FC, useEffect, useRef } from "react";
+import {  useEffect, useRef } from "react";
 import { useMap } from "react-leaflet";
 import { RoutingMachineProps } from "./types/Routingmachine";
 
@@ -17,14 +17,6 @@ const RoutingMachine = ({ coords, updateExternalState }:RoutingMachineProps) => 
       lineOptions: {
         styles: [{ color: "#6FA1EC", weight: 4 }]
       },
-      hide: true, // Add this line to hide the route list
-      showInstructions: false, 
-      show: false,
-      addWaypoints: true,
-      routeWhileDragging: true,
-      draggableWaypoints: false,
-      fitSelectedRoutes: false,
-      showAlternatives: false,
       routeLine: function (route:any, options:any) {
         return L.polyline(route.coordinates, options);
       },
@@ -64,7 +56,7 @@ const RoutingMachine = ({ coords, updateExternalState }:RoutingMachineProps) => 
     // Cleanup the interval on component unmount
     return () => clearInterval(intervalId);
   }, [map]);
-  return <></>
+  return <div ></div>
 }
 
 export default RoutingMachine;

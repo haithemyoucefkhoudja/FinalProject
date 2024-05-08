@@ -1,95 +1,89 @@
-
-import { CardDescription, CardTitle, CardHeader, CardContent, Card } from "@/components/ui/card"
-import { TableHead, TableRow, TableHeader, TableCell, TableBody, Table } from "@/components/ui/table"
+"use client";
 import { ResponsiveLine } from "@nivo/line"
 export function Charts(){
     return(
         <>
     <div className="grid md:grid-cols-2 gap-6">
-    <Card>
-      <CardHeader>
-        <CardDescription>Net Sales</CardDescription>
-        <CardTitle>$1,234.56</CardTitle>
-      </CardHeader>
-      <CardContent>
+    <div className="rounded-lg border border-gray-200 bg-white text-gray-950 shadow-sm" >
+      <div className="flex p-6 flex-col space-y-2">
+        <p className="text-sm text-gray-500">Net Sales</p>
+        <h3 className="font-semibold leading-none tracking-tight">$1,234.56</h3>
+      </div>
+      <div className="p-6 pt-0">
         <CurvedlineChart className="aspect-[2/1]" />
-      </CardContent>
-    </Card>
-    <Card>
-      <CardHeader>
-        <CardDescription>Gross Profit</CardDescription>
-        <CardTitle>$5,432.10</CardTitle>
-      </CardHeader>
-      <CardContent>
+      </div>
+    </div>
+    <div className="rounded-lg border border-gray-200 bg-white text-gray-950 shadow-sm ">
+      <div className="flex p-6 flex-col space-y-2">
+        <p className="text-sm text-gray-500">Gross Profit</p>
+        <h3 className="font-semibold leading-none tracking-tight">$5,432.10</h3>
+      </div>
+      <div className="p-6 pt-0">
         <CurvedlineChart className="aspect-[2/1]" />
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   </div>
-  <Card>
-    <CardHeader>
-      <CardDescription>Gross Margin</CardDescription>
-      <CardTitle>45%</CardTitle>
-    </CardHeader>
-    <CardContent>
+  <div className="rounded-lg border border-gray-200 bg-white text-gray-950 shadow-sm ">
+    <div className="flex p-6 flex-col space-y-2">
+      <p className="text-sm text-gray-500">Gross Margin</p>
+      <h3 className="font-semibold leading-none tracking-tight">45%</h3>
+    </div>
+    <div className="p-6 pt-0">
       <LineChart className="aspect-[2/1]" />
-    </CardContent>
-  </Card>
-  <Card>
-    <CardHeader>
-      <CardTitle>Drivers</CardTitle>
-      <CardDescription>Performance Metrics</CardDescription>
-    </CardHeader>
-    <CardContent>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>ID</TableHead>
-            <TableHead>Deliveries</TableHead>
-            <TableHead>Issues</TableHead>
-            <TableHead>Rating</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          <TableRow>
-            <TableCell className="font-medium">John Doe</TableCell>
-            <TableCell>12345</TableCell>
-            <TableCell>56</TableCell>
-            <TableCell>2</TableCell>
-            <TableCell>4.5</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell className="font-medium">Jane Smith</TableCell>
-            <TableCell>54321</TableCell>
-            <TableCell>72</TableCell>
-            <TableCell>1</TableCell>
-            <TableCell>4.8</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell className="font-medium">Mike Johnson</TableCell>
-            <TableCell>98765</TableCell>
-            <TableCell>42</TableCell>
-            <TableCell>3</TableCell>
-            <TableCell>4.2</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell className="font-medium">Sarah Lee</TableCell>
-            <TableCell>13579</TableCell>
-            <TableCell>63</TableCell>
-            <TableCell>0</TableCell>
-            <TableCell>4.9</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell className="font-medium">Kevin Brown</TableCell>
-            <TableCell>24680</TableCell>
-            <TableCell>37</TableCell>
-            <TableCell>5</TableCell>
-            <TableCell>4.0</TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
-    </CardContent>
-  </Card>
+    </div>
+  </div>
+  <div className="rounded-lg border border-gray-200 bg-white text-gray-950 shadow-sm ">
+    <div className="flex p-6 flex-col space-y-2">
+      <h3 className="font-semibold leading-none tracking-tight">Drivers</h3>
+      <p className="text-sm text-gray-500">Performance Metrics</p>
+    </div>
+    <div className="p-6 pt-0">
+      
+  <div className="relative w-full overflow-auto">
+      <table className="w-full caption-bottom text-sm">
+        <thead className="[&_tr]:border-b">
+          <tr className="border-b transition-colors hover:bg-gray-100/50 data-[state=selected]:bg-gray-100 ">
+            <th className="h-12 px-4 text-left align-middle font-medium text-gray-500 [&:has([role=checkbox])]:pr-0 ">Name</th>
+            <th className="h-12 px-4 text-left align-middle font-medium text-gray-500 [&:has([role=checkbox])]:pr-0 ">ID</th>
+            <th className="h-12 px-4 text-left align-middle font-medium text-gray-500 [&:has([role=checkbox])]:pr-0 ">Deliveries</th>
+            <th className="h-12 px-4 text-left align-middle font-medium text-gray-500 [&:has([role=checkbox])]:pr-0 ">Issues</th>
+            <th className="h-12 px-4 text-left align-middle font-medium text-gray-500 [&:has([role=checkbox])]:pr-0 ">Rating</th>
+          </tr>
+        </thead>
+        <tbody className="[&_tr:last-child]:border-0">
+          <tr className="border-b transition-colors hover:bg-gray-100/50 data-[state=selected]:bg-gray-100">
+            <td className=" p-4 align-middle [&:has([role=checkbox])]:pr-0 font-medium">John Doe</td>
+            <td className="p-4 align-middle [&:has([role=checkbox])]:pr-0">12345</td>
+            <td className="p-4 align-middle [&:has([role=checkbox])]:pr-0">56</td>
+            <td className="p-4 align-middle [&:has([role=checkbox])]:pr-0">2</td>
+            <td className="p-4 align-middle [&:has([role=checkbox])]:pr-0">4.5</td>
+          </tr>
+          <tr className="border-b transition-colors hover:bg-gray-100/50 data-[state=selected]:bg-gray-100">
+            <td className=" p-4 align-middle [&:has([role=checkbox])]:pr-0 font-medium">John Doe</td>
+            <td className="p-4 align-middle [&:has([role=checkbox])]:pr-0">12345</td>
+            <td className="p-4 align-middle [&:has([role=checkbox])]:pr-0">56</td>
+            <td className="p-4 align-middle [&:has([role=checkbox])]:pr-0">2</td>
+            <td className="p-4 align-middle [&:has([role=checkbox])]:pr-0">4.5</td>
+          </tr>
+          <tr className="border-b transition-colors hover:bg-gray-100/50 data-[state=selected]:bg-gray-100">
+            <td className=" p-4 align-middle [&:has([role=checkbox])]:pr-0 font-medium">John Doe</td>
+            <td className="p-4 align-middle [&:has([role=checkbox])]:pr-0">12345</td>
+            <td className="p-4 align-middle [&:has([role=checkbox])]:pr-0">56</td>
+            <td className="p-4 align-middle [&:has([role=checkbox])]:pr-0">2</td>
+            <td className="p-4 align-middle [&:has([role=checkbox])]:pr-0">4.5</td>
+          </tr>
+          <tr className="border-b transition-colors hover:bg-gray-100/50 data-[state=selected]:bg-gray-100">
+            <td className=" p-4 align-middle [&:has([role=checkbox])]:pr-0 font-medium">John Doe</td>
+            <td className="p-4 align-middle [&:has([role=checkbox])]:pr-0">12345</td>
+            <td className="p-4 align-middle [&:has([role=checkbox])]:pr-0">56</td>
+            <td className="p-4 align-middle [&:has([role=checkbox])]:pr-0">2</td>
+            <td className="p-4 align-middle [&:has([role=checkbox])]:pr-0">4.5</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </div>
   </>
     )
 }

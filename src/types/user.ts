@@ -3,5 +3,5 @@ export interface IUser{
     name:string ,
     password:string
     email:string ,
-    role:"Admin" | "Mod" | "Gay"
+    role:"Admin" | "Observer" | "Drvier" | "Worker"
 }
