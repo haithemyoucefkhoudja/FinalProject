@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activate Post Requests</title>
+</head>
+<body>
+    <h1>Activate Post Requests--------------------------------</h1>
+
+    <form id="modelFieldsForm" method="post" action="/p/get_all_model_fields/">
+        <button type="submit">Get All Model Fields</button>
+    </form>
+
+    <form id="modelMyFieldsForm" method="post" action="/p/get_all_of_my_model_fields/">
+        <button type="submit">Get MY Model Fields</button>
+    </form>
+
+    <form id="modelMyFieldsForm2" method="post" action="/p/get_all_of_my_model_fields2/">
+        <button type="submit">get all DATABASE OBJECTS</button>
+    </form>
+
+    <form id="linkForm" method="post" action="/p/link/">
+        <button type="submit">link</button>
+    </form>
+    <br>
+    <form id="populateForm" method="post" action="/p/populate_permissions/">
+        <button type="submit">Populate Permissions</button>
+    </form>
+
+    <form id="roleForm" method="post" action="/p/populate_roles/">
+        <button type="submit">Populate Roles</button>
+    </form>
+
+    <form id="companyForm" method="post" action="/p/populate_company/">
+        <button type="submit">Populate Company</button>
+    </form>
+
+    <form id="populatewarehouseForm" method="post" action="/p/populate_warehouse/">
+        <button type="submit">Populate Warheouse</button>
+    </form>
+
+    <form id="populateaccountForm" method="post" action="/p/populate_account/">
+        <button type="submit">Populate Account</button>
+    </form>
+
+    <form id="populatecarForm" method="post" action="/p/populate_car/">
+        <button type="submit">Populate Car</button>
+    </form>
+
+    <form id="populateProductTypeForm" method="post" action="/p/populate_product_type/">
+        <button type="submit">Populate ProductType</button>
+    </form>
+
+    <form id="populateProductForm" method="post" action="/p/populate_product/">
+        <button type="submit">Populate Product</button>
+    </form>
+
+
+    <br><br>
+    <form id="jsonForm">
+        <label for="message">Message:</label><br>
+        <input type="text" id="message" name="message"><br>
+        <label for="status">Status:</label><br>
+        <input type="text" id="status" name="status"><br>
+        <button type="button" onclick="sendJSON()">Send JSON</button>
+    </form>
+    <h1>Send JSON Data--------------------------------</h1>
+    <form id="json-shipment-form">
+        <label for="company_name">Company Name:</label>
+        <input type="text" id="company_name" name="company_name"><br>
+
+        <label for="car_name">Car Name:</label>
+        <input type="text" id="car_name" name="car_name"><br>
+
+        <label for="driver_name">Driver Name:</label>
+        <input type="text" id="driver_name" name="driver_name"><br>
+
+        <label for="departing_warehouse_name">Departing Warehouse Name:</label>
+        <input type="text" id="departing_warehouse_name" name="departing_warehouse_name"><br>
+
+        <label for="arriving_warehouse_name">Arriving Warehouse Name:</label>
+        <input type="text" id="arriving_warehouse_name" name="arriving_warehouse_name"><br>
+
+        <label for="departing_time">Departing Time:</label>
+        <input type="datetime-local" id="departing_time" name="departing_time"><br>
+
+        <label for="arriving_time">Arriving Time:</label>
+        <input type="datetime-local" id="arriving_time" name="arriving_time"><br>
+
+        <label for="product_name">Product Name:</label>
+        <input type="text" id="product_name" name="product_name"><br>
+
+        <label for="product_quantity">Product Quantity:</label>
+        <input type="number" id="product_quantity" name="product_quantity"><br>
+
+        <button type="button" onclick="sendJsonShipmentForm()">Submit</button>
+    </form>
+
+
+    <h1>Send JSON Dynamic Data--------------------------------</h1>
+    <form id="json-form1">
+        <label for="company_name1">Company Name:</label>
+        <input type="text" id="company_name1" name="company_name1"><br>
+
+        <label for="car_name1">Car Name:</label>
+        <input type="text" id="car_name1" name="car_name1"><br>
+
+        <label for="driver_name1">Driver Name:</label>
+        <input type="text" id="driver_name1" name="driver_name1"><br>
+
+        <label for="departing_warehouse_name1">Departing Warehouse Name:</label>
+        <input type="text" id="departing_warehouse_name1" name="departing_warehouse_name1"><br>
+
+        <label for="arriving_warehouse_name1">Arriving Warehouse Name:</label>
+        <input type="text" id="arriving_warehouse_name1" name="arriving_warehouse_name1"><br>
+
+        <label for="departing_time1">Departing Time:</label>
+        <input type="datetime-local" id="departing_time1" name="departing_time1"><br>
+
+        <label for="arriving_time1">Arriving Time:</label>
+        <input type="datetime-local" id="arriving_time1" name="arriving_time1"><br>
+
+        <div id="products1">
+            <div class="product1">
+                <label for="product_name1">Product Name:</label>
+                <input type="text" name="product_name1[]" id="product_name1"><br>
+
+                <label for="product_quantity1">Product Quantity:</label>
+                <input type="number" name="product_quantity1[]" id="product_quantity1"><br>
+            </div>
+        </div>
+
+        <button type="button" onclick="addProductField()">Add Product</button><br>
+
+        <button type="button" onclick="send_Dynamic_Json_Shipment_Form()">Submit</button>
+    </form>
+
+
+    <h2>API TEST get company_info_card</h2>
+    <form id="json-form">
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username"><br>
+
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email"><br>
+
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password"><br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <div id="response"></div>
+
+    <script>
+        function sendJSON() {
+            const message = document.getElementById('message').value;
+            const status = document.getElementById('status').value;
+            const jsonData = JSON.stringify({message: message, status: status});
+
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "/p/receive_json/", true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    alert("JSON data sent successfully!");
+                }
+            };
+            xhr.send(jsonData);
+        }
+
+        function sendJsonShipmentForm() {
+            var data = {
+                company_name: document.getElementById("company_name").value,
+                car_name: document.getElementById("car_name").value,
+                driver_name: document.getElementById("driver_name").value,
+                departing_warehouse_name: document.getElementById("departing_warehouse_name").value,
+                arriving_warehouse_name: document.getElementById("arriving_warehouse_name").value,
+                departing_time: document.getElementById("departing_time").value,
+                arriving_time: document.getElementById("arriving_time").value,
+                product: [{
+                    name: document.getElementById("product_name").value,
+                    quantity: document.getElementById("product_quantity").value
+                }]
+            };
+
+            fetch('/p/populate_shipment_json/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                // Handle success response
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                // Handle error
+            });
+        }
+
+        function addProductField() {
+        var productsDiv = document.getElementById("products1");
+        var productDiv = document.createElement("div");
+        productDiv.classList.add("product1");
+
+        var productNameLabel = document.createElement("label");
+        productNameLabel.textContent = "Product Name:";
+        var productNameInput = document.createElement("input");
+        productNameInput.type = "text";
+        productNameInput.name = "product_name1[]";
+
+        var productQuantityLabel = document.createElement("label");
+        productQuantityLabel.textContent = "Product Quantity:";
+        var productQuantityInput = document.createElement("input");
+        productQuantityInput.type = "number";
+        productQuantityInput.name = "product_quantity1[]";
+
+        productDiv.appendChild(productNameLabel);
+        productDiv.appendChild(productNameInput);
+        productDiv.appendChild(document.createElement("br"));
+        productDiv.appendChild(document.createElement("br"));
+        productDiv.appendChild(productQuantityLabel);
+        productDiv.appendChild(productQuantityInput);
+        productDiv.appendChild(document.createElement("br"));
+        productDiv.appendChild(document.createElement("br"));
+
+        productsDiv.appendChild(productDiv);
+    }
+
+        function send_Dynamic_Json_Shipment_Form() {
+            var data = {
+                company_name: document.getElementById("company_name1").value,
+                car_name: document.getElementById("car_name1").value,
+                driver_name: document.getElementById("driver_name1").value,
+                departing_warehouse_name: document.getElementById("departing_warehouse_name1").value,
+                arriving_warehouse_name: document.getElementById("arriving_warehouse_name1").value,
+                departing_time: document.getElementById("departing_time1").value,
+                arriving_time: document.getElementById("arriving_time1").value,
+                product: []
+            };
+
+            var productDivs = document.querySelectorAll(".product1");
+            productDivs.forEach(function(productDiv) {
+                var productName = productDiv.querySelector("input[name='product_name1[]']").value;
+                var productQuantity = productDiv.querySelector("input[name='product_quantity1[]']").value;
+                data.product.push({name: productName, quantity: productQuantity});
+            });
+
+            fetch('/p/populate_shipment_json/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                // Handle success response
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                // Handle error
+            });
+        }
+        function submitJsonForm(event) {
+            event.preventDefault(); // Prevent form submission
+
+            var formData = {
+                username: document.getElementById("username").value,
+                email: document.getElementById("email").value,
+                password: document.getElementById("password").value
+            };
+
+            // Send form data as JSON
+            fetch("/p/get_company_info_card/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display response
+                document.getElementById("response").innerText = JSON.stringify(data, null, 2);
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                // Display error message
+                document.getElementById("response").innerText = "Error occurred: " + error.message;
+            });
+        }
+
+        // Attach the function to the form submission event
+        document.getElementById("json-form").addEventListener("submit", submitJsonForm);
+    </script>
+
+
+</body>
+</html>
