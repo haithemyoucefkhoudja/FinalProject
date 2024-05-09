@@ -92,6 +92,11 @@ def check_if_account_has_permission(account_object, permission_text):
     else:
         return False
 
+def check_company_exist(company_name):
+    if Company.objects.filter(name=company_name).exists():
+        return True
+    return False
+
 
 
 @csrf_exempt
@@ -1056,6 +1061,99 @@ def login(request):
                 success = True
             else:
                 message = "account doesn't exist "
+
+            user = {
+                'id' : account_id,
+                'username' : account_username,
+                'email' : account_email,
+                'company' : account_company,
+                'warehouse' : account_warehouse,
+                'role' : account_role
+            }
+            data = {
+                'user' : user
+            }
+
+            # Return response
+            return JsonResponse({
+                'success': success,
+                'message': message,
+                'data': data
+            })
+        except Exception as e:
+            return JsonResponse({
+                'success': success,
+                'message' : str(e)
+            })
+    else:
+        return JsonResponse({'error': 'Only POST requests are allowed'}, status=400)
+
+
+
+@csrf_exempt
+def registeration(request):
+    if request.method == 'POST':
+        success = False
+        message = ""
+        try:
+
+            data = json.loads(request.body)
+            # Extracting values from JSON and assigning them to variables
+            username = data.get('username')
+            email = data.get('email')
+            password = data.get('password')
+            company_name = data.get('company_name')
+            # Process other data as needed
+            print(f"user:'{email}' has issues a POST request for registration")
+            print(f"info: username:'{username}'  email:'{email}'  password:'{password}'  company_name:'{company_name}'")
+            account_id = 0
+            account_username = ""
+            account_email = ""
+            account_role = ""
+            account_company = ""
+            account_warehouse = ""
+            is_account_exist = check_account_exist(email, password)
+            if is_account_exist:
+                message = "account email already exists"
+            else:
+                is_company_exist = check_company_exist(company_name)
+                if is_company_exist:
+                    message = "company name already exists"
+                else:
+                    new_company_object = Company.objects.create(name=company_name)
+                    new_company_object.save()
+                    if Company.objects.filter(name=company_name).exists():
+                        confirm_company = Company.objects.get(name=company_name)
+                        main_warehouse = Warehouse.objects.create(company_id=confirm_company, type="factory", name="main warehouse")
+                        main_warehouse.save()
+                        if Warehouse.objects.filter(company_id=confirm_company, type="factory", name="main warehouse").exists():
+                            confirm_warehouse = Warehouse.objects.get(company_id=confirm_company, type="factory", name="main warehouse")
+                            if Role.objects.filter(name="admin").exists():
+                                role_object = Role.objects.get(name="admin")
+                                user_object = User.objects.create_user(username=username, email=email, password=password)
+                                user_object.save()
+                                new_account_row = Account.objects.create(user=user_object, warehouse_id=confirm_warehouse,role_id=role_object)
+                                new_account_row.save()
+                                confirm_user = User.objects.get(username=username, email=email)
+                                confirm_account = Account.objects.get(user=confirm_user)
+                                confirm_company.num_employees = confirm_company.num_employees + 1
+                                account_id = confirm_account.user.id
+                                account_username = confirm_account.user.username
+                                account_email = confirm_account.user.email
+                                account_role = confirm_account.role_id.name
+                                account_warehouse = confirm_account.warehouse_id.name
+                                account_company = confirm_account.warehouse_id.company_id.name
+                                message = "successful registration of company and admin"
+                                success = True
+                            else:
+                                message = "admin role not found"
+                        else:
+                            message = "something went wrong in factory creation"
+                    else:
+                        message = "something went wrong in company creation"
+
+
+
 
             user = {
                 'id' : account_id,
