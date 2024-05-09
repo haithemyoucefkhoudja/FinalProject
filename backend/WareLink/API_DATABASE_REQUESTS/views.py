@@ -1026,6 +1026,8 @@ def link_models(model1_name, model2_name):
 @csrf_exempt
 def login(request):
     if request.method == 'POST':
+        success = False
+        message = ""
         try:
             data = json.loads(request.body)
             # Extracting values from JSON and assigning them to variables
@@ -1034,34 +1036,49 @@ def login(request):
             # Process other data as needed
             print(f"user:'{email}' has issues a POST request for login")
             print(f"info: email:'{email}'  password:'{password}'")
-            message = ""
-            status_code = 0
-            account_name = ""
+            account_id = 0
+            account_username = ""
             account_email = ""
             account_role = ""
+            account_company = ""
+            account_warehouse = ""
             is_account_exist = check_account_exist(email, password)
             if is_account_exist:
                 user_object = User.objects.get(email=email)
                 account_object = Account.objects.get(user=user_object)
-                account_name = account_object.user.username
+                account_id = account_object.user.id
+                account_username = account_object.user.username
                 account_email = account_object.user.email
                 account_role = account_object.role_id.name
+                account_warehouse = account_object.warehouse_id.name
+                account_company = account_object.warehouse_id.company_id.name
                 message = "successful login"
-                status_code = 200
+                success = True
             else:
                 message = "account doesn't exist "
-                status_code = 403
 
-            response_data = {
-                'message': message,
-                'account_name' : account_name,
-                'account_email' : account_email,
-                'account_role' : account_role
+            user = {
+                'id' : account_id,
+                'username' : account_username,
+                'email' : account_email,
+                'company' : account_company,
+                'warehouse' : account_warehouse,
+                'role' : account_role
+            }
+            data = {
+                'user' : user
             }
 
             # Return response
-            return JsonResponse(response_data, status=status_code)
+            return JsonResponse({
+                'success': success,
+                'message': message,
+                'data': data
+            })
         except Exception as e:
-            return JsonResponse({'error': str(e)}, status=400)
+            return JsonResponse({
+                'success': success,
+                'message' : str(e)
+            })
     else:
         return JsonResponse({'error': 'Only POST requests are allowed'}, status=400)
