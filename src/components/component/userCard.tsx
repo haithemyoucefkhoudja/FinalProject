@@ -5,7 +5,6 @@ import { useSession } from 'next-auth/react';
 
 export default  function UserCard({isHidden}:{isHidden:boolean}) {
     const { data, status } = useSession();
-
   return (
     // if status == authenticated and data exists and data.user property exists
     // render the Card component 
@@ -19,7 +18,7 @@ export default  function UserCard({isHidden}:{isHidden:boolean}) {
                 <div className="pt-0 p-1 flex flex-col items-start ">
                 <h3 className="font-semibold leading-none tracking-tight text-lg mr-auto">
                     {/* access the data.user.name from data.user object*/}
-                    {data.user.name}
+                    {data.user.username}
                 </h3>
                 <p className='text-sm text-gray-500'>
                     

@@ -15,19 +15,14 @@ export const LoginFormSchema = z.object({
 
   export const RegisterFormSchema = z.object({
     ...LoginFormSchema.shape,
-    FirstName: z.string()
-    .min(1, "FirstName is Required")
-    .max(30, "FirstName is Too Long")
-    .regex(new RegExp("^[a-zA-Z]+$"), {message:"FirstName must contain Letters Only"})
-    .regex(new RegExp("[A-Z].*"), {message:"FirstName must start with capital letter"}),
-    LastName: z.string()
-    .min(1, "LastName is Required")
-    .max(30, "LastName is Too Long")
-    .regex(new RegExp("^[a-zA-Z]+$"), {message:"LastName must contain Letters Only"})
-    .regex(new RegExp("^[A-Z].*"), {message:"LastName must start with capital letter"}),
+    username: z.string()
+    .min(1, "Name is Required")
+    .max(30, "Name is Too Long")
+    .regex(new RegExp("^[a-zA-Z\\s]+$"), {message:"Name must contain Letters Only"})
+    .regex(new RegExp("[A-Z].*"), {message:"Name must start with capital letter"}),
     passwordConfirmation:z.string()
     .min(1, "Password confirmation is required!"),
-    CompanyName: z.string()
+    company_name: z.string()
     .min(1, "CompanyName is Required")
     .max(30, "CompanyName is Too Long")
     .regex(new RegExp("[A-Z].*"), {message:"CompanyName must start with capital letter"}),

@@ -9,6 +9,7 @@ import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import { RegisterFormSchema } from "@/schemas/Form";
 import signUp from "@/actions/InsertUser";
 import { Loading } from "../ui/buttonLoading";
+import { signIn } from "next-auth/react";
 
 const RegisterForm = () => {
     
@@ -21,18 +22,26 @@ const RegisterForm = () => {
     resolver: zodResolver(RegisterFormSchema),
     defaultValues: {
       email: "",
-      FirstName:"",
-      LastName:"",
+      username:"",
       passwordConfirmation:"",
       password: "",
-      CompanyName:""
+      company_name:""
     },
   });
   const onSubmit = async (values: z.infer<typeof RegisterFormSchema>) => {
-
-    const registrationData = await signUp("credentials", values);
+    const registrationData = await signUp(values);
     if(registrationData.error)
-      setError('root', {message:registrationData.error} )
+      {
+        setError('root', {message:registrationData.error} )
+        return;
+      }
+      await signIn("credentials", {
+        email: values.email,
+        password: values.password,
+        redirect: true,
+        callbackUrl:'/Dashboard/Map/Inventories'
+      })
+
   };
   
 
@@ -47,17 +56,10 @@ const RegisterForm = () => {
             </p>
         <div className="space-y-2">
         <div className="space-y-1">
-          <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">FirstName:</label>
-        <Input {...register("FirstName")} type="text" placeholder="Joe" />
-      {errors.FirstName && (
-        <div className="text-red-500">{errors.FirstName.message}</div>
-      )}
-      </div>
-          <div className="space-y-1">
-          <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">LastName:</label>
-        <Input {...register("LastName")} type="text" placeholder="Doe" />
-      {errors.LastName && (
-        <div className="text-red-500">{errors.LastName.message}</div>
+          <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Name:</label>
+        <Input {...register("username")} type="text" placeholder="Joe Doe" />
+      {errors.username && (
+        <div className="text-red-500">{errors.username.message}</div>
       )}
       </div>
           <div className="space-y-1">
@@ -69,9 +71,9 @@ const RegisterForm = () => {
       </div>
       <div className="space-y-1">
           <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">CompanyName:</label>
-        <Input {...register("CompanyName")} type="text" placeholder="Mang Inc" />
-      {errors.CompanyName && (
-        <div className="text-red-500">{errors.CompanyName.message}</div>
+        <Input {...register("company_name")} type="text" placeholder="Mang Inc" />
+      {errors.company_name && (
+        <div className="text-red-500">{errors.company_name.message}</div>
       )}
       </div>
       <div className="space-y-1">

@@ -12,12 +12,15 @@ export default withAuth(
     // Manage route protection
     const Token = await getToken({ req, secret });
     const isLoginPage = pathname.startsWith('/login');
+    
+    const isRegisterPage = pathname.startsWith('/register');
     const sensitiveRoutes = ['/Dashboard'];
+
     const isAccessingSensitiveRoute = sensitiveRoutes.some(route => pathname.startsWith(route));
     // check if the user is Authenticated
-    if (isLoginPage) {
+    if (isLoginPage || isRegisterPage) {
       if (Token) {
-        return NextResponse.redirect(new URL('/Dashboard', req.url));
+        return NextResponse.redirect(new URL('/Dashboard/Map/Inventories', req.url));
       }
       // rdirect the `Visitor` to The Login Page
       return NextResponse.next();
@@ -40,7 +43,7 @@ export default withAuth(
           return NextResponse.next();
         }
       // Redirect `Driver` to the Dashboard
-      return NextResponse.redirect(new URL('/Dashboard', req.url));
+      return NextResponse.redirect(new URL('/Dashboard/Map/Inventories', req.url));
     }
     // Check if the user has access to observer-level sensitive routes (e.g. /Dashboard/Stats, /Dashboard/Reports)
     const observerLevelSensitiveRoutes = ['/Dashboard/Stats', '/Dashboard/Reports']
@@ -54,7 +57,7 @@ export default withAuth(
           return NextResponse.next();
         }
       // Hide the stats and reports for other roles
-      return NextResponse.redirect(new URL('/Dashboard', req.url));
+      return NextResponse.redirect(new URL('/Dashboard/Map/Inventories', req.url));
     }
     // Check if the user has access to admin-level sensitive routes (e.g. /Dashboard/Management)
     const adminLevelSensitiveRoutes = ['/Dashboard/Management'];
@@ -66,7 +69,7 @@ export default withAuth(
           return NextResponse.next();
         }
       // Hide management page and subpages for all other roles
-      return NextResponse.redirect(new URL('/Dashboard', req.url));
+      return NextResponse.redirect(new URL('/Dashboard/Map/Inventories', req.url));
     }
 
     
@@ -80,6 +83,6 @@ export default withAuth(
 )
 
 export const config = {
-  matcher: ['/', '/login', '/Dashboard/:path*',],
+  matcher: ['/', '/login', '/register' ,'/Dashboard/:path*',],
 
 };

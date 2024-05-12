@@ -10,9 +10,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import { LoginFormSchema } from "@/schemas/Form";
 import { Loading } from "../ui/buttonLoading";
+import { useRouter } from "next/navigation";
 
 
 const LoginForm = () => {
+  const router = useRouter();
     const {
       setError,
       register,
@@ -29,10 +31,14 @@ const LoginForm = () => {
     const loginData = await signIn("credentials", {
       email: values.email,
       password: values.password,
-     
+      redirect:false
     });
+    
     if (loginData?.error) {
       setError('root', {message:loginData.error} )
+    }
+    if(loginData?.ok){
+      router.replace('/Dashboard/Map/Inventories')
     }
   };
   
@@ -41,10 +47,11 @@ const LoginForm = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-6">
         
       <p className="text-center text-md text-gray-600 mt-5">
-        If you don&apos;t have an account, please.
-        <Link className="text-blue-500 hover:underline ml-1" href="/register">
-          Sign up
-        </Link>
+      if you aren't affiliated with a company,
+      <Link className="text-blue-500 hover:underline ml-1" href="/register">
+          Signup here
+        </Link>  to register your firm.
+        
             </p>
         <div className="space-y-2">
           

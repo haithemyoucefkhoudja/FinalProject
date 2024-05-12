@@ -1,16 +1,17 @@
 'use client'
-import React, { FC, ReactElement } from 'react'
+import React, {  ReactElement } from 'react'
 import Link from 'next/link'
 import {  LineChartIcon, LogOut, MapIcon, Package2Icon, RouteIcon,   LayoutGrid, Table, TextIcon  } from 'lucide-react'
 import { signOut } from 'next-auth/react'
-
-export default function Header():ReactElement {
+import Image from 'next/image'
+import LogoImage from '@/public/logo.png'
+export  const  Header =  () :ReactElement => {
   return (
     <header className="flex w-full h-16 items-center gap-4  px-6 ">
-        <Link className={`flex flex-1 items-center gap-2 font-semibold `} href="/">
-              <Package2Icon className="h-6 w-6" />
-              <span>Mang Inc</span>
+        <Link className={`flex  items-center gap-2 font-semibold `} href="/Dashboard/Map/Inventories">
+              <Image height={LogoImage.height * 0.1} width={LogoImage.width * 0.1} src={LogoImage} alt=''  />
         </Link>
+        <div className='flex-1'/>
         <div className='flex '>
               <Link
                 className="flex items-center gap-3  rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 "
