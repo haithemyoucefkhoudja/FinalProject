@@ -1,8 +1,11 @@
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faTrashCan} from "@fortawesome/free-solid-svg-icons"
 import {faPenToSquare} from "@fortawesome/free-solid-svg-icons"
+import { useState } from 'react'
+import Popup_form_edit_account from "./popup_form_edit_account.tsx"
+
 export default function(){
+	const [pop,setPop]=useState(false)
 	let Account_name="long bottom"
 	let role="comedic relief"
 	return(
@@ -17,9 +20,10 @@ export default function(){
 			<p>role:{role}</p>
 			<div className="flex justify-between w-[20%]">
 				<FontAwesomeIcon icon={faTrashCan} />
-				<FontAwesomeIcon icon={faPenToSquare} />
+				<FontAwesomeIcon icon={faPenToSquare} onClick={()=>{setPop(true)}}/>
 			</div>
 		</div>
+	    {pop && <Popup_form_edit_account send={()=>{setPop(false)}}/>}
 	</div>
 	);
 }

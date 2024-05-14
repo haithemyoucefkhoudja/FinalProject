@@ -1,14 +1,17 @@
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faTrashCan} from "@fortawesome/free-solid-svg-icons"
 import {faPenToSquare} from "@fortawesome/free-solid-svg-icons"
+import { useState } from 'react'
+import Popup_form_edit_truck from "./popup_form_edit_truck.tsx"
 export default function(){
+		const [pop,setPop]=useState(false)
 	let Account_model="honda civic"
 	let Account_id="42069"
 	let plate="800-70-14-idk"
 	let run="what's a run"
 	let state="Texas"
 	return(
+
 	<div className="w-[35vw] h-[20vh] border border-black rounded flex justify-between text-[1.5em] relative">
 		<div className="flex flex-col   w-[50%]  m-[1rem]">
 			<p className="">Model: {Account_model}</p>
@@ -25,8 +28,9 @@ export default function(){
 		<div className="flex  justify-between w-[7%] absolute bottom-[0] right-[0] m-[1rem]">
 				
 				<FontAwesomeIcon icon={faTrashCan} />
-				<FontAwesomeIcon icon={faPenToSquare} />
+				<FontAwesomeIcon icon={faPenToSquare} onClick={()=>{setPop(true)}}/>
 			</div>
+	      {pop && <Popup_form_edit_truck send={()=>{setPop(false)}}/>}
 	</div>
 	);
 }
