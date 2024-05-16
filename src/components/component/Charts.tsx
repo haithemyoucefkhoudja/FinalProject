@@ -1,5 +1,6 @@
 "use client";
-import { ResponsiveLine } from "@nivo/line"
+import { ResponsiveBar } from "@nivo/bar"
+import {BarDatum} from '@nivo/bar'
 export function Charts(){
     return(
         <>
@@ -10,7 +11,7 @@ export function Charts(){
         <h3 className="font-semibold leading-none tracking-tight">$1,234.56</h3>
       </div>
       <div className="p-6 pt-0">
-        <CurvedlineChart className="aspect-[2/1]" />
+        <CurvedlineChart className="aspect-[2/1] overflow-x-auto max-w-fit"  />
       </div>
     </div>
     <div className="rounded-lg border border-gray-200 bg-white text-gray-950 shadow-sm ">
@@ -19,7 +20,7 @@ export function Charts(){
         <h3 className="font-semibold leading-none tracking-tight">$5,432.10</h3>
       </div>
       <div className="p-6 pt-0">
-        <CurvedlineChart className="aspect-[2/1]" />
+        <CurvedlineChart className="aspect-[2/1] overflow-x-auto" />
       </div>
     </div>
   </div>
@@ -28,9 +29,9 @@ export function Charts(){
       <p className="text-sm text-gray-500">Gross Margin</p>
       <h3 className="font-semibold leading-none tracking-tight">45%</h3>
     </div>
-    <div className="p-6 pt-0">
+    {/*<div className="p-6 pt-0">
       <LineChart className="aspect-[2/1]" />
-    </div>
+    </div>*/}
   </div>
   <div className="rounded-lg border border-gray-200 bg-white text-gray-950 shadow-sm ">
     <div className="flex p-6 flex-col space-y-2">
@@ -88,43 +89,34 @@ export function Charts(){
     )
 }
 function CurvedlineChart(props:any) {
+  const data = [
+    {
+      "name": "Category A",
+      "value": 40,
+      "color": "red"
+    },
+    {
+      "name": "Category B",
+      "value": 30,
+      "color": "blue"
+    },
+    {
+      "name": "Category C",
+      "value": 20,
+      "color": "green"
+    }
+  ];
     return (
       <div {...props}>
-        <ResponsiveLine
-          data={[
-            {
-              id: "Desktop",
-              data: [
-                { x: "Jan", y: 43 },
-                { x: "Feb", y: 137 },
-                { x: "Mar", y: 61 },
-                { x: "Apr", y: 145 },
-                { x: "May", y: 26 },
-                { x: "Jun", y: 154 },
-              ],
-            },
-            {
-              id: "Mobile",
-              data: [
-                { x: "Jan", y: 60 },
-                { x: "Feb", y: 48 },
-                { x: "Mar", y: 177 },
-                { x: "Apr", y: 78 },
-                { x: "May", y: 96 },
-                { x: "Jun", y: 204 },
-              ],
-            },
-          ]}
-          margin={{ top: 10, right: 10, bottom: 40, left: 40 }}
-          xScale={{
-            type: "point",
-          }}
-          yScale={{
-            type: "linear",
-            min: 0,
-            max: "auto",
-          }}
-          curve="monotoneX"
+        <ResponsiveBar
+         data={data}
+         keys={['value']}
+         layout="horizontal"
+         indexBy="name"
+         padding={0.3}
+         colors={({ index }) => data[index].color}
+         margin={{ top: 10, right: 10, bottom: 40, left: 40 }}
+          
           axisTop={null}
           axisRight={null}
           axisBottom={{
@@ -136,9 +128,7 @@ function CurvedlineChart(props:any) {
             tickValues: 5,
             tickPadding: 16,
           }}
-          colors={["#2563eb", "#e11d48"]}
-          pointSize={6}
-          useMesh={true}
+          
           gridYValues={6}
           theme={{
             tooltip: {
@@ -163,76 +153,3 @@ function CurvedlineChart(props:any) {
     )
   }
   
-  
-  function LineChart(props:any) {
-    return (
-      <div {...props}>
-        <ResponsiveLine
-          data={[
-            {
-              id: "Desktop",
-              data: [
-                { x: "Jan", y: 43 },
-                { x: "Feb", y: 137 },
-                { x: "Mar", y: 61 },
-                { x: "Apr", y: 145 },
-                { x: "May", y: 26 },
-                { x: "Jun", y: 154 },
-              ],
-            },
-            {
-              id: "Mobile",
-              data: [
-                { x: "Jan", y: 60 },
-                { x: "Feb", y: 48 },
-                { x: "Mar", y: 177 },
-                { x: "Apr", y: 78 },
-                { x: "May", y: 96 },
-                { x: "Jun", y: 204 },
-              ],
-            },
-          ]}
-          margin={{ top: 10, right: 10, bottom: 40, left: 40 }}
-          xScale={{
-            type: "point",
-          }}
-          yScale={{
-            type: "linear",
-          }}
-          axisTop={null}
-          axisRight={null}
-          axisBottom={{
-            tickSize: 0,
-            tickPadding: 16,
-          }}
-          axisLeft={{
-            tickSize: 0,
-            tickValues: 5,
-            tickPadding: 16,
-          }}
-          colors={["#2563eb", "#e11d48"]}
-          pointSize={6}
-          useMesh={true}
-          gridYValues={6}
-          theme={{
-            tooltip: {
-              chip: {
-                borderRadius: "9999px",
-              },
-              container: {
-                fontSize: "12px",
-                textTransform: "capitalize",
-                borderRadius: "6px",
-              },
-            },
-            grid: {
-              line: {
-                stroke: "#f3f4f6",
-              },
-            },
-          }}
-          role="application"
-        />
-      </div>
-    )
-  }

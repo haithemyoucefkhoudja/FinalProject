@@ -20,7 +20,7 @@ export default function warehouse_info_card() {
             <div className="flex  justify-between w-[7%] absolute bottom-[0] right-[0] m-[1rem]">
 				
 				<FontAwesomeIcon icon={faTrashCan} />
-				<FontAwesomeIcon icon={faPenToSquare} icon={faPenToSquare} onClick={()=>{setPop(true)}}/>
+				<FontAwesomeIcon icon={faPenToSquare}  onClick={()=>{setPop(true)}}/>
 			</div>
                             {pop && <Popup_form_edit_company send={()=>{setPop(false)}}/>}
 

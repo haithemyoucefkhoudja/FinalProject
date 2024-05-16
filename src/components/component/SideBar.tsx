@@ -1,13 +1,12 @@
 "use client"
 import Link from "next/link"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useWidth } from "@/hooks/windowWidth"
 import {Sidebar} from "lucide-react"
 import {Header} from "../ui/header"
 import UserCard from "./userCard"
 import { useSidebar } from "@/context/SideBarContext"
 import useRouterSegments from "@/hooks/pathhook"
-import fetchDepots from "@/actions/FetchData"
 
 export default function SideBar({
   children, // will be a page or nested layout
@@ -30,6 +29,7 @@ export default function SideBar({
   
   // Width of the active window
   const  windowWidth = useWidth()
+  
   return (
     <div className={`flex  min-h-screen w-full `}>
       <aside className={`bg-white ${windowWidth < 1024 ? 'border-r-2' : ''}  flex flex-1 flex-col z-10 h-screen transition-transform transition-width transform ease-in-out duration-300 lg:relative absolute ${isHidden ? '-translate-x-full w-0' : ' -translate-x-0 z-50  min-w-[280px] max-w-[280px]'}`}>
@@ -66,7 +66,6 @@ export default function SideBar({
       <div className=" flex flex-col w-8 items-center justify-center ml-2">
         <div className=" bg-gray-300 w-[2px] h-4" />
         {relevantItems.length !== 0 && <button className="mx-auto h-8 w-8 border border-gray-200 bg-white hover:bg-gray-100 hover:text-gray-900 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 focus-visible:ring-offset-2"  onClick={()=> {
-          fetchDepots();
           setHidden(!isHidden)}}>
                   <Sidebar className="h-4 w-4" />
         </button>}
@@ -74,7 +73,7 @@ export default function SideBar({
       </div>
 
       <main className={`flex flex-col max-h-screen flex-grow overflow-hidden ${isHidden ? 'w-full' : ''}`}>
-        <Header  />
+        <Header windowWidth={windowWidth} />
         <section className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6 overflow-auto ">
           {children}
         </section>

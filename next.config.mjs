@@ -9,5 +9,5 @@ const withPWA = withPWAInit({
 });
 
 export default withPWA({
-  // Your Next.js config
+  // There's no configuration
 });

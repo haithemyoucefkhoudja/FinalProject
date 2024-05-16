@@ -24,7 +24,7 @@ export const SidebarProvider = ({ children }: { children: ReactNode }) => {
       { label: 'Shipments', icon: <TruckIcon className="h-4 w-4" />, href: '/Dashboard/Map/Shipments' },
     ],
     '/Dashboard/Tables': [
-      { label: 'Company', icon: <TabletsIcon className="h-4 w-4" />, href: '/Dashboard/Tables/Company' },
+      { label: 'Company', icon: <Copyright className="h-4 w-4" />, href: '/Dashboard/Tables/Company' },
       { label: 'Warehouses', icon: <HomeIcon className="h-4 w-4" />, href: '/Dashboard/Tables/Warehouses' },
     ],
     '/Dashboard/Shipments': [
@@ -35,12 +35,8 @@ export const SidebarProvider = ({ children }: { children: ReactNode }) => {
     '/Dashboard/Stats': [
       { label: 'Company', icon: <Copyright className="h-4 w-4" />, href: '/Dashboard/Stats/Company' },
       { label: 'Products', icon: <Package className="h-4 w-4" />, href: '/Dashboard/Stats/Products' }, 
-    ],
-    '/Dashboard/Reports':[
-      
       { label: 'Reports', icon: <TextIcon className="h-4 w-4" />, href: '/Dashboard/Reports' }
-    ]
-    , 
+    ],
     '/Dashboard/Management': [
       { label: 'Company', icon: <TabletsIcon className="h-4 w-4" />, href: '/Dashboard/Management/Company' },
       { label: 'Warehouses', icon: <HomeIcon className="h-4 w-4" />, href: '/Dashboard/Management/Warehouses' },

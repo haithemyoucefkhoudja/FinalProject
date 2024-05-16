@@ -2,7 +2,6 @@ import { getToken } from 'next-auth/jwt';
 import { withAuth } from 'next-auth/middleware';
 import { NextResponse, NextRequest } from 'next/server';
 import { JWT } from 'next-auth/jwt';
-import { IUser } from './types/user';
 const secret = process.env.NEXTAUTH_SECRET;
 
 export default withAuth(
@@ -28,8 +27,7 @@ export default withAuth(
 
     if (!Token && isAccessingSensitiveRoute) {
       return NextResponse.redirect(new URL('/login', req.url));
-    }
-    type InferJWT = JWT & {user:IUser}; // infer type for TypeScript 
+    } // infer type for TypeScript 
 
     // Check if the user has access to worker-level sensitive routes (e.g. /Dashboard/Tables)
     const workerLevelSensitiveRoutes = ['/Dashboard/Tables']
@@ -37,8 +35,8 @@ export default withAuth(
     
     
     if(Token && isWorkerLevelSensitiveRoutes){
-      const Role = (Token as InferJWT).user.role
-      if(Role === 'Admin' || Role === 'Observer' || Role === 'Worker')
+      const Role = Token.user.role
+      if(Role === 'admin' || Role === 'Observer' || Role === 'Worker')
         {
           return NextResponse.next();
         }
@@ -51,8 +49,8 @@ export default withAuth(
     
     
     if(Token && isObserverLevelSensitiveRoutes){
-      const Role = (Token as InferJWT).user.role
-      if(Role === 'Admin' || Role === 'Observer')
+      const Role = Token.user.role
+      if(Role === 'admin' || Role === 'Observer')
         {
           return NextResponse.next();
         }
@@ -63,8 +61,8 @@ export default withAuth(
     const adminLevelSensitiveRoutes = ['/Dashboard/Management'];
     const isAdminLevelSensitiveRoutes = adminLevelSensitiveRoutes.some(route => pathname.startsWith(route));
     if(Token && isAdminLevelSensitiveRoutes){
-      const Role = (Token as InferJWT).user.role
-      if(Role === 'Admin')
+      const Role = Token.user.role
+      if(Role === 'admin')
         {
           return NextResponse.next();
         }

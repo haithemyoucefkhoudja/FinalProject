@@ -10,10 +10,10 @@ config.autoAddCss = false; // Tell Font Awesome to skip adding the CSS automatic
 
 
 const inter = Inter({ subsets: ["latin"] });
-const APP_NAME = "PWA App";
-const APP_DEFAULT_TITLE = "My Awesome PWA App";
-const APP_TITLE_TEMPLATE = "%s - PWA App";
-const APP_DESCRIPTION = "Best PWA app in the world!";
+const APP_NAME = "WareLink App";
+const APP_DEFAULT_TITLE = "WareLink App";
+const APP_TITLE_TEMPLATE = "WareLink ";
+const APP_DESCRIPTION = "WareHouse Management System";
 
 export const metadata: Metadata = {
   applicationName: APP_NAME,
@@ -23,32 +23,6 @@ export const metadata: Metadata = {
   },
   description: APP_DESCRIPTION,
   manifest: "/manifest.json",
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: "default",
-    title: APP_DEFAULT_TITLE,
-    // startUpImage: [],
-  },
-  formatDetection: {
-    telephone: false,
-  },
-  openGraph: {
-    type: "website",
-    siteName: APP_NAME,
-    title: {
-      default: APP_DEFAULT_TITLE,
-      template: APP_TITLE_TEMPLATE,
-    },
-    description: APP_DESCRIPTION,
-  },
-  twitter: {
-    card: "summary",
-    title: {
-      default: APP_DEFAULT_TITLE,
-      template: APP_TITLE_TEMPLATE,
-    },
-    description: APP_DESCRIPTION,
-  },
 };
 
 

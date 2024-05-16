@@ -18,8 +18,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         {...props}
       />
       {viewMode &&      
-      <button onClick={(e)=>{e.preventDefault()
-        
+      <button
+      type="button"
+      onClick={(e)=>{
+        e.preventDefault()
         setshowHideState(prev=> !prev)}} className="hover:bg-gray-200 hover:text-gray-900 rounded-full inline-flex items-center justify-center whitespace-nowrap p-1 text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 ">
       {
        showHideState ?  
