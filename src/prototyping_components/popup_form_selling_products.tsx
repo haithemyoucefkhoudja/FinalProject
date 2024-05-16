@@ -1,7 +1,7 @@
 
 
 
-export default function Popup_form_selling_products(){
+export default function Popup_form_selling_products(props:any){
 function handleClick(){
   
   props.send();

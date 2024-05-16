@@ -1,6 +1,6 @@
 
 
-export default function Popup_text_description(props) {
+export default function Popup_text_description(props:any) {
 function handleClick(){
   props.send();
 }

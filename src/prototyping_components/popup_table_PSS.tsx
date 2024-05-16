@@ -1,4 +1,4 @@
-export default function Popup_table_PSS(props) {
+export default function Popup_table_PSS(props:any) {
 function handleClick(){
   props.send();
 }

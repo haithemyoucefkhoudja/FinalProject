@@ -2,10 +2,12 @@ import { useState } from 'react'
 import Popup_text_description from "./popup_text_description.tsx"
 import Popup_table_PSS from "./popup_table_PSS.tsx"
 
+type Props={
+  product_name:string;
+}
 
 
-
-function Product_info_card(props) {
+function Product_info_card(props:Props) {
 const [descState,setDescState]=useState(false)
 const [pricesState,setPricesState]=useState(false)
 

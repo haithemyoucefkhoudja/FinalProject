@@ -3,11 +3,17 @@ import {faTrashCan} from "@fortawesome/free-solid-svg-icons"
 import {faPenToSquare} from "@fortawesome/free-solid-svg-icons"
 import { useState } from 'react'
 import Popup_form_edit_account from "./popup_form_edit_account.tsx"
+type Props={
+	Account_name:string;
+	role:string;
+}
 
-export default function(){
+
+
+export default function(props:Props){
 	const [pop,setPop]=useState(false)
-	let Account_name="long bottom"
-	let role="comedic relief"
+	let Account_name=props.Account_name
+	let role=props.role
 	return(
 	<div className="w-[35vw] h-[20vh] border border-black rounded flex justify-between text-[1.5em]">
 		<div className="flex pl-[1rem] items-center  w-[50%]">

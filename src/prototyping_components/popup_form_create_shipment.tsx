@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Popup_form_shipment_products from "./popup_form_shipment_products.tsx"
-export default function Popup_form_create_shipment(props){
+export default function Popup_form_create_shipment(props:any){
 function handleClick(){  
   props.send();
 }

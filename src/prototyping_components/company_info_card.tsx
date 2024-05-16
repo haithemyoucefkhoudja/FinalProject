@@ -2,10 +2,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faPenToSquare} from "@fortawesome/free-solid-svg-icons";
 import { useState } from 'react'
 import Popup_form_edit_company from "./popup_form_edit_company"
+type Props={
+	company_name:string;
+}
 
-export default function company_info_card(){
+
+export default function company_info_card(props:Props){
 	const [nameEdit,setNameEdit]=useState(false)
-	let company_name="DN productions"
+	let company_name=props.company_name
 
 	return (
 		<>

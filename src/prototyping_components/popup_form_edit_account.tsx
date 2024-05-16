@@ -1,4 +1,4 @@
-export default function Popup_form_edit_account (props){
+export default function Popup_form_edit_account (props:any){
 function handleClick(){
 	
   props.send();

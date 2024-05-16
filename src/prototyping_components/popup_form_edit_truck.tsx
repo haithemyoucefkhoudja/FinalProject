@@ -1,4 +1,4 @@
-export default function Popup_form_edit_truck (props){
+export default function Popup_form_edit_truck (props:any){
 function handleClick(){
   
   props.send();

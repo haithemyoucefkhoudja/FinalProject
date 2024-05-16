@@ -1,4 +1,4 @@
-export default function Popup_form_edit_warehouse (props){
+export default function Popup_form_edit_warehouse (props:any){
 function handleClick(){
 	
   props.send();
