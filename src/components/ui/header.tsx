@@ -7,7 +7,6 @@ import Image from 'next/image'
 import LogoImage from '@/public/logo.png'
 import { useWidth } from '@/hooks/windowWidth'
 export  const  Header =  ({windowWidth}:{windowWidth:number}) :ReactElement => {
-  
   const [isMobile, setIsMobile] = useState(false); 
   useEffect(()=>{
     setIsMobile(windowWidth < 768)
