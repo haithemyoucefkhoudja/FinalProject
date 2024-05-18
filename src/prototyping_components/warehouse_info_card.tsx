@@ -12,7 +12,7 @@ export default function warehouse_info_card() {
     return (
         <div className="w-[35vw] h-[20vh] border border-black rounded flex justify-center items-center text-[1.5em] relative">
             <div>
-            	<p>{boolean === 1 ? "Factory" : "Warehouse"}: {warehouse_name}</p>
+            	<span className="flex"><p className="underline">{boolean === 1 ? "Factory" : "Warehouse"}</p><p>: {warehouse_name}</p></span>
             	<p>Coordinates:</p>
             	<p>{long}</p>
             	<p>{lat}</p>
@@ -20,7 +20,7 @@ export default function warehouse_info_card() {
             <div className="flex  justify-between w-[7%] absolute bottom-[0] right-[0] m-[1rem]">
 				
 				<FontAwesomeIcon icon={faTrashCan} />
-				<FontAwesomeIcon icon={faPenToSquare}  onClick={()=>{setPop(true)}}/>
+				<FontAwesomeIcon icon={faPenToSquare} icon={faPenToSquare} onClick={()=>{setPop(true)}}/>
 			</div>
                             {pop && <Popup_form_edit_company send={()=>{setPop(false)}}/>}
 

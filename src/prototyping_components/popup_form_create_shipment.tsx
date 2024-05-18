@@ -18,7 +18,7 @@ return (
     <>
    <div className="fixed top-[0] left-[0] w-[100vw] h-[100vh] bg-black bg-opacity-20" onClick={handleClick}></div>
     
-    <div className=" text-[1.5rem] flex flex-col justify-center items-center text-black w-[40vw] h-[40vh] rounded-[1rem] p-[1rem] border black-border absolute top-[50%] left-[50%] transform translate-x-[-50%] translate-y-[-50%] bg-white"> 
+    <div className=" text-[1.5rem] flex flex-col justify-center items-center text-black w-[40vw] h-[55vh] rounded-[1rem] p-[1rem] border black-border absolute top-[50%] left-[50%] transform translate-x-[-50%] translate-y-[-50%] bg-white"> 
       <p className="fixed top-[1%] right-[1%] text-[1.5em] text-[red]" onClick={handleClick}>X</p>
           
           
@@ -27,7 +27,7 @@ return (
           <div className="flex w-[65%] justify-between ">  <p>Products</p><button className="p-[0.5rem] bg-blue-500 text-white rounded text-[0.85em] " onClick={()=>{setPop(true)}}>Choose products</button></div>
           </div>
      
-      <button className="absolute right-[4%] bottom-[4%] p-[0.5rem] bg-blue-500 text-white rounded text-[0.85em]">Sell</button>
+      <button className="absolute right-[4%] bottom-[4%] pl-[2rem] pr-[2rem] p-[0.5rem] bg-blue-500 text-white rounded text-[0.85em]">Sell</button>
     </div>
   {pop && <Popup_form_shipment_products send={()=>{setPop(false)}}/>}
 </>
