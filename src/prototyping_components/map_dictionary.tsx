@@ -1,4 +1,4 @@
-//import Link from 'next/p';
+import Link from 'next/p';
 export default function(){
 const F_data = [
   { url: "/driver", title: "item 1" },
@@ -45,19 +45,19 @@ const S_data = [
     	<h2 className="text-black text-[2rem] border border-[2px] border-black border-l-0 border-r-0 w-[100%] text-center bg-gray-200">Factories</h2>
     	<div className="hide-scrollbar text-blue-500  flex flex-col items-center text-[1.5rem] w-[100%] max-h-[17vh] overflow-y-auto ">
     		{F_data.map(item => ( 
-          <div className="text-black text-[1em] border border-[1px] border-black border-l-0 border-r-0 w-[100%] text-center " href={item.url}>{item.title}</div>
+          <Link className="text-black text-[1em] border border-[1px] border-black border-l-0 border-r-0 w-[100%] text-center " href={item.url}>{item.title}</Link>
         ))}
     	</div>
     	<h2 className="text-black text-[2rem] border border-[2px] border-black border-l-0 border-r-0 w-[100%] text-center bg-gray-200">Warehouses</h2>
     	<div className=" hide-scrollbar flex flex-col items-center text-[1.5rem] w-[100%] max-h-[17vh] overflow-y-auto">
     		{W_data.map(item => ( 
-          <div className="text-black text-[1em] border border-[1px] border-black border-l-0 border-r-0 w-[100%] text-center " href={item.url}>{item.title}</div>
+          <Link className="text-black text-[1em] border border-[1px] border-black border-l-0 border-r-0 w-[100%] text-center " href={item.url}>{item.title}</Link>
           ))}
     	</div>
     	<h2 className="text-black text-[2rem] border border-[2px] border-black border-l-0 border-r-0 w-[100%] text-center bg-gray-200">Shipments</h2>
       <div className=" hide-scrollbar flex flex-col items-center text-[1.5rem] w-[100%] max-h-[17vh] overflow-y-auto">
     		{S_data.map(item => ( 
-          <div className="text-black text-[1em] border border-[1px] border-black border-l-0 border-r-0 w-[100%] text-center " href={item.url}>{item.title}</div>
+          <Link className="text-black text-[1em] border border-[1px] border-black border-l-0 border-r-0 w-[100%] text-center " href={item.url}>{item.title}</Link>
           ))}
     	</div>
     	</div>
