@@ -1,4 +1,4 @@
-import Link from 'next/p';
+import Link from 'next/link';
 export default function(){
 const F_data = [
   { url: "/driver", title: "item 1" },
