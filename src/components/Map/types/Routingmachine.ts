@@ -1,4 +1,5 @@
 export interface RoutingMachineProps {
-    coords: [number, number];
+    tocoords:[number, number];
+    fromcoords: [number, number];
     updateExternalState: (newCords: [number, number]) => void;
   }

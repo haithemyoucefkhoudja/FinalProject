@@ -12,8 +12,6 @@
   padding:0;
 }
 
-
-
 /* Custom scrollbar styling */
 .custom-scrollbar {
   overflow-y: auto; /* Enable vertical scrolling */
@@ -37,3 +35,12 @@
 .leaflet-routing-alternatives-container{
   display: none;
 }
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none; 
+} 

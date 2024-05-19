@@ -30,7 +30,7 @@ export default withAuth(
     } // infer type for TypeScript 
 
     // Check if the user has access to worker-level sensitive routes (e.g. /Dashboard/Tables)
-    const workerLevelSensitiveRoutes = ['/Dashboard/Tables']
+    const workerLevelSensitiveRoutes = ['/Dashboard/Tables/Warehouses']
     const isWorkerLevelSensitiveRoutes = workerLevelSensitiveRoutes.some(route => pathname.startsWith(route));
     
     
@@ -44,7 +44,7 @@ export default withAuth(
       return NextResponse.redirect(new URL('/Dashboard/Map/Inventories', req.url));
     }
     // Check if the user has access to observer-level sensitive routes (e.g. /Dashboard/Stats, /Dashboard/Reports)
-    const observerLevelSensitiveRoutes = ['/Dashboard/Stats', '/Dashboard/Reports']
+    const observerLevelSensitiveRoutes = ['/Dashboard/Stats', '/Dashboard/Reports', '/Dashboard/Tables/Company']
     const isObserverLevelSensitiveRoutes = observerLevelSensitiveRoutes.some(route => pathname.startsWith(route));
     
     

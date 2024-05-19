@@ -9,5 +9,5 @@ const withPWA = withPWAInit({
 });
 
 export default withPWA({
-  // There's no configuration
+  
 });

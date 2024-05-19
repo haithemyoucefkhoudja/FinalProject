@@ -33,58 +33,7 @@ export function Charts(){
       <LineChart className="aspect-[2/1]" />
     </div>*/}
   </div>
-  <div className="rounded-lg border border-gray-200 bg-white text-gray-950 shadow-sm ">
-    <div className="flex p-6 flex-col space-y-2">
-      <h3 className="font-semibold leading-none tracking-tight">Drivers</h3>
-      <p className="text-sm text-gray-500">Performance Metrics</p>
-    </div>
-    <div className="p-6 pt-0">
-      
-  <div className="relative w-full overflow-auto">
-      <table className="w-full caption-bottom text-sm">
-        <thead className="[&_tr]:border-b">
-          <tr className="border-b transition-colors hover:bg-gray-100/50 data-[state=selected]:bg-gray-100 ">
-            <th className="h-12 px-4 text-left align-middle font-medium text-gray-500 [&:has([role=checkbox])]:pr-0 ">Name</th>
-            <th className="h-12 px-4 text-left align-middle font-medium text-gray-500 [&:has([role=checkbox])]:pr-0 ">ID</th>
-            <th className="h-12 px-4 text-left align-middle font-medium text-gray-500 [&:has([role=checkbox])]:pr-0 ">Deliveries</th>
-            <th className="h-12 px-4 text-left align-middle font-medium text-gray-500 [&:has([role=checkbox])]:pr-0 ">Issues</th>
-            <th className="h-12 px-4 text-left align-middle font-medium text-gray-500 [&:has([role=checkbox])]:pr-0 ">Rating</th>
-          </tr>
-        </thead>
-        <tbody className="[&_tr:last-child]:border-0">
-          <tr className="border-b transition-colors hover:bg-gray-100/50 data-[state=selected]:bg-gray-100">
-            <td className=" p-4 align-middle [&:has([role=checkbox])]:pr-0 font-medium">John Doe</td>
-            <td className="p-4 align-middle [&:has([role=checkbox])]:pr-0">12345</td>
-            <td className="p-4 align-middle [&:has([role=checkbox])]:pr-0">56</td>
-            <td className="p-4 align-middle [&:has([role=checkbox])]:pr-0">2</td>
-            <td className="p-4 align-middle [&:has([role=checkbox])]:pr-0">4.5</td>
-          </tr>
-          <tr className="border-b transition-colors hover:bg-gray-100/50 data-[state=selected]:bg-gray-100">
-            <td className=" p-4 align-middle [&:has([role=checkbox])]:pr-0 font-medium">John Doe</td>
-            <td className="p-4 align-middle [&:has([role=checkbox])]:pr-0">12345</td>
-            <td className="p-4 align-middle [&:has([role=checkbox])]:pr-0">56</td>
-            <td className="p-4 align-middle [&:has([role=checkbox])]:pr-0">2</td>
-            <td className="p-4 align-middle [&:has([role=checkbox])]:pr-0">4.5</td>
-          </tr>
-          <tr className="border-b transition-colors hover:bg-gray-100/50 data-[state=selected]:bg-gray-100">
-            <td className=" p-4 align-middle [&:has([role=checkbox])]:pr-0 font-medium">John Doe</td>
-            <td className="p-4 align-middle [&:has([role=checkbox])]:pr-0">12345</td>
-            <td className="p-4 align-middle [&:has([role=checkbox])]:pr-0">56</td>
-            <td className="p-4 align-middle [&:has([role=checkbox])]:pr-0">2</td>
-            <td className="p-4 align-middle [&:has([role=checkbox])]:pr-0">4.5</td>
-          </tr>
-          <tr className="border-b transition-colors hover:bg-gray-100/50 data-[state=selected]:bg-gray-100">
-            <td className=" p-4 align-middle [&:has([role=checkbox])]:pr-0 font-medium">John Doe</td>
-            <td className="p-4 align-middle [&:has([role=checkbox])]:pr-0">12345</td>
-            <td className="p-4 align-middle [&:has([role=checkbox])]:pr-0">56</td>
-            <td className="p-4 align-middle [&:has([role=checkbox])]:pr-0">2</td>
-            <td className="p-4 align-middle [&:has([role=checkbox])]:pr-0">4.5</td>
-          </tr>
-        </tbody>
-      </table>
-      </div>
-    </div>
-  </div>
+  
   </>
     )
 }

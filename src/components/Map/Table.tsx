@@ -17,9 +17,9 @@ const LeafletTable = ({Products, name}:{Products:IProduct[], name:string}) => {
               {Products.map((row, index) => (
                 <tr key={index}>
                   <td className="py-2 px-4 border-b">{index}</td>
-                  <td className="py-2 px-4 border-b">{row.p_name}</td>
-                  <td className="py-2 px-4 border-b">{row.p_quantity}</td>
-                  <td className="py-2 px-4 border-b">{row.p_unit_price}</td>
+                  <td className="py-2 px-4 border-b">{row.name}</td>
+                  <td className="py-2 px-4 border-b">{row.quantity}</td>
+                  <td className="py-2 px-4 border-b">{row.unit_price}</td>
                 </tr>
               ))}
             </tbody>
