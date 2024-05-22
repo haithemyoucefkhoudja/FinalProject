@@ -2,7 +2,7 @@ import Company_info_card  from "@/prototyping_components/company_info_card.tsx";
 
 
 export default async function Page(){
-	let data=["one"]
+	let data=["Cevital Group"]
 
 	const cards=data.map((item)=>{
 		return <span className="m-[3vh]"><Company_info_card company_name={item}/></span>

@@ -2,22 +2,28 @@ import Warehouse_info_card  from "@/prototyping_components/warehouse_info_card.t
 export default function Page(){
 const data = [
     {
+        boolean: 3,
+        warehouse_name: "Factory Bejaia N1",
+        long: 5.0754,
+        lat: 36.7416
+    },
+    {
         boolean: 2,
-        warehouse_name: "highway 7 storage",
-        long: 12.7,
-        lat: 17.9
+        warehouse_name: "Warehouse Oum El Bouaghi N2",
+        long: 7.1505,
+        lat: 35.8819
     },
     {
         boolean: 1,
-        warehouse_name: "main street storage",
-        long: 10.5,
-        lat: 15.3
+        warehouse_name: "Warehouse Mostaganem N3",
+        long: 0.1467,
+        lat: 35.9158
     },
     {
         boolean: 0,
-        warehouse_name: "elm street storage",
-        long: 8.2,
-        lat: 13.4
+        warehouse_name: "Warehouse Ouargla N4",
+        long: 5.3345,
+        lat: 31.9526
     }
 ];
 console.log(data[0],data[0].warehouse_name)
