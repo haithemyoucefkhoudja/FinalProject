@@ -28,7 +28,7 @@ export  const  Header =  ({windowWidth}:{windowWidth:number}) :ReactElement => {
           <li key={'m-1'}>
               <Link
                 className="flex items-center gap-3  rounded-lg px-3 py-4 text-gray-100 "
-                href="/Dashboard/Map/Inventories"
+                href="/Dashboard/Map"
               >
                 <MapIcon className="h-4 w-4" />
                 Map
@@ -75,17 +75,17 @@ export  const  Header =  ({windowWidth}:{windowWidth:number}) :ReactElement => {
           </li>
           </ul>
         </button> : (<ul className='hidden md:flex'>
-          <li key={'d-1'} className='hidden md:flex'>
+          <li key={'d-1'} >
               <Link
                 className="flex items-center gap-3  rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 "
-                href="/Dashboard/Map/Inventories"
+                href="/Dashboard/Map"
               >
           
                 <MapIcon className="h-4 w-4" />
                 Map
               </Link>
           </li>
-          <li key={'d-2'} className='hidden md:flex'>
+          <li key={'d-2'} >
               <Link
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 "
                 href="/Dashboard/Tables/Company"
@@ -94,7 +94,7 @@ export  const  Header =  ({windowWidth}:{windowWidth:number}) :ReactElement => {
                 Tables
               </Link>
           </li>
-          <li key={'d-3'} className='hidden md:flex'>
+          <li key={'d-3'} >
               <Link
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 "
                 href="/Dashboard/Shipments/Current"
@@ -103,7 +103,7 @@ export  const  Header =  ({windowWidth}:{windowWidth:number}) :ReactElement => {
                 Shipments
               </Link>
           </li>
-          <li key={'d-4'} className='hidden md:flex'>
+          <li key={'d-4'} >
               <Link
                 className="flex items-center gap-3 rounded-lg  px-3 py-2 text-gray-500  transition-all hover:text-gray-900 "
                 href="/Dashboard/Stats/Company"
@@ -112,7 +112,7 @@ export  const  Header =  ({windowWidth}:{windowWidth:number}) :ReactElement => {
                 Stats
               </Link>
           </li>
-          <li key={'d-5'} className='hidden md:flex'>
+          <li key={'d-5'} >
               <Link
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 "
                 href="/Dashboard/Management/Company"

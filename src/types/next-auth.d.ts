@@ -15,7 +15,7 @@ declare module "next-auth" {
     email:string ,
     company:string,
     warehouse:string,
-    role:"Admin" | "Observer" | "Drvier" | "Worker"
+    role:"admin" | "observer" | "driver" | "worker"
   }
   interface Session {
     user: User & DefaultSession["user"]

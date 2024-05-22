@@ -36,7 +36,7 @@ export default withAuth(
     
     if(Token && isWorkerLevelSensitiveRoutes){
       const Role = Token.user.role
-      if(Role === 'admin' || Role === 'Observer' || Role === 'Worker')
+      if(Role === 'admin' || Role === 'observer' || Role === 'worker')
         {
           return NextResponse.next();
         }
@@ -50,7 +50,7 @@ export default withAuth(
     
     if(Token && isObserverLevelSensitiveRoutes){
       const Role = Token.user.role
-      if(Role === 'admin' || Role === 'Observer')
+      if(Role === 'admin' || Role === 'observer')
         {
           return NextResponse.next();
         }

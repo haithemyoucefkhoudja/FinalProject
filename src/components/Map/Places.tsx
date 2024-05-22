@@ -289,7 +289,7 @@ interface WareHouseMarkerProps {
 const Places = () => {
   const [center, setCenter] = useState<[number, number] | undefined>([35.8689, 7.1108]);
   
-var customIcon = new Icon({
+const customIcon = new Icon({
     iconUrl:'/marker-icon.png',
     iconSize:[25,41],
     

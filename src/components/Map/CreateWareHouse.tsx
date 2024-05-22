@@ -3,7 +3,7 @@
 import 'leaflet/dist/leaflet.css'
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
 import { Ref, useCallback, useMemo, useRef, useState } from 'react'
-import { Icon, IconOptions,} from 'leaflet'
+import { Icon, IconOptions, Marker as IMarker} from 'leaflet'
 import LeafletTable from './Table'
 interface MarkerType{
     id:number,
@@ -36,13 +36,13 @@ interface DraggableMarkerProps {
     const [draggable, setDraggable] = useState(true);
     const [position, setPosition] = useState<[number, number]>(externalmarker.geocode)
 
-    const markerRef = useRef(null)
+    const markerRef = useRef<IMarker| null>(null)
     const eventHandlers = useMemo(
       () => ({
         dragend() {
-          const marker = markerRef.current
+          const marker:IMarker | null = markerRef.current
           if (marker != null) {
-            const latlng = (marker as any).getLatLng();
+            const latlng = marker.getLatLng();
             updateExternalState(externalmarker.id, [latlng.lat, latlng.lng])
             setPosition([latlng.lat, latlng.lng])
           }
@@ -63,7 +63,7 @@ interface DraggableMarkerProps {
         ref={markerRef}>
         
         <Popup minWidth={90} closeOnEscapeKey={true}>
-        <LeafletTable Products={Products} name=''></LeafletTable>
+        <LeafletTable Products={[]} name=''></LeafletTable>
         </Popup>
       </Marker>
     )
@@ -112,7 +112,7 @@ function reverseGeocode(coordinates: [number, number]): Promise<string> {
         console.error("Error fetching reverse geocoding data:", error);
         return 'error';
       });
-  }
+}
   
 const updateMarkerPosition = async (id: number, newPosition: [number, number]) =>  {
     const newaddress:string = await reverseGeocode(newPosition);

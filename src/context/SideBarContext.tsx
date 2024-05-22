@@ -19,10 +19,7 @@ const SidebarContext = createContext<SidebarContextType>({
 export const SidebarProvider = ({ children }: { children: ReactNode }) => {
   
   const sidebarItems: Record<string, SidebarItem[]> = {
-    '/Dashboard/Map': [
-      { label: 'Inventories', icon: <MapPinIcon className="h-4 w-4" />, href: '/Dashboard/Map/Inventories' },
-      { label: 'Shipments', icon: <TruckIcon className="h-4 w-4" />, href: '/Dashboard/Map/Shipments' },
-    ],
+    '/Dashboard/Map': [],
     '/Dashboard/Tables': [
       { label: 'Company', icon: <Copyright className="h-4 w-4" />, href: '/Dashboard/Tables/Company' },
       { label: 'Warehouses', icon: <HomeIcon className="h-4 w-4" />, href: '/Dashboard/Tables/Warehouses' },
