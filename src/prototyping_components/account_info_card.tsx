@@ -1,3 +1,4 @@
+"use client";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faTrashCan} from "@fortawesome/free-solid-svg-icons"
 import {faPenToSquare} from "@fortawesome/free-solid-svg-icons"
@@ -11,7 +12,7 @@ type Props={
 
 
 
-export default function(props:Props){
+export default function Account_info_card(props:Props){
 	const [pop,setPop]=useState(false)
 	let Account_name="placeholder" //props.account_name
 	let role="placeholder" //props.role             /*this ofc these should be a props, but I can't recall who summons it*/
