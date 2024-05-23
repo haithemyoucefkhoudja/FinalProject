@@ -38,8 +38,9 @@ const LoginForm = () => {
       setError('root', {message:loginData.error} )
     }
     if(loginData?.ok){
-      router.replace('/Dashboard/Map/Inventories')
+      router.replace('/Dashboard/Map')
     }
+    return loginData
   };
   
 
@@ -78,7 +79,7 @@ const LoginForm = () => {
                   </p>
             </div>
             }
-            <button className="h-10 px-4 py-2 w-full bg-gray-900 text-gray-50 hover:bg-gray-900/90 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 "  disabled={isSubmitting} type="submit">
+            <button className="h-10 px-4 py-2 w-full bg-gray-900 text-gray-50 hover:bg-gray-900/90 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors  disabled:pointer-events-none disabled:opacity-50 "  disabled={isSubmitting} type="submit">
           <Loading text="Login" isLoading={isSubmitting}/>
         </button>
 

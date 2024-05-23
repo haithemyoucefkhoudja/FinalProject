@@ -41,7 +41,6 @@ export const SidebarProvider = ({ children }: { children: ReactNode }) => {
       { label: 'Vehicles', icon: <TruckIcon className="h-4 w-4" />, href: '/Dashboard/Management/Vehicles' },
       { label: 'Products', icon: <CurlyBraces className="h-4 w-4" />, href: '/Dashboard/Management/Products' }, 
     ],
-    // Add more routes as needed...
   };
   return (
     <SidebarContext.Provider value={{

@@ -13,7 +13,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       <div className="flex w-full items-center border-gray-200 bg-white">
       <input
         type={showHideState ? 'Text' : type}
-        className=" flex-grow h-10 px-3 py-2 text-sm focus:none outline-none  placeholder:text-gray-500 "
+        className={" flex-grow h-10 px-3 py-2 text-sm focus:none outline-none  placeholder:text-gray-500 ".concat(className || '')}
         ref={ref}
         {...props}
       />

@@ -5,36 +5,18 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
 import { Ref, useCallback, useMemo, useRef, useState } from 'react'
 import { Icon, IconOptions, Marker as IMarker} from 'leaflet'
 import LeafletTable from './Table'
-interface MarkerType{
-    id:number,
-    geocode:[number, number],
-    Popup:string,
-    address:string
-}
+import { useWareData } from '@/context/WarehouseContext'
+import { LucideCornerDownLeft, LucideDoorOpen } from 'lucide-react'
+
 interface DraggableMarkerProps {
-    externalmarker: MarkerType;
+    externalmarker: [number, number];
     icon: Icon<IconOptions> | undefined;
-    updateExternalState: (id:number,newCords: [number, number]) => void;
+    updateExternalState: (newCords: [number, number]) => void;
   }
-  const Products = [
-    {
-       p_name: "Milk",
-       p_quantity: 200,
-       p_unit_price: 11,
-       p_soft_limit: 250,
-       p_hard_limit: 90
-     },
-     {
-       p_name: "Yogurt",
-       p_quantity: 20,
-       p_unit_price: 20,
-       p_soft_limit: 150,
-       p_hard_limit: 75
-     }
-   ]
+  
   const DraggableMarker: React.FC<DraggableMarkerProps> = ({ externalmarker, icon, updateExternalState }) => {
     const [draggable, setDraggable] = useState(true);
-    const [position, setPosition] = useState<[number, number]>(externalmarker.geocode)
+    const [position, setPosition] = useState<[number, number]>(externalmarker)
 
     const markerRef = useRef<IMarker| null>(null)
     const eventHandlers = useMemo(
@@ -43,8 +25,9 @@ interface DraggableMarkerProps {
           const marker:IMarker | null = markerRef.current
           if (marker != null) {
             const latlng = marker.getLatLng();
-            updateExternalState(externalmarker.id, [latlng.lat, latlng.lng])
-            setPosition([latlng.lat, latlng.lng])
+            const newPos:[number, number] = [parseFloat((latlng.lat.toFixed(2))), parseFloat((latlng.lng.toFixed(2)))]
+            updateExternalState(newPos)
+            setPosition(newPos)
           }
         },
       }),
@@ -61,68 +44,22 @@ interface DraggableMarkerProps {
         eventHandlers={eventHandlers}
         position={position}
         ref={markerRef}>
-        
-        <Popup minWidth={90} closeOnEscapeKey={true}>
-        <LeafletTable Products={[]} name=''></LeafletTable>
-        </Popup>
       </Marker>
     )
   }
 
-const CreateWMap = () => {
-    const initMarkers:MarkerType[] = [{
-        id:1,
-        geocode:[35.8689, 7.1108],
-        Popup:'hello im popup1',
-        address:''
-    },
-    {
-        id:2,
-        geocode:[35.650, 7.1108],
-        Popup:'hello im popup2',
-        address:''
-    }
-    ]
-const [markersPosition, setMarkersPosition] = useState<MarkerType[]>([{
-    id:1,
-    geocode:[35.8689, 7.1108],
-    Popup:'hello im popup1',
-    address:''
-},
-{
-    id:2,
-    geocode:[35.650, 7.1108],
-    Popup:'hello im popup2',
-    address:''
-}
-]);
-function reverseGeocode(coordinates: [number, number]): Promise<string> {
-    
-    return fetch(`https://api.openrouteservice.org/geocode/reverse?api_key=${process.env.NEXT_PUBLIC_MAP_KEY}&point.lon=${coordinates[1]}&point.lat=${coordinates[0]}`)
-      .then(response => response.json())
-      .then(data => {
-        if (data.features && data.features.length > 0) {
-          const locationName = data.features[0].properties.label;
-          return locationName;
-        } else {
-          return 'Location not found.';
-        }
-      })
-      .catch(error => {
-        console.error("Error fetching reverse geocoding data:", error);
-        return 'error';
-      });
-}
+const CreateWMap: React.FC<any> = (props) => {
+    const {warehouse_pos, updateWareData} = useWareData()
+    const [Marker, setMarkersPosition] = useState<[number, number]>(warehouse_pos)
+
   
-const updateMarkerPosition = async (id: number, newPosition: [number, number]) =>  {
-    const newaddress:string = await reverseGeocode(newPosition);
-    setMarkersPosition((prev) =>
-      prev.map((marker) =>
-        marker.id === id ? { ...marker, address:newaddress, geocode: newPosition } : marker
-      )
+const updateMarkerPosition = async (newPosition: [number, number]) =>  {
+    updateWareData(newPosition, 'warehouse_pos')
+    setMarkersPosition(
+        newPosition 
     );
   };
-var customIcon = new Icon({
+const customIcon = new Icon({
     iconUrl:'/marker-icon.png',
     iconSize:[25,41],
     
@@ -130,33 +67,26 @@ var customIcon = new Icon({
     return (
         
         <div>        
-            <ul>
-        {markersPosition.map((marker) => (
-          <li key={marker.id}>
-            Marker {marker.id}: ({marker.geocode[0]}, {marker.geocode[1]}: {marker.address}  ) 
-          </li>
-        ))}
-      </ul>
-            <MapContainer style={{
-                height: '100vh',
-                width: '100vw'
-            }} center={[35.8689, 7.1108]} zoom={13} scrollWheelZoom={false}>
-                 <TileLayer
-      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-    />
-    {initMarkers.map((marker, index) => {
-          return (
+              <MapContainer  className=' w-96 h-96 ' center={Marker} zoom={10} scrollWheelZoom={false}>
+                  <TileLayer
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+      {Marker &&
             <DraggableMarker
-              key={index}
-              externalmarker={marker}
-              icon={customIcon}
-              updateExternalState={updateMarkerPosition}
-            >
-            </DraggableMarker>
-          );
-        })}
-            </MapContainer>
+            
+            externalmarker={Marker}
+            icon={customIcon}
+            updateExternalState={updateMarkerPosition}
+          >
+          </DraggableMarker>
+          }
+              </MapContainer>
+        <div className='flex justify-center p-4'>
+        <button  onClick={()=>props.showMap()} className=" h-8 w-8 border border-gray-800 bg-white hover:bg-gray-300 hover:text-gray-900 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 " type="button">
+          <LucideCornerDownLeft color='green' className='w-6 h-6'></LucideCornerDownLeft>
+        </button>
+        </div>
         </div>
     )
 }
