@@ -19,7 +19,7 @@ export default function Account_info_card(props:Props){
 	let warehouse_name="placeholder"//props.warehouse_na  /*	change it once you hook em up*/
 	
 	return(
-	<div className="w-[35vw] h-[20vh] border border-black rounded flex justify-between text-[1.5em]">
+	<div className="w-[35vw] h-[20vh] border border-black rounded flex justify-between text-[1em]">
 		<div className="flex pl-[1rem] items-center  w-[50%]">
 			<img className="rounded-[50%] w-[3.5vw] h-[7vh] bg-blue-500 " src="" />
 			<p className="pl-[0.5rem]">{Account_name}</p>

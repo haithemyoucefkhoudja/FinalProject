@@ -34,13 +34,13 @@ const data:Props[] = [
         lat: 31.9526
     }
 ];
-console.log(data[0],data[0].warehouse_name)
+
 	const cards=data.map((item)=>{
-		return <span className="m-[3vh]" ><Warehouse_info_card warehouse_name={item.warehouse_name} type={item.type} long={item.long} lat={item.lat}  /></span>
+		return <div className="mt-[1rem] mb-[1rem]"><Warehouse_info_card warehouse_name={item.warehouse_name} type={item.type} long={item.long} lat={item.lat}  /></div>
 	})
 	return(
 		<div className="rounded-lg border border-gray-500 bg-white text-gray-950 shadow-sm ">
-	      	<div className="flex flex-col items-center">
+	      	<div className="flex flex-col justify-evenly items-center">
 	        {cards}
 	   
 	        </div>
