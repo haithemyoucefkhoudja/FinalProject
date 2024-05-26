@@ -49,3 +49,4 @@ next-env.d.ts
 /backend/.idea
 /backend/.venv/
 certificates
+/backend/venv/
