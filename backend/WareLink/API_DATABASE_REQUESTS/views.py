@@ -283,9 +283,6 @@ def populate_account(request):
         TOOOOOOOOOOOO DELETE BY ID------------------------------------------------
 
         
-
-        TOOOOOOOOOOOO DELETE BY ID-------------------------------------------------
-        '''
         message = []
         accounts_to_delete = Account.objects.filter(id__in=[5,11])
         for account in accounts_to_delete:
@@ -293,14 +290,22 @@ def populate_account(request):
             account.delete()
 
         return HttpResponse(f"accounts deleted: {message}")
-            
+
+        TOOOOOOOOOOOO DELETE BY ID-------------------------------------------------
+        '''
+        """
+            cevital_worker_OEB_1
+            cevital_worker_OEB_1@gmail.com
+        cevital_worker_OEB_1_password
+
+            """
         message = []
-        account_username = "" #name formula : company_role_warehouse_nbr
-        account_email = "" #email_formula : company_role_warehouse_nbr@gmail.com
-        account_password = "" #password_formula : company_role_warehouse_nbr_password
-        account_role_name = "admin" #admin or observer or worker or driver
+        account_username = "cevital_worker_OEB_11" #name formula : company_role_warehouse_nbr
+        account_email = "cevital_worker_OEB_11@gmail.com" #email_formula : company_role_warehouse_nbr@gmail.com
+        account_password = "cevital_worker_OEB_11_password@" #password_formula : company_role_warehouse_nbr_password@ <- special character
+        account_role_name = "worker" #admin or observer or worker or driver
         company_name = ("CEVITAL")
-        warehouse_name = "Bejaia"
+        warehouse_name = "Warehouse Oum El Bouaghi N2"
         if Account.objects.exists():
             all_accounts = Account.objects.all()
             print("ALREADY EXISTING ACCOUNTS :")

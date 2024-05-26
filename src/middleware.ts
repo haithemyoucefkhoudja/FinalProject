@@ -27,7 +27,8 @@ export default withAuth(
 
     if (!Token && isAccessingSensitiveRoute) {
       return NextResponse.redirect(new URL('/login', req.url));
-    } // infer type for TypeScript 
+    } 
+
 
     // Check if the user has access to worker-level sensitive routes (e.g. /Dashboard/Tables)
     const workerLevelSensitiveRoutes = ['/Dashboard/Tables/Warehouses']
