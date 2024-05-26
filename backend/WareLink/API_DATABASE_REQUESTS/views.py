@@ -282,16 +282,22 @@ def populate_account(request):
         '''
         TOOOOOOOOOOOO DELETE BY ID------------------------------------------------
 
-        accounts_to_delete = Account.objects.filter(id__in=[12])
-        for account in accounts_to_delete:
-            account.delete()
+        
 
         TOOOOOOOOOOOO DELETE BY ID-------------------------------------------------
         '''
         message = []
-        account_username = "cevital_admin_Bejaia_1" #name formula : company_role_warehouse_nbr
-        account_email = "cevital_admin_Bejaia_1@gmail.com" #email_formula : company_role_warehouse_nbr@gmail.com
-        account_password = "cevital_admin_Bejaia_1_password" #password_formula : company_role_warehouse_nbr_password
+        accounts_to_delete = Account.objects.filter(id__in=[5,11])
+        for account in accounts_to_delete:
+            message.append(account.user.username)
+            account.delete()
+
+        return HttpResponse(f"accounts deleted: {message}")
+            
+        message = []
+        account_username = "" #name formula : company_role_warehouse_nbr
+        account_email = "" #email_formula : company_role_warehouse_nbr@gmail.com
+        account_password = "" #password_formula : company_role_warehouse_nbr_password
         account_role_name = "admin" #admin or observer or worker or driver
         company_name = ("CEVITAL")
         warehouse_name = "Bejaia"
