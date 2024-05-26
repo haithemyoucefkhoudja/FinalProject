@@ -3,8 +3,9 @@ import LeafletTable from "@/components/Map/Table"
 import ShipmentForm from "@/components/Shipments/Form/ShipmentForm"
 import { ShipmentInfoCard } from "@/components/Shipments/Shipment_info_card"
 import { X } from "lucide-react"
-import { useState } from "react"
-const data =  {
+import { useSession } from "next-auth/react"
+import { useEffect, useState } from "react"
+const Waredata =  {
   "company" : "Cevital Group",
   "factories": [
     {
@@ -309,20 +310,39 @@ interface Product {
 export default  function Page() {
     const [showProducts, setShow] = useState(false)
     const [showForm, setShowForm] = useState(false);
+    const {data, status} = useSession();
+    useEffect(()=>{
+      if(status == 'authenticated') {
+        
 
+      }
+    },[data, status])
     const [selectedProducts, setSelected] = useState({
         name:'',
         Products:[] as Product[]})
+    
     const [Shipments, setShipments] = useState(shipments)
     const updateData = (d_id:number) => {
         setShipments(prev=> prev.filter(shipment=> shipment.id !== d_id))
     }
     return(  
     <section>
-    <button onClick={()=>{setShowForm(prev=> !prev)}} className="w-full h-12 my-5 px-4 py-2  bg-gray-900 text-gray-50 hover:bg-gray-900/90 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors">
+    {status === 'loading' ? 
+    (
+      <div className="w-full h-12 my-5 px-4 py-2  flex items-center justify-center">
+        <div className="w-8 h-8 rounded-full border-black border-4 border-b-transparent animate-spin border-[inherit]"/>
+      </div>
+    ): status === 'authenticated' && data.user.role == 'admin' ?
+    (
+    
+      <button onClick={()=>{setShowForm(prev=> !prev)}} className="w-full h-12 my-5 px-4 py-2  bg-gray-900 text-gray-50 hover:bg-gray-900/90 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors">
         Create New Shipment
-    </button>
-    {data.shipments.map(shipment => {
+      </button>
+    )
+    :
+    (<></>)
+    }
+    {Waredata.shipments.map(shipment => {
         return(
             <ShipmentInfoCard key={shipment.id *21} shipment={shipment} 
               updateShipment={updateData}

@@ -1,7 +1,8 @@
 
+import { getServerSession } from "@/app/utils/getServerSession";
 import { TablesButton } from "@/components/Tables/TablesButton";
-import { Table } from "@/components/component/TableWareHouse";
-import { Data } from "@/types/Data";
+import { Table } from "@/components/Tables/TableWareHouse";
+import { Data, Warehouse } from "@/types/Data";
 
 const data:Data = {
     "company" : {
@@ -334,22 +335,41 @@ const data:Data = {
   ]
 }
     
-export default  function Page() {
+export default async  function Page() {
+    const session = await getServerSession()
     return(
-        <section>
-        
-        <ul className="space-y-4">
+        <section >
+        {}
+        {!session ? 
+        (
+            <></>
+        ): session.user.role == 'worker'? (
+            <>
+            <ul className="space-y-4">
+                {
+                <Table Warehouse={data.warehouses.find(warehouse => warehouse.name === session.user.warehouse)}></Table>                
+                }
+            </ul>
+            <TablesButton></TablesButton>
+            </>
+        ) :
+        session.user.role == "admin" ? (
+            <ul className="space-y-4">
         {
             data.warehouses.map((warehouse, index)=>{
                 return(   
             <li key={index}>
-              <Table products={warehouse.products} WarehouseName={warehouse.name}></Table>
-            </li>)
+              <Table Warehouse={warehouse}></Table>
+            </li>
+            
+        )
                 
             })
             }    
         </ul>
-        <TablesButton></TablesButton>
+        ):
+        (<></>)}
+        
         </section>
 )
 }

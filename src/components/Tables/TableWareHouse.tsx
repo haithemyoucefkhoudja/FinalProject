@@ -1,10 +1,15 @@
 'use client';
-import { Product } from "@/types/Data";
+import {   Warehouse } from "@/types/Data";
 import { X } from "lucide-react";
 import { useState } from "react";
 
   
-export const Table = ({products, WarehouseName}:{products:Product[], WarehouseName:string}) => {
+export const Table = ({Warehouse}:{Warehouse:Warehouse | undefined}) => {
+    if(!Warehouse)
+      return(
+      <div className="w-full h-[80vh] rounded-md flex justify-center items-center drop-shadow-lg bg-slate-200">
+        <div className="bg-gray-700 rounded-full h-10 text-md text-gray-50 flex justify-center items-center p-4"> No data to show</div>
+      </div>)
     const [showModal, setShowModal] = useState(false);
     const [ModalInfo, setModalInfo] = useState({name:'', descreption:''})
     const handleCloseModal = () => {
@@ -28,7 +33,7 @@ export const Table = ({products, WarehouseName}:{products:Product[], WarehouseNa
     <div className="rounded-lg border border-gray-500 bg-white text-gray-950 shadow-sm ">
     <div className="flex p-6 flex-col space-y-2 items-center justify-center text-5xl">
       <h3 className="font-semibold leading-none tracking-tight">Cevital Group</h3>
-      <p className="text-sm text-gray-500">{WarehouseName}</p>
+      <p className="text-sm text-gray-500">{Warehouse.name && Warehouse.name}</p>
     </div>
     <div className="p-6 pt-0">
       
@@ -45,7 +50,7 @@ export const Table = ({products, WarehouseName}:{products:Product[], WarehouseNa
           </tr>
         </thead>
         <tbody className="[&_tr:last-child]:border-0">
-        {products.map((productItem)=>{
+        {Warehouse.products && Warehouse.products.map((productItem)=>{
             return(<tr key={productItem.id + productItem.name} className="border-b transition-colors hover:bg-gray-100/50 data-[state=selected]:bg-gray-100">
             <td className="p-4 align-middle border-r-2 ">{productItem.id}</td>
             <td className="p-4 align-middle  border-r-2">{productItem.name}</td>

@@ -19,7 +19,7 @@ export default withAuth(
     // check if the user is Authenticated
     if (isLoginPage || isRegisterPage) {
       if (Token) {
-        return NextResponse.redirect(new URL('/Dashboard/Map/Inventories', req.url));
+        return NextResponse.redirect(new URL('/Dashboard/Map', req.url));
       }
       // rdirect the `Visitor` to The Login Page
       return NextResponse.next();
@@ -41,10 +41,10 @@ export default withAuth(
           return NextResponse.next();
         }
       // Redirect `Driver` to the Dashboard
-      return NextResponse.redirect(new URL('/Dashboard/Map/Inventories', req.url));
+      return NextResponse.redirect(new URL('/Dashboard/Map', req.url));
     }
     // Check if the user has access to observer-level sensitive routes (e.g. /Dashboard/Stats, /Dashboard/Reports)
-    const observerLevelSensitiveRoutes = ['/Dashboard/Stats', '/Dashboard/Reports', '/Dashboard/Tables/Company']
+    const observerLevelSensitiveRoutes = ['/Dashboard/Stats', '/Dashboard/Tables/Company']
     const isObserverLevelSensitiveRoutes = observerLevelSensitiveRoutes.some(route => pathname.startsWith(route));
     
     
@@ -54,8 +54,12 @@ export default withAuth(
         {
           return NextResponse.next();
         }
+      if(pathname.startsWith('/Dashboard/Tables/Company') && Role === 'worker')
+        return NextResponse.redirect(new URL('/Dashboard/Tables/Warehouses', req.url));
+
+
       // Hide the stats and reports for other roles
-      return NextResponse.redirect(new URL('/Dashboard/Map/Inventories', req.url));
+      return NextResponse.redirect(new URL('/Dashboard/Map', req.url));
     }
     // Check if the user has access to admin-level sensitive routes (e.g. /Dashboard/Management)
     const adminLevelSensitiveRoutes = ['/Dashboard/Management'];
@@ -67,7 +71,7 @@ export default withAuth(
           return NextResponse.next();
         }
       // Hide management page and subpages for all other roles
-      return NextResponse.redirect(new URL('/Dashboard/Map/Inventories', req.url));
+      return NextResponse.redirect(new URL('/Dashboard/Map', req.url));
     }
 
     

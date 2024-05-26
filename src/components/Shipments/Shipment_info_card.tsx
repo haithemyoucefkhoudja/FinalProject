@@ -1,6 +1,8 @@
 'use client'
 
 import { Loading } from "../ui/buttonLoading";
+import { CancelButton } from "./CancelButton";
+import { CompleteButton } from "./ConfirmButton";
 
 interface Product {
     id: number;
@@ -57,16 +59,9 @@ export const ShipmentInfoCard = (props:ShipmentProps) =>{
                 <label className="text-md ">To arrive at:</label>
                 <p className="text-md ">{props.shipment.arrival}</p>
                 </div>
-                <button 
-                onClick={()=>props.updateShipment(props.shipment.id)}
-                className="h-10 px-4 py-2 w-24 bg-blue-700 text-gray-50 hover:bg-blue-700/90 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors  "  disabled={false} type="submit">
-                    <Loading text="Complete" isLoading={false}/>
-                </button>
-                <button
-                onClick={()=>props.updateShipment(props.shipment.id)}
-                className="h-10 px-4 py-2 w-24 bg-red-700 text-gray-50 hover:bg-red-700/90 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors"  disabled={false} type="submit">
-                    <Loading text="Cancel" isLoading={false}/>
-                </button>
+                
+                <CompleteButton updateShipment={props.updateShipment} id={props.shipment.id}/>
+                <CancelButton updateShipment={props.updateShipment} id={props.shipment.id}/>
             </div>
         </div>
         <div className="flex text-wrap max-w-48 text-center  flex-col items-center justify-center h-full space-y-2 p-4 ">
