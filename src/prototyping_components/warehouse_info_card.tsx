@@ -40,7 +40,7 @@ export default function warehouse_info_card(props:Props) {
 				<FontAwesomeIcon icon={faTrashCan} />
 				<FontAwesomeIcon icon={faPenToSquare} onClick={()=>{setPop(true)}} /*and change this*//>
 			</div>
-                            {pop && <EditWarehouse {...Data} send={()=>{setPop(false)}} updateData={(newData:UpdatedProps)=>{setData(newData)}} /> } 
+            {pop && <EditWarehouse {...Data} send={()=>{setPop(false)}} updateData={(newData:UpdatedProps)=>{setData(newData)}} /> } 
 
         </div>
     );

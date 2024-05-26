@@ -7,7 +7,19 @@ import { useMap } from "react-leaflet";
 import { RoutingMachineProps } from "./types/Routingmachine";
 import LeafletTable from "./Table";
 import ReactDOM from "react-dom";
+function moveCoordsCloser(
+  currentCoords: [number, number],
+  targetCoords: [number, number],
+  fraction: number = 0.1
+): [number, number] {
+  const [currentLat, currentLng] = currentCoords;
+  const [targetLat, targetLng] = targetCoords;
 
+  const newLat = currentLat + (targetLat - currentLat) * fraction;
+  const newLng = currentLng + (targetLng - currentLng) * fraction;
+
+  return [newLat, newLng];
+}
 const RoutingMachine = ({ fromcoords, data, tocoords, products, name, updateExternalState }:RoutingMachineProps) => {
   const routingControlRef = useRef<L.Routing.Control | null>(null);
   const map = useMap();
@@ -53,17 +65,17 @@ const RoutingMachine = ({ fromcoords, data, tocoords, products, name, updateExte
     const updatewaypoints = () =>{
       if (routingControlRef.current) {
         const currentWaypoint = routingControlRef.current.getWaypoints()[0];
-        const newLat = currentWaypoint ? currentWaypoint.latLng.lat + 0.1 : fromcoords[0];
-        const newLng = currentWaypoint ? currentWaypoint.latLng.lng + 0.1 : fromcoords[1];
+        const Lat = currentWaypoint ? currentWaypoint.latLng.lat  : fromcoords[0];
+        const Lng = currentWaypoint ? currentWaypoint.latLng.lng  : fromcoords[1];
+        const newCoords = moveCoordsCloser([Lat, Lng], tocoords)
         // Update the waypoints
         routingControlRef.current.setWaypoints(
           [
-            L.latLng(newLat, newLng),
+            L.latLng(newCoords[0], newCoords[1]),
             L.latLng(tocoords[0], tocoords[1])
           ]
         );
-        if(data?.user.id)
-          updateExternalState(data?.user.id, [newLat, newLng])
+        updateExternalState(name, [newCoords[0], newCoords[1]])
       }
     }
     // Run the waypoint update every 10 seconds

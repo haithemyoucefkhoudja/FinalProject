@@ -14,6 +14,7 @@ export const WarehouseForm = (props:any) =>{
   const data = useWareData()
   
   const Dropref = useRef<null | HTMLDivElement>(null)
+
     const {
         watch,
         setValue,
@@ -32,6 +33,7 @@ export const WarehouseForm = (props:any) =>{
         
       },
     });
+
     useEffect(()=>{
       setValue('warehouse_Lat', data.warehouse_pos[0])
       setValue('warehouse_Long', data.warehouse_pos[1])
@@ -50,6 +52,7 @@ export const WarehouseForm = (props:any) =>{
       });
       
     }
+  
   function DropMenuEvent() {
     if(Dropref.current) {
       if (Dropref.current.style.display === 'none') {
@@ -62,7 +65,7 @@ export const WarehouseForm = (props:any) =>{
 
   function OptionEvent(option: 'Factory' | 'Warehouse'): void {
     if(Dropref.current)
-      Dropref.current.style.display = 'none'; // Hide the dropdown
+      Dropref.current.style.display = 'none'; // Hide the dropdown  
     setValue('warehouse_type', option);
 
   }

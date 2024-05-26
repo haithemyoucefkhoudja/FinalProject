@@ -282,28 +282,128 @@ interface WareHouseMarkerProps {
 interface infos  {
   user:User,
   coords:[number, number]
+  destionation_warehouse:[number, number]
+  products:{ id: number;
+    name: string;
+    quantity: number;
+    unit_price: number;}[]
 }
+const FakeDriverscoords: Record<string, infos> = {
+  "shipment B-O N19": {
+    user: {
+      id: 1,
+      username: "cevitam_driver_Bejaia_2",
+      email: "driver2@cevital.com",
+      company: "Cevital Group",
+      warehouse: "Warehouse Oum El Bouaghi N2",
+      role: "driver",
+    },
+    destionation_warehouse:[35.8819,7.1505],
+    coords: [36.7416, 5.0754],
+    products:[
+      {
+        "id" : 1 ,
+        "name" :"Elio 5L Olive Oil" ,
+        "quantity" : 1000,
+        "unit_price" : 650.00 
+      },
+      {
+        "id" : 2 ,
+
+        "name" :"Elio 2L Olive Oil" ,
+        "quantity" : 1000,
+        "unit_price" : 270.00 
+      },
+      {
+        "id" : 3 ,
+        "name" :"Skor 5kg Granulated Sugar" ,
+        "quantity" : 1500,
+        "unit_price" : 300.00 
+      },
+      {
+        "id" : 4 ,
+        "name" :"Skor 2kg Granulated Sugar" ,
+        "quantity" : 700,
+        "unit_price" : 180.00 
+      },
+      {
+        "id" : 5 ,
+        "name" :"Skor 1kg Granulated Sugar" ,
+        "quantity" : 100,
+        "unit_price" : 90.00 
+      }
+    ]
+    
+  },
+  "shipment B-M N38": {
+    user: {
+      id: 2,
+      username: "cevitam_driver_Bejaia_1",
+      email: "driver1@cevital.com",
+      company: "Cevital Group",
+      warehouse: "Warehouse Mostaganem N3",
+      role: "driver",
+    },
+    destionation_warehouse:[31.9526,5.3345],
+    coords: [36.7416, 5.0754],
+    products:[
+      {
+        "id" : 1 ,
+        "name" :"Elio 5L Olive Oil" ,
+        "quantity" : 800,
+        "unit_price" : 670.00 
+      },
+      {
+        "id" : 2 ,
+        "name" :"Elio 2L Olive Oil" ,
+        "quantity" : 9500,
+        "unit_price" : 290.00 
+      },
+      {
+        "id" : 3 ,
+        "name" :"Skor 5kg Granulated Sugar" ,
+        "quantity" : 3600,
+        "unit_price" : 300.00 
+      },
+      {
+        "id" : 4 ,
+        "name" :"Skor 2kg Granulated Sugar" ,
+        "quantity" : 12100,
+        "unit_price" : 170.00 
+      },
+      {
+        "id" : 5 ,
+        "name" :"Skor 1kg Granulated Sugar" ,
+        "quantity" : 1700,
+        "unit_price" : 90.00 
+      }
+    ]
+  },
+};
 const Map = () => {
     const [center, setCenter] = useState<[number, number] | undefined>([35.8689, 7.1108]);
-    const [Driverscoords, setDriversCoords] = useState<Record<string, infos>>({});
+    const [Driverscoords, setDriversCoords] = useState<Record<string, infos>>(FakeDriverscoords);
     const {data, status} = useSession()
     const [role, setRole] = useState('driver');
-    const updateExternalState = (driverId: number ,newCoords:[number, number]) => {
-      if(!data || role == 'admin')
-        return;
-      setDriversCoords(prevCoords => ({
-        ...prevCoords,
+    const updateExternalState = (driverId: string ,newCoords:[number, number]) => {
+      console.log('newCoords:',newCoords);
+      setDriversCoords(prev => ({
+        ...prev,
 
-        [driverId]: {coords:newCoords,
-          user:data.user
+        [driverId]: {
+          coords:newCoords,
+          user:prev[driverId].user,
+          destionation_warehouse:prev[driverId].destionation_warehouse,
+          products:prev[driverId].products
+          
         }
       }));
-      socket.current?.send(JSON.stringify({
+      /*socket.current?.send(JSON.stringify({
         type: "update_location",
         latitude: newCoords[0],
         longitude: newCoords[1],
         user:data.user
-      }));
+      }));*/
       
       };
       
@@ -337,7 +437,7 @@ const Map = () => {
       }
     }
       socket.current.onopen = () => {
-        if(data.user.username == "Youcef Khoudja Haithem")
+        if(data.user.username == "cevital_admin_Bejaia_1")
           {
             setRole('admin');
             socket.current?.send(JSON.stringify({ type: "identify", user:data.user }));
@@ -349,11 +449,11 @@ const Map = () => {
             navigator.geolocation.getCurrentPosition((position) => {
                 const lat =position.coords.latitude;
                 const long = position.coords.longitude;
-                setDriversCoords({[user_info.id]: {
+                /*setDriversCoords(prev=> {[user_info.id]: {
                   user:user_info,
-                  coords:[lat, long]
-                
-                }})
+                  coords:[lat, long],
+                  destionation_warehouse:
+                }})*/
               })
           }
           socket.current?.send(JSON.stringify({ type: "identify", user:user_info }));
@@ -428,10 +528,10 @@ const Map = () => {
        {Object.entries(Driverscoords).map(([driver, infos]) => (
         <RoutingMachine
         data={data}
-        products={[]}
+        products={infos.products}
         name={driver}
         fromcoords={infos.coords} 
-        tocoords ={[35, 7]}
+        tocoords ={infos.destionation_warehouse}
         updateExternalState={updateExternalState}
       />
        ))}
@@ -494,7 +594,17 @@ const Map = () => {
     ))*/}
     {Object.entries(Driverscoords).map(([driver, infos]) => {
 
-      return(<li key={infos.user.username}>{infos.user.username}</li>)
+      return(
+      <li key={infos.user.username} className='flex justify-between items-center   border-b-2 text-left w-full '>
+      <p className='mr-4'>{driver}</p>
+  <button  onClick={()=>{
+    setCenter([infos.coords[0], infos.coords[1]])}} className="hover:bg-gray-200 hover:text-gray-900 rounded-full inline-flex items-center justify-center whitespace-nowrap p-1 text-sm font-medium ring-offset-white transition-colors ">
+  <Eye className='h-6 w-6 self-start'></Eye>
+  </button>
+  
+</li>
+    
+    )
     })}
 
     

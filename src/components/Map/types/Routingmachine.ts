@@ -8,5 +8,5 @@ export interface RoutingMachineProps {
     products:IProduct[]
     tocoords:[number, number];
     fromcoords: [number, number];
-    updateExternalState: (driverId: number, newCords: [number, number]) => void;
+    updateExternalState: (driverId: string, newCords: [number, number]) => void;
   }

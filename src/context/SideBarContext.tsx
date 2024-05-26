@@ -32,7 +32,7 @@ export const SidebarProvider = ({ children }: { children: ReactNode }) => {
     '/Dashboard/Stats': [
       { label: 'Company', icon: <Copyright className="h-4 w-4" />, href: '/Dashboard/Stats/Company' },
       { label: 'Products', icon: <Package className="h-4 w-4" />, href: '/Dashboard/Stats/Products' }, 
-      { label: 'Reports', icon: <TextIcon className="h-4 w-4" />, href: '/Dashboard/Reports' }
+      { label: 'Reports', icon: <TextIcon className="h-4 w-4" />, href: '/Dashboard/Stats/Reports' }
     ],
     '/Dashboard/Management': [
       { label: 'Company', icon: <TabletsIcon className="h-4 w-4" />, href: '/Dashboard/Management/Company' },

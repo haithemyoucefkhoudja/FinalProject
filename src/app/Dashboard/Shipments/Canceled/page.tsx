@@ -1,7 +1,6 @@
 'use client'
 import LeafletTable from "@/components/Map/Table"
-import ShipmentForm from "@/components/Shipments/Form/ShipmentForm"
-import { ShipmentInfoCard } from "@/components/Shipments/Shipment_info_card"
+import { DoneShipmentInfoCard } from "@/components/Shipments/Done_CanceledShipment_info_card"
 import { X } from "lucide-react"
 import { useState } from "react"
 const data =  {
@@ -252,7 +251,6 @@ const data =  {
     }
   ]
 }
-
 const shipments = [
     {
       "id": 1,
@@ -308,7 +306,6 @@ interface Product {
 
 export default  function Page() {
     const [showProducts, setShow] = useState(false)
-    const [showForm, setShowForm] = useState(false);
 
     const [selectedProducts, setSelected] = useState({
         name:'',
@@ -319,13 +316,10 @@ export default  function Page() {
     }
     return(  
     <section>
-    <button onClick={()=>{setShowForm(prev=> !prev)}} className="w-full h-12 my-5 px-4 py-2  bg-gray-900 text-gray-50 hover:bg-gray-900/90 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors">
-        Create New Shipment
-    </button>
     {data.shipments.map(shipment => {
         return(
-            <ShipmentInfoCard key={shipment.id *21} shipment={shipment} 
-              updateShipment={updateData}
+            <DoneShipmentInfoCard status="canceled" key={shipment.id *21} shipment={shipment} 
+
               showProducts={(s_id:number)=>{
               
               const selectedShipment = Shipments.find(shipment => shipment.id === s_id);
@@ -334,7 +328,7 @@ export default  function Page() {
                       setShow(true)
               }
             }} >
-            </ShipmentInfoCard>
+            </DoneShipmentInfoCard>
         )
     })}
     {showProducts && 
@@ -352,22 +346,6 @@ export default  function Page() {
              </div>
            </div>
          </div>
-    }
-    {showForm &&
-        <div className="fixed inset-0 z-40  bg-gray-900 bg-opacity-50">
-            <div className="fixed inset-0 flex  items-center justify-center z-50">
-                <div className="bg-white rounded-lg shadow-md p-6 w-3/4 max-w-md">
-                    <button
-                    onClick={()=> {setShowForm(false)}}
-                    className=" text-gray-500 hover:text-gray-700 focus:outline-none"
-                    >
-                    <X className="h-6 w-6"></X>
-                    </button>
-                    
-                    <ShipmentForm ></ShipmentForm>
-                </div>
-            </div>
-    </div>
     }
     </section>
     )
