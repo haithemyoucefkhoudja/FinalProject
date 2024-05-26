@@ -282,16 +282,22 @@ def populate_account(request):
         '''
         TOOOOOOOOOOOO DELETE BY ID------------------------------------------------
 
-        accounts_to_delete = Account.objects.filter(id__in=[12])
-        for account in accounts_to_delete:
-            account.delete()
+        
 
         TOOOOOOOOOOOO DELETE BY ID-------------------------------------------------
         '''
         message = []
-        account_username = "cevital_admin_Bejaia_1" #name formula : company_role_warehouse_nbr
-        account_email = "cevital_admin_Bejaia_1@gmail.com" #email_formula : company_role_warehouse_nbr@gmail.com
-        account_password = "cevital_admin_Bejaia_1_password" #password_formula : company_role_warehouse_nbr_password
+        accounts_to_delete = Account.objects.filter(id__in=[5,11])
+        for account in accounts_to_delete:
+            message.append(account.user.username)
+            account.delete()
+
+        return HttpResponse(f"accounts deleted: {message}")
+            
+        message = []
+        account_username = "" #name formula : company_role_warehouse_nbr
+        account_email = "" #email_formula : company_role_warehouse_nbr@gmail.com
+        account_password = "" #password_formula : company_role_warehouse_nbr_password
         account_role_name = "admin" #admin or observer or worker or driver
         company_name = ("CEVITAL")
         warehouse_name = "Bejaia"
@@ -1166,6 +1172,76 @@ def registeration(request):
             data = {
                 'user' : user
             }
+
+            # Return response
+            return JsonResponse({
+                'success': success,
+                'message': message,
+                'data': data
+            })
+        except Exception as e:
+            return JsonResponse({
+                'success': success,
+                'message' : str(e)
+            })
+    else:
+        return JsonResponse({'error': 'Only POST requests are allowed'}, status=400)
+
+
+
+
+
+
+
+@csrf_exempt
+def edit_warehouse(request):
+    if request.method == 'POST':
+        success = False
+        message = ""
+        try:
+
+            data = json.loads(request.body)
+            # Extracting values from JSON and assigning them to variables
+            username = data.get('username')
+            email = data.get('email')
+            password = data.get('password')
+            warehouse_name = data.get('warehouse_name')
+            warehouse_type = data.get('warehouse_type')
+            warehouse_longitude = data.get('warehouse_longitude')
+            warehouse_latitude = data.get('warehouse_latitude')
+            # Process other data as needed
+            print(f"user:'{email}' has issues a POST request for registration")
+            print(f"info: username:'{username}'  email:'{email}'  password:'{password}'")
+
+            is_account_exist = check_account_exist(email, password)
+            if is_account_exist:
+                if Role.objects.filter(name="admin").exists():
+                    role_object = Role.objects.get(name="admin")
+                    confirm_user = User.objects.get(username=username, email=email)
+                    if Account.objects.filter(user=confirm_user, role_id=role_object).exists():
+                        confirm_account = Account.objects.get(user=confirm_user, role_id=role_object)
+
+                        confirm_warehouse = confirm_account.warehouse_id
+
+                        confirm_warehouse.name = warehouse_name
+                        confirm_warehouse.type = warehouse_type
+                        confirm_warehouse.longitude = warehouse_longitude
+                        confirm_warehouse.latitude = warehouse_latitude
+
+                        confirm_warehouse.save()
+                        if Warehouse.objects.filter(name=warehouse_name, type=warehouse_type, longitude=warehouse_longitude, latitude=warehouse_latitude).exists():
+                            message = "successful edit warehouse operation"
+                            success = True
+                        else:
+                            message = "failed edit warehouse operation"
+                    else:
+                        message = "account with admin role doesn't exist"
+                else:
+                    message = "admin role doesn't exist"
+            else:
+                message = "account doesn't exist"
+
+
 
             # Return response
             return JsonResponse({
