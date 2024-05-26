@@ -40,7 +40,8 @@ export default async function Page(){
 	})
 	return (
 	 <>
-	   <div className="rounded-lg border border-gray-500 bg-white text-gray-950 shadow-sm ">
+	   <div className="flex flex-col items-center rounded-lg border border-gray-500 bg-white text-gray-950 shadow-sm ">
+        <button className="mt-[2vh] bg-blue-500 w-[7.5vw] p-[0.5rem] text-white rounded">Add vehicle</button>
 	    <div className="flex flex-col items-center">
 	     {cards}
 

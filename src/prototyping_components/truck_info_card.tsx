@@ -42,7 +42,7 @@ export default function(props:Props) {
 				<FontAwesomeIcon icon={faTrashCan} />
 				<FontAwesomeIcon icon={faPenToSquare} onClick={()=>{setPop(true)}}/>
 			</div>
-	      {pop && <Popup_form_edit_truck send={()=>{setPop(false)}}/>}
+	      {pop && <Popup_form_edit_truck {...Data} send={()=>{setPop(false)}} updateData={(newData:UpdatedProps)=>{setData(newData)}}/>}
 	</div>
 	);
 }

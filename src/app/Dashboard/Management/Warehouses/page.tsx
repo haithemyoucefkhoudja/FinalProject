@@ -39,10 +39,10 @@ const data:Props[] = [
 		return <div className="mt-[1rem] mb-[1rem]"><Warehouse_info_card warehouse_name={item.warehouse_name} type={item.type} long={item.long} lat={item.lat}  /></div>
 	})
 	return(
-		<div className="rounded-lg border border-gray-500 bg-white text-gray-950 shadow-sm ">
-	      	<div className="flex flex-col justify-evenly items-center">
+		<div className="flex flex-col  items-center rounded-lg border border-gray-500 bg-white text-gray-950 shadow-sm ">
+	      	<button className="mt-[2vh] bg-blue-500 w-[12vw] p-[0.5rem] text-white rounded">Add warehouse or factory</button>
+            <div className="flex flex-col items-center">
 	        {cards}
-	   
 	        </div>
 		</div>
 	)
