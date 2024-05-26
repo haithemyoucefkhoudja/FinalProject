@@ -1,4 +1,4 @@
-export default function Popup_form_edit_account (props:any){
+/*export default function Popup_form_edit_account (props:any){
 function handleClick(){
 	
   props.send();
@@ -50,7 +50,7 @@ return (
       		<div className=" flex flex-col items-center justify-between h-[40%] ">
 
       	    	<div className="  flex w-[70%] justify-between"><p>Account username</p><input type="text" className=" bg-white border black-border rounded outline-none"/></div>
-      	    	<div className="  flex w-[70%] justify-between"><p>Account role </p><select className=" bg-white border black-border rounded outline-none w-[53.5%]"   >{roles_display}</select></div> {/* this and under is should be a dropdown, but since we haven't made up our mind I'll leave it as is for now*/}
+      	    	<div className="  flex w-[70%] justify-between"><p>Account role </p><select className=" bg-white border black-border rounded outline-none w-[53.5%]"   >{roles_display}</select></div> {}
       	    	<div className="  flex w-[70%] justify-between"><p>warehouse post</p><select  className=" bg-white border black-border rounded outline-none w-[53.5%]" >{posts_display}</select></div>
       		</div>
      
@@ -59,4 +59,30 @@ return (
      
 </>
 )
+}*/
+import { X } from "lucide-react"
+import { useState } from "react"
+import dynamic from 'next/dynamic';
+
+export default  function  Popup_form_edit_account(props:any) {
+
+    return(
+        <div className="fixed inset-0 z-40  bg-gray-900 bg-opacity-50">
+          <div className="fixed inset-0 flex  items-center justify-center z-50">
+            <div className="bg-white rounded-lg shadow-md p-6 w-1/2 max-w-md">
+              <button
+                onClick={()=> {
+                    props.send()}}
+                className=" text-gray-500 hover:text-gray-700 focus:outline-none"
+              >
+                <X></X>
+              </button>
+              
+           
+            </div>
+          </div>
+        </div>
+        
+    )
+
 }

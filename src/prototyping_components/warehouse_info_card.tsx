@@ -28,8 +28,8 @@ export default function warehouse_info_card(props:Props) {
     const [pop,setPop]=useState(false) //delete this
     
     return (
-        <div className="w-[35vw] h-[20vh] border border-black rounded flex justify-center items-center text-[1.5em] relative">
-            <div>
+        <div className="w-[35vw] h-[20vh] border border-black rounded flex  items-center text-[1em] relative">
+            <div className="ml-[1rem]">
             	<span className="flex"><p className="underline">{Data.warehouse_type}</p><p>: {Data.warehouse_name}</p></span>
             	<p>Coordinates:</p>
             	<p>{Data.warehouse_Long}</p>
