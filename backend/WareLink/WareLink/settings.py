@@ -70,7 +70,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'WareLink.wsgi.application'
-ASGI_APPLICATION = 'not.asgi.application'
+ASGI_APPLICATION = 'WareLink.asgi.application'
 
 CHANNEL_LAYERS = {
     "default": {

@@ -282,10 +282,6 @@ def populate_account(request):
         '''
         TOOOOOOOOOOOO DELETE BY ID------------------------------------------------
 
-        
-
-        TOOOOOOOOOOOO DELETE BY ID-------------------------------------------------
-        '''
         message = []
         accounts_to_delete = Account.objects.filter(id__in=[5,11])
         for account in accounts_to_delete:
@@ -293,6 +289,10 @@ def populate_account(request):
             account.delete()
 
         return HttpResponse(f"accounts deleted: {message}")
+
+        TOOOOOOOOOOOO DELETE BY ID-------------------------------------------------
+        '''
+
             
         message = []
         account_username = "" #name formula : company_role_warehouse_nbr
@@ -1202,44 +1202,26 @@ def edit_warehouse(request):
 
             data = json.loads(request.body)
             # Extracting values from JSON and assigning them to variables
-            username = data.get('username')
-            email = data.get('email')
-            password = data.get('password')
+            warehouse_own_id = data.get('warehouse_own_id')
             warehouse_name = data.get('warehouse_name')
             warehouse_type = data.get('warehouse_type')
             warehouse_longitude = data.get('warehouse_longitude')
             warehouse_latitude = data.get('warehouse_latitude')
             # Process other data as needed
-            print(f"user:'{email}' has issues a POST request for registration")
-            print(f"info: username:'{username}'  email:'{email}'  password:'{password}'")
 
-            is_account_exist = check_account_exist(email, password)
-            if is_account_exist:
-                if Role.objects.filter(name="admin").exists():
-                    role_object = Role.objects.get(name="admin")
-                    confirm_user = User.objects.get(username=username, email=email)
-                    if Account.objects.filter(user=confirm_user, role_id=role_object).exists():
-                        confirm_account = Account.objects.get(user=confirm_user, role_id=role_object)
-
-                        confirm_warehouse = confirm_account.warehouse_id
-
-                        confirm_warehouse.name = warehouse_name
-                        confirm_warehouse.type = warehouse_type
-                        confirm_warehouse.longitude = warehouse_longitude
-                        confirm_warehouse.latitude = warehouse_latitude
-
-                        confirm_warehouse.save()
-                        if Warehouse.objects.filter(name=warehouse_name, type=warehouse_type, longitude=warehouse_longitude, latitude=warehouse_latitude).exists():
-                            message = "successful edit warehouse operation"
-                            success = True
-                        else:
-                            message = "failed edit warehouse operation"
-                    else:
-                        message = "account with admin role doesn't exist"
+            if Warehouse.objects.filter(id=warehouse_own_id).exists():
+                warehouse_object = Warehouse.objects.get(id=warehouse_own_id)
+                warehouse_object.name = warehouse_name
+                warehouse_object.type = warehouse_type
+                warehouse_object.longitude = warehouse_longitude
+                warehouse_object.latitude = warehouse_latitude
+                warehouse_object.save()
+                if Warehouse.objects.filter(name=warehouse_name, type=warehouse_type, longitude=warehouse_longitude,
+                                            latitude=warehouse_latitude).exists():
+                    message = "successful edit warehouse operation"
+                    success = True
                 else:
-                    message = "admin role doesn't exist"
-            else:
-                message = "account doesn't exist"
+                    message = "failed edit warehouse operation"
 
 
 
@@ -1247,7 +1229,6 @@ def edit_warehouse(request):
             return JsonResponse({
                 'success': success,
                 'message': message,
-                'data': data
             })
         except Exception as e:
             return JsonResponse({
