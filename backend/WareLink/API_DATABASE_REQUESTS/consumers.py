@@ -261,6 +261,5 @@ class three_consumer(AsyncWebsocketConsumer):
     def three_consumer_get_group_name(self):
         can_see = ""
         can_see = "all" if self.role in  ['admin', 'observer'] else None
-        can_see = "driver" if self.role == 'driver' else None
-        can_see = "worker" if self.role == 'worker' else None
+        can_see = "part" if self.role in ['driver', 'worker'] else None
         return f"{self.company}_{self.warehouse}"
