@@ -5,8 +5,8 @@ import {faPenToSquare} from "@fortawesome/free-solid-svg-icons"
 import { useState } from 'react'
 import Popup_form_edit_truck from "./popup_form_edit_truck.tsx"
 type Props={
-	model:string;
-	id:number;
+	Account_model:string;
+	Account_id:number;
 	plate:string;
 	run:number;
 	state:string;
@@ -14,20 +14,20 @@ type Props={
 
 export default function(props:Props) {
      const [Data, setData] = useState<UpdatedProps>({
-     model:props.model,
-	id:props.id,
+    Account_model:props.Account_model,
+	Account_id:props.Account_id,
 	plate:props.plate,
 	run:props.run,
 	state:props.state
     });
 	const [pop,setPop]=useState(false)
-	console.log(Data.model,Data.id)
-	 return(
-    
+	
+	return(
+
 	<div className="w-[35vw] h-[20vh] border border-black rounded flex justify-between text-[1em] relative">
 		<div className="flex flex-col   w-[50%]  m-[1rem]">
-			<p className="">Model: {Data.model}</p>
-			<p className="">Id: {Data.id}</p>
+			<p className="">Model: {Data.Account_model}</p>
+			<p className="">Id: {Data.Account_id}</p>
 		</div>
 
 

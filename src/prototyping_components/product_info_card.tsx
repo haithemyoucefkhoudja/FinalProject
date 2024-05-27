@@ -9,14 +9,11 @@ import Popup_form_edit_product from "./popup_form_edit_product.tsx"
 
 type Props={
     product_name:string;
-    product_desc:string;
-    /*prices not sure*/
-    /*safety_stock not sure */
 
 }
 
 function Product_info_card(props:Props) {
-  const [Data, setData] = useState<UpdatedProps>({
+  const [Data, setData] = useState<Props>({
         product_name:props.product_name,
         product_desc:props.product_desc,
         prices:props.prices,
