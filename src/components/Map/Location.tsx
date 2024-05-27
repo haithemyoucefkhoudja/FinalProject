@@ -418,7 +418,6 @@ const Map = () => {
       socket.current =  new WebSocket('ws://127.0.0.1:8000/ws/some_path/');
       
       socket.current.onmessage = (event) => {
-        console.log('hellowedasd')
         const s_data = JSON.parse(event.data);
         console.log('s_data:',s_data);
         if(s_data.type == 'driver_location_update' &&  data?.user.username == "Youcef Khoudja Haithem"){

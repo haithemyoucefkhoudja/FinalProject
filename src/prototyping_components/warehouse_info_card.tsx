@@ -5,25 +5,23 @@ import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import Popup_form_edit_company from './popup_form_edit_warehouse.tsx' //delete
 import {  useState } from 'react'
 import { EditWarehouse } from "@/components/Management/Popups/edit_warehouse.tsx";
+import { UpdatedProps } from "@/types/WarehouseType.ts";
 
 type Props={
     warehouse_name:string;
     long:number;
     lat:number;
     type:'Factory' | 'Warehouse';
+    id:number;
 }
-type UpdatedProps={
-    warehouse_name: string;
-    warehouse_Long: number;
-    warehouse_Lat: number;
-    warehouse_type: 'Factory' | 'Warehouse';
-}
+
 export default function warehouse_info_card(props:Props) {
     const [Data, setData] = useState<UpdatedProps>({
         warehouse_name:props.warehouse_name,
         warehouse_Long:props.long,
         warehouse_Lat:props.lat,
-        warehouse_type:props.type
+        warehouse_type:props.type,
+        warehouse_own_id:props.id
     });
     const [pop,setPop]=useState(false) //delete this
     

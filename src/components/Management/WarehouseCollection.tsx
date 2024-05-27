@@ -2,7 +2,6 @@
 
 import Warehouse_info_card from "@/prototyping_components/warehouse_info_card";
 import { Warehouse } from "@/types/Data";
-import { useState } from "react";
 
 type WarehouseType = 'Factory' | 'Warehouse';
 interface MixedData extends Warehouse{
