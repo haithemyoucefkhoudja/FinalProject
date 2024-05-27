@@ -1210,8 +1210,8 @@ def edit_warehouse(request):
             warehouse_own_id = data.get('warehouse_own_id')
             warehouse_name = data.get('warehouse_name')
             warehouse_type = data.get('warehouse_type')
-            warehouse_longitude = data.get('warehouse_longitude')
-            warehouse_latitude = data.get('warehouse_latitude')
+            warehouse_longitude = str(data.get('warehouse_longitude'))
+            warehouse_latitude = str(data.get('warehouse_latitude'))
             # Process other data as needed
             for ele in Warehouse.objects.all():
                 print(ele.id)
@@ -1261,19 +1261,28 @@ def create_warehouse(request):
             company_name = data.get('company_name')
             warehouse_name = data.get('warehouse_name')
             warehouse_type = data.get('warehouse_type')
-            warehouse_longitude = data.get('warehouse_longitude')
-            warehouse_latitude = data.get('warehouse_latitude')
+            warehouse_longitude = str(data.get('warehouse_longitude'))
+            warehouse_latitude = str(data.get('warehouse_latitude'))
             # Process other data as needed
+
+
+            warehouse_id = 0
+            warheouse_returned_long = 0
+            warheouse_returned_lat = 0
 
             if Company.objects.filter(name=company_name).exists():
                 company_object = Company.objects.get(name=company_name)
-                if not Warehouse.objects.filter(id=warehouse_name, company_id=company_object).exists():
+                if not Warehouse.objects.filter(name=warehouse_name, company_id=company_object).exists():
                     new_warehouse_row = Warehouse.objects.create(name=warehouse_name, type=warehouse_type, longitude=warehouse_longitude, latitude=warehouse_latitude, company_id=company_object)
                     # Save changes to the Model1 instance
                     new_warehouse_row.save()
                     company_object.num_warehouses = company_object.num_warehouses + 1
                     company_object.save()
                     if Warehouse.objects.filter(name=warehouse_name, type=warehouse_type, longitude=warehouse_longitude, latitude=warehouse_latitude).exists():
+                        confirme_warehouse = Warehouse.objects.get(name=warehouse_name, type=warehouse_type, longitude=warehouse_longitude, latitude=warehouse_latitude)
+                        warehouse_id = confirme_warehouse.id
+                        warheouse_returned_long = float(confirme_warehouse.longitude)
+                        warheouse_returned_lat = float(confirme_warehouse.latitude)
                         message = "successful create warehouse operation"
                         success = True
                     else:
@@ -1287,6 +1296,9 @@ def create_warehouse(request):
 
             # Return response
             return JsonResponse({
+                'warehouse_id': warehouse_id,
+                'warehouse_longitude': warheouse_returned_long,
+                'warehouse_latitude': warheouse_returned_lat,
                 'success': success,
                 'message': message,
             })
@@ -1324,6 +1336,9 @@ def add_number(request):
 
     all_numbers = Number.objects.all()
     return render(request, 'add_number.html', {'all_numbers': all_numbers})
+
+
+
 @csrf_exempt
 def get_all_json_data_for_three_consumer(request):
     if request.method == 'GET':
@@ -1334,11 +1349,12 @@ def get_all_json_data_for_three_consumer(request):
         role = data.get('role')
         '''
         company_name = "CEVITAL"
-        print("1")
+        warehouse_name = "Bejaia"
+        role = "driver"
         company = Company.objects.get(name=company_name)
-        print("1")
         company_data = {}
         company_products_array = []
+        id_index = 1
         aggregated_products = {}
         warehouse_objects = Warehouse.objects.filter(company_id=company)
         factory_array = []
@@ -1350,6 +1366,7 @@ def get_all_json_data_for_three_consumer(request):
             warehouse_data['longitude'] = float(warehouse.longitude)
             warehouse_data['latitude'] = float(warehouse.latitude)
             warehouse_data['products'] = []
+            warehouse_data['shipments'] = []
             products = Product.objects.filter(warehouse_id=warehouse)
             for product in products:
                 products_data = {}
@@ -1366,11 +1383,37 @@ def get_all_json_data_for_three_consumer(request):
                 warehouse_data['products'].append(products_data)
                 product_type = product.product_type_id.name
                 if product_type in aggregated_products:
-                    aggregated_products[product_type]['quantity'] += product.quantity
+                    aggregated_products[product_type]['quantity'] = aggregated_products[product_type]['quantity'] + product.quantity
                     aggregated_products[product_type]['prices'].append(product.price_per_unit)
                 else:
-                    aggregated_products[product_type] = products_data
-                    aggregated_products[product_type]['prices'] = [product.price_per_unit]  # List to store prices
+                    aggregated_products[product_type] = {
+                        'id': id_index,
+                        'name': product.product_type_id.name,
+                        'quantity': product.quantity,
+                        'prices': [product.price_per_unit],
+                        'description': product.product_type_id.description
+                    } # List to store prices
+                    id_index =  id_index + 1
+
+
+            if Shippment.objects.filter(arriving_warehouse_id=warehouse, is_departed=True).exists():
+                shipments_objects = Shippment.objects.filter(arriving_warehouse_id=warehouse, is_departed=True)
+                for shipment in shipments_objects:
+                    shipment_data = {}
+                    shipment_data['id'] = shipment.id
+                    shipment_data['name'] = f"shipment to {shipment.arriving_warehouse_id.name}-{shipment.id}"
+                    shipment_data['driver'] = shipment.driver_id.user.username if shipment.driver_id else None
+                    shipment_data['origin_factory'] = shipment.departing_warehouse_id.name
+                    shipment_data['products'] = []
+                    Shippment_Product_OnetoMany_objects = Shippment_Product_OnetoMany.objects.filter(shippment_id=shipment)
+                    for ship_product in  Shippment_Product_OnetoMany_objects:
+                        products_data = {}
+                        products_data['id'] = ship_product.product_id.id
+                        products_data['name'] = ship_product.product_id.product_type_id.name
+                        products_data['quantity'] = ship_product.product_id.quantity
+                        shipment_data['products'].append(products_data)
+                    warehouse_data['shipments'].append(shipment_data)
+
 
             ######### where to add  factories or to warehouses ??
             if warehouse.type == "Factory":
@@ -1378,7 +1421,6 @@ def get_all_json_data_for_three_consumer(request):
             if warehouse.type == "Warehouse":
                 warehouse_array.append(warehouse_data)
             ######### where to add  factories or to warehouses ??
-            '''return JsonResponse({'warehouses': warehouse_array})'''
 
 
         for product in aggregated_products.values():
@@ -1397,7 +1439,22 @@ def get_all_json_data_for_three_consumer(request):
                         "latitude": "",
                         "products": company_products_array}
 
+        if role in ["worker", "driver"]:
+            company_data = {"name": "",
+                            "longitude": "",
+                            "latitude": "",
+                            "products": []}
+            for i in range(len(warehouse_array)):
+                if warehouse_array[i]["name"] == warehouse_name:
+                    warehouse_array = warehouse_array[i]
+                    factory_array = []
+            for i in range(len(factory_array)):
+                if factory_array[i]["name"] == warehouse_name:
+                    factory_array = factory_array[i]
+                    warehouse_array = []
+
         return JsonResponse({'company': company_data,
                              'factories': factory_array,
                              'warehouses' : warehouse_array})
+
 
