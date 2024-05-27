@@ -1210,8 +1210,8 @@ def edit_warehouse(request):
             warehouse_own_id = data.get('warehouse_own_id')
             warehouse_name = data.get('warehouse_name')
             warehouse_type = data.get('warehouse_type')
-            warehouse_longitude = data.get('warehouse_longitude')
-            warehouse_latitude = data.get('warehouse_latitude')
+            warehouse_longitude = str(data.get('warehouse_longitude'))
+            warehouse_latitude = str(data.get('warehouse_latitude'))
             # Process other data as needed
             for ele in Warehouse.objects.all():
                 print(ele.id)
@@ -1261,19 +1261,28 @@ def create_warehouse(request):
             company_name = data.get('company_name')
             warehouse_name = data.get('warehouse_name')
             warehouse_type = data.get('warehouse_type')
-            warehouse_longitude = data.get('warehouse_longitude')
-            warehouse_latitude = data.get('warehouse_latitude')
+            warehouse_longitude = str(data.get('warehouse_longitude'))
+            warehouse_latitude = str(data.get('warehouse_latitude'))
             # Process other data as needed
+
+
+            warehouse_id = 0
+            warheouse_returned_long = 0
+            warheouse_returned_lat = 0
 
             if Company.objects.filter(name=company_name).exists():
                 company_object = Company.objects.get(name=company_name)
-                if not Warehouse.objects.filter(id=warehouse_name, company_id=company_object).exists():
+                if not Warehouse.objects.filter(name=warehouse_name, company_id=company_object).exists():
                     new_warehouse_row = Warehouse.objects.create(name=warehouse_name, type=warehouse_type, longitude=warehouse_longitude, latitude=warehouse_latitude, company_id=company_object)
                     # Save changes to the Model1 instance
                     new_warehouse_row.save()
                     company_object.num_warehouses = company_object.num_warehouses + 1
                     company_object.save()
                     if Warehouse.objects.filter(name=warehouse_name, type=warehouse_type, longitude=warehouse_longitude, latitude=warehouse_latitude).exists():
+                        confirme_warehouse = Warehouse.objects.get(name=warehouse_name, type=warehouse_type, longitude=warehouse_longitude, latitude=warehouse_latitude)
+                        warehouse_id = confirme_warehouse.id
+                        warheouse_returned_long = float(confirme_warehouse.longitude)
+                        warheouse_returned_lat = float(confirme_warehouse.latitude)
                         message = "successful create warehouse operation"
                         success = True
                     else:
@@ -1287,6 +1296,9 @@ def create_warehouse(request):
 
             # Return response
             return JsonResponse({
+                'warehouse_id': warehouse_id,
+                'warehouse_longitude': warheouse_returned_long,
+                'warehouse_latitude': warheouse_returned_lat,
                 'success': success,
                 'message': message,
             })
