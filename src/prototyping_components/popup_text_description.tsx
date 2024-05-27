@@ -26,7 +26,7 @@ export default  function  Popup_text_description (props:any) {
     return(
         <div className="fixed inset-0 z-40  bg-gray-900 bg-opacity-50">
           <div className="fixed inset-0 flex  items-center justify-center z-50">
-            <div className="bg-white rounded-lg shadow-md p-6 w-1/2 max-w-md">
+            <div className="bg-white rounded-lg shadow-md p-6 w-1/2 max-w-md ">
               <button
                 onClick={()=> {
                     props.send()}}
@@ -34,7 +34,10 @@ export default  function  Popup_text_description (props:any) {
               >
                 <X></X>
               </button>
-              
+         
+                <p className="whitespace-normal">{props.product_desc}</p>
+        
+             
            
             </div>
           </div>
