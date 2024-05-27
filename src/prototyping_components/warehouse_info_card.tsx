@@ -13,6 +13,8 @@ type Props={
     lat:number;
     type:WarehouseType;
     id:number;
+    updateData:({ware_data, mode}:{mode:'Creation'|'Edit', ware_data: UpdatedProps})=>void;
+    
 }
 type UpdatedProps={
     warehouse_name: string;
@@ -22,13 +24,13 @@ type UpdatedProps={
     warehouse_own_id: number;
 }
 export default function warehouse_info_card(props:Props) {
-    const [Data, setData] = useState<UpdatedProps>({
+    const Data = {
         warehouse_name:props.warehouse_name,
         warehouse_Long:props.long,
         warehouse_Lat:props.lat,
         warehouse_type:props.type,
         warehouse_own_id:props.id
-    });
+    };
     const [pop,setPop]=useState(false) //delete this
     
     return (
@@ -44,7 +46,7 @@ export default function warehouse_info_card(props:Props) {
 				<FontAwesomeIcon icon={faTrashCan} />
 				<FontAwesomeIcon icon={faPenToSquare} onClick={()=>{setPop(true)}} /*and change this*//>
 			</div>
-            {pop && <EditWarehouse {...Data} send={()=>{setPop(false)}} updateData={(newData:UpdatedProps)=>{setData(newData)}} /> } 
+            {pop && <EditWarehouse {...Data} send={()=>{setPop(false)}} updateData={ props.updateData}/> } 
 
         </div>
     );

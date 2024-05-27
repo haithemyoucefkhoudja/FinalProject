@@ -1,11 +1,8 @@
 'use client';
-
-import Warehouse_info_card from "@/prototyping_components/warehouse_info_card";
-import { Warehouse, WarehouseType } from "@/types/Data";
+import { ProductWareHouse, Warehouse, WarehouseType } from "@/types/Data";
 import { useState } from "react";
 import { WarehouseList } from "./WarehouseCollection";
 import { AddButton } from "./AddButton"
-import { Session } from "next-auth";
 import { UpdatedProps } from "@/types/WarehouseType";
 
 interface MixedData extends Warehouse{
@@ -13,17 +10,37 @@ interface MixedData extends Warehouse{
 }
 interface WrapperComponentProps {
     WareList:MixedData[]
-    session:Session;
 }
 export const WrapperComponent:React.FC<WrapperComponentProps> = ({WareList}) =>{
     const [warehouses, setWarehouses] = useState<MixedData[]>(WareList)
     return(
         <>
-            <AddButton warehouse_own_id={-1} updateWarehouses={(newData:UpdatedProps)=>{ 
-                setWarehouses(prev=> [...prev, {} as MixedData])
+            <AddButton warehouse_own_id={-1} updateWarehouses={({ware_data,mode})=>{ 
+                setWarehouses(prev=> [...prev, {
+                    id: ware_data.warehouse_own_id,
+                    name: ware_data.warehouse_name,
+                    longitude: ware_data.warehouse_Long,
+                    latitude: ware_data.warehouse_Lat,
+                    products: [] as ProductWareHouse[],
+                    shipments: undefined,
+                    type:ware_data.warehouse_type
+                } as MixedData])
             } }></AddButton>
             <div className="flex flex-col items-center">
-                <WarehouseList WareList={warehouses}/>
+                <WarehouseList updateData={
+                    ({ware_data,mode})=>{ 
+                        setWarehouses(prevWarehouses => 
+                            prevWarehouses.map(warehouse => 
+                              warehouse.id === ware_data.warehouse_own_id ? { ...warehouse, 
+                                latitude:ware_data.warehouse_Lat,
+                                longitude:ware_data.warehouse_Long,
+                                name:ware_data.warehouse_name,
+                                type:ware_data.warehouse_type
+                               } : warehouse
+                            )
+                          );
+                    }
+                } WareList={warehouses}/>
             </div>
         </>
     )

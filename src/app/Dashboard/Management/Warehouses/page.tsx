@@ -158,7 +158,7 @@ export default async function Page() {
       const MixedData = [...factoriesWithType, ...warehousesWithType];
 	return(
 		<div className="flex flex-col  items-center rounded-lg border border-gray-500 bg-white text-gray-950 shadow-sm ">
-	      	<WrapperComponent WareList={MixedData} session={session}/>
+	      	<WrapperComponent WareList={MixedData} />
 		</div>
 	)
 }

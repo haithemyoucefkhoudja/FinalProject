@@ -8,7 +8,7 @@ const CreateMap = dynamic(() => import('@/components/Map/CreateWareHouse'), {
   ssr: false,
 });
 interface EditWarehouse extends UpdatedProps {
-  updateData: (ware_data: UpdatedProps) => void;
+  updateData: ({ware_data, mode}:{mode:'Creation'|'Edit', ware_data: UpdatedProps}) => void;
   send: () => void;
 }
 export  const  EditWarehouse:React.FC<EditWarehouse> = (props: EditWarehouse ) =>  {

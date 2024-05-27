@@ -4,7 +4,7 @@ import { UpdatedProps } from "@/types/WarehouseType";
 import { EditWarehouse } from "./Popups/edit_warehouse";
 
 interface ICancel {
-    updateWarehouses: (UpdatedProps:UpdatedProps) => void
+    updateWarehouses: ({ware_data, mode}:{mode:'Creation'|'Edit', ware_data: UpdatedProps}) => void
     warehouse_own_id:number;
 }
 export const AddButton:React.FC<ICancel> = ({updateWarehouses, warehouse_own_id})=>{
@@ -23,7 +23,7 @@ export const AddButton:React.FC<ICancel> = ({updateWarehouses, warehouse_own_id}
                 className="mt-[2vh] bg-blue-500 w-[12vw] p-[0.5rem] text-white rounded">Add warehouse or Factory
             </button>
             
-            {showForm && <EditWarehouse {...fakeData} send={()=>{setShowForm(false)}} updateData={(newData:UpdatedProps)=>{updateWarehouses(newData)}} /> } 
+            {showForm && <EditWarehouse {...fakeData} send={()=>{setShowForm(false)}} updateData={updateWarehouses} /> } 
         </>  
     )
 }

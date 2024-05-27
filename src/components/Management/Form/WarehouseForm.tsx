@@ -14,7 +14,7 @@ import { z } from "zod";
 
 interface WarehouseFormProps {
   warehouse_own_id:number,
-  updateData: (ware_data: UpdatedProps) => void;
+  updateData: ({ware_data, mode}:{mode:'Creation'|'Edit', ware_data: UpdatedProps}) => void;
   send: () => void; 
   showMap: () => void; 
 }
@@ -48,14 +48,14 @@ export const WarehouseForm = (props:WarehouseFormProps) =>{
     },[data])
 
     const onSubmit = async (values: z.infer<typeof WarehouseFormSchema>) => {
-      console.log('Warehouse_id:', props.warehouse_own_id);
       const Data = 
       { warehouse_own_id: props.warehouse_own_id,
         warehouse_name: values.warehouse_name,
         warehouse_type: values.warehouse_type, 
         warehouse_longitude: values.warehouse_Long,
         warehouse_latitude: values.warehouse_Lat }
-      const BackData = await editWarehouse(Data)
+      const mode = props.warehouse_own_id == -1 ? 'Creation' : 'Edit'
+      const BackData = await editWarehouse(Data, mode)
       if(!BackData.success)
         {
           if(BackData.error === '')
@@ -64,10 +64,14 @@ export const WarehouseForm = (props:WarehouseFormProps) =>{
           return;
         }
 
-      props.updateData({
+      props.updateData(
+        
+        {
+          mode:mode,
+          ware_data:{
         ...values,
-        warehouse_own_id:props.warehouse_own_id
-      })
+        warehouse_own_id:mode == 'Creation' ? BackData.id : props.warehouse_own_id
+      }})
       props.send()
       
       alert(BackData.message)

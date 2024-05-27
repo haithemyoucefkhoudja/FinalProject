@@ -2,9 +2,17 @@
 
 import { getServerSession } from "@/app/utils/getServerSession";
 import { getURL } from "@/lib/backend_baseurl";
+import { WarehouseType } from "@/types/Data";
 import { Session } from "next-auth";
 
-export default async function editWarehouse(values: { warehouse_own_id: number; warehouse_name: string; warehouse_type: "Factory" | "Warehouse"; warehouse_longitude: number; warehouse_latitude: number; }){
+interface BackEndProps { 
+    warehouse_own_id: number;
+    warehouse_name: string;
+    warehouse_type: WarehouseType;
+    warehouse_longitude: number;
+    warehouse_latitude: number; 
+}
+export default async function editWarehouse(values: BackEndProps, mode:'Creation' | 'Edit'){
     try{
     const session:Session | null = await getServerSession();
     if(!session || !session.user)
@@ -12,11 +20,11 @@ export default async function editWarehouse(values: { warehouse_own_id: number; 
     
     if(session.user.role !== 'admin')
         throw new Error("you don't have enough permission for this action");
-    
-    const editWarehouseURL = getURL('p/edit_warehouse'); // Construct the URL
+    const path = mode == 'Creation' ? 'p/create_warehouse' : 'p/edit_warehouse';
+    const WarehouseURL = getURL(path); // Construct the URL
 
     // Send POST Request with Credentials
-    const response = await fetch(editWarehouseURL, {
+    const response = await fetch(WarehouseURL, {
         method: 'POST',
         headers: {
         'Content-Type': 'application/json' 
@@ -25,12 +33,12 @@ export default async function editWarehouse(values: { warehouse_own_id: number; 
     });
     const res_data = await response.json(); 
     
-    console.log(res_data)
     if (!res_data.success) {
         throw new Error(res_data.message); 
     }
     // fetch from api...
-    
+    if(res_data.id)   
+        return {success:true, message:res_data.message, id:res_data.id}
     return {success:true, message:res_data.message}
     }
     catch(error:any)
