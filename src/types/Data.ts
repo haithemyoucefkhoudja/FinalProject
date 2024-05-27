@@ -12,8 +12,6 @@ export type Product = {
   export interface ProductCompany extends Product {
     mid_price: number; 
   }
-  
-export type WarehouseType = 'Factory' | 'Warehouse';
 export  type Shipment = {
     id: number;
     name: string;
