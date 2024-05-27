@@ -63,14 +63,14 @@ export const WarehouseForm = (props:WarehouseFormProps) =>{
           setError('root', {message:BackData.error})
           return;
         }
-
+      console.log("lat:",BackData.extra_data?.warehouse_latitude, "long:",BackData.extra_data?.warehouse_longitude)
       props.updateData(
         
         {
           mode:mode,
           ware_data:{
         ...values,
-        warehouse_own_id:mode == 'Creation' ? BackData.id : props.warehouse_own_id
+        warehouse_own_id:mode == 'Creation' ? BackData.extra_data?.warehouse_id : props.warehouse_own_id
       }})
       props.send()
       
@@ -161,7 +161,7 @@ export const WarehouseForm = (props:WarehouseFormProps) =>{
             </div>
       }
         <button className="h-10 px-4 py-2 w-full bg-gray-900 text-gray-50 hover:bg-gray-900/90 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors  disabled:pointer-events-none disabled:opacity-50 "  disabled={isSubmitting} type="submit">
-          <Loading text="Register" isLoading={isSubmitting}/>
+          <Loading text={props.warehouse_own_id == -1 ? 'Create' : 'Edit'} isLoading={isSubmitting}/>
           
         </button>
     </form>

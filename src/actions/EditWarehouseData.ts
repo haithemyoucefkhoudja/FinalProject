@@ -29,7 +29,10 @@ export default async function editWarehouse(values: BackEndProps, mode:'Creation
         headers: {
         'Content-Type': 'application/json' 
         },
-        body: JSON.stringify(values) 
+        body: JSON.stringify({
+            ...values,
+            company_name:session.user.company
+         }) 
     });
     const res_data = await response.json(); 
     
@@ -37,8 +40,12 @@ export default async function editWarehouse(values: BackEndProps, mode:'Creation
         throw new Error(res_data.message); 
     }
     // fetch from api...
-    if(res_data.id)   
-        return {success:true, message:res_data.message, id:res_data.id}
+    if(res_data.warehouse_id)   
+        return {success:true, message:res_data.message, extra_data:{
+            warehouse_id:res_data.warehouse_id, 
+            warehouse_longitude:res_data.warehouse_longitude,
+            warehouse_latitude:res_data.warehouse_latitude
+        }}
     return {success:true, message:res_data.message}
     }
     catch(error:any)

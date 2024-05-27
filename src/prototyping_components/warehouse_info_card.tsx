@@ -36,6 +36,7 @@ export default function warehouse_info_card(props:Props) {
     return (
         <div className="w-[35vw] h-[20vh] border border-black rounded flex  items-center text-[1em] relative">
             <div className="ml-[1rem]">
+                <p>{Data.warehouse_own_id}</p>
             	<span className="flex"><p className="underline">{Data.warehouse_type}</p><p>: {Data.warehouse_name}</p></span>
             	<p>Coordinates:</p>
             	<p>{Data.warehouse_Long}</p>
