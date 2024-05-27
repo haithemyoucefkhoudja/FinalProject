@@ -4,7 +4,7 @@ import { getServerSession } from "@/app/utils/getServerSession";
 import { getURL } from "@/lib/backend_baseurl";
 import { Session } from "next-auth";
 
-export default async function editWarehouse(values: { warehouse_own_id: number; warehouse_name: string; warehouse_type: "Factory" | "Warehouse"; warehouse_longitude: number; warehouse_latitude: number; }){
+export default async function editWarehouse(values: { warehouse_own_id: any; warehouse_name: string; warehouse_type: "Factory" | "Warehouse"; warehouse_longitude: number; warehouse_latitude: number; }){
     try{
     const session:Session | null = await getServerSession();
     if(!session || !session.user)
@@ -15,7 +15,7 @@ export default async function editWarehouse(values: { warehouse_own_id: number; 
     
     const editWarehouseURL = getURL('p/edit_warehouse'); // Construct the URL
 
-    // Send POST Request with Values
+    // Send POST Request with Credentials
     const response = await fetch(editWarehouseURL, {
         method: 'POST',
         headers: {
@@ -25,6 +25,7 @@ export default async function editWarehouse(values: { warehouse_own_id: number; 
     });
     const res_data = await response.json(); 
     
+    console.log(res_data)
     if (!res_data.success) {
         throw new Error(res_data.message); 
     }

@@ -6,6 +6,7 @@ export type Product = {
     safety_level: number;
     color: string;
   };
+export type WarehouseType = 'Factory' | 'Warehouse'
   export interface ProductWareHouse extends Product {
     price: number; 
   }

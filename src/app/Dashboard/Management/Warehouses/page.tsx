@@ -1,164 +1,49 @@
-import { getServerSession } from "@/app/utils/getServerSession";
-import { WrapperComponent } from "@/components/Management/WrapperComponent";
-import { Data, Warehouse, WarehouseType } from "@/types/Data";
-const Waredata:Data = {
-    "company": {
-      "name": "CEVITAL",
-      "longitude": "",
-      "latitude": "",
-      "products": [
-        {
-          "id": 1,
-          "name": "ELIO 5L",
-          "quantity": 6907,
-          "mid_price": 612.5,
-          "description": "Vegetable cooking oil , stays in dry non-humid areas in recommended temprature 15-25° , last for 7 months  , without cholesterol , HALAL",
-          "safety_level": 1000,
-          "color": "green"
-        },
-        {
-          "id": 5,
-          "name": "SKOR 1KG",
-          "quantity": 47900,
-          "mid_price": 90,
-          "description": "White refined sugar , stays in dry non-humid areas in recommended temprature 15-25° , last for 2 years  , HALAL , state supported",
-          "safety_level": 5000,
-          "color": "green"
-        }
-      ]
-    },
-    "factories": [
-      {
-        "id": 1,
-        "name": "Bejaia",
-        "longitude":  5.0754,
-        "latitude": 36.7416,
-        "products": [
-          {
-            "id": 1,
-            "name": "ELIO 5L",
-            "quantity": 6907,
-            "price": 612.5,
-            "description": "Vegetable cooking oil , stays in dry non-humid areas in recommended temprature 15-25° , last for 7 months  , without cholesterol , HALAL",
-            "safety_level": 1000,
-            "color": "green"
-          },
-          {
-            "id": 5,
-            "name": "SKOR 1KG",
-            "quantity": 47900,
-            "price": 90,
-            "description": "White refined sugar , stays in dry non-humid areas in recommended temprature 15-25° , last for 2 years  , HALAL , state supported",
-            "safety_level": 5000,
-            "color": "green"
-          }
-        ]
-      }
-    ],
-    "warehouses": [
-      {
-        "id": 2,
-        "name": "Oum El Bouaghi",
-        "longitude":  7.1505,
-        "latitude":  35.8819,
-        "shipments":[],
-        "products": [
-          {
-            "id": 2,
-            "name": "ELIO 5L",
-            "quantity": 1000,
-            "price": 600,
-            "description": "Vegetable cooking oil , stays in dry non-humid areas in recommended temprature 15-25° , last for 7 months  , without cholesterol , HALAL",
-            "safety_level": 200,
-            "color": "green"
-          },
-          {
-            "id": 6,
-            "name": "SKOR 1KG",
-            "quantity": 9000,
-            "price": 90,
-            "description": "White refined sugar , stays in dry non-humid areas in recommended temprature 15-25° , last for 2 years  , HALAL , state supported",
-            "safety_level": 1000,
-            "color": "green"
-          }
-        ]
-      },
-      {
-        "id": 3,
-        "name": "Mostaganem",
-        "longitude": 0.1467,
-        "latitude": 35.9158,
-        "shipments":[],
-        "products": [
-          {
-            "id": 3,
-            "name": "ELIO 5L",
-            "quantity": 1500,
-            "price": 600,
-            "description": "Vegetable cooking oil , stays in dry non-humid areas in recommended temprature 15-25° , last for 7 months  , without cholesterol , HALAL",
-            "safety_level": 300,
-            "color": "green"
-          },
-          {
-            "id": 7,
-            "name": "SKOR 1KG",
-            "quantity": 11000,
-            "price": 90,
-            "description": "White refined sugar , stays in dry non-humid areas in recommended temprature 15-25° , last for 2 years  , HALAL , state supported",
-            "safety_level": 1000,
-            "color": "green"
-          }
-        ]
-      },
-      {
-        "id": 4,
-        "name": "Ouargla",
-        "longitude": 5.3345,
-        "latitude":  31.9526,
-        "shipments":[],
-        "products": [
-          {
-            "id": 4,
-            "name": "ELIO 5L",
-            "quantity": 1000,
-            "price": 600,
-            "description": "Vegetable cooking oil , stays in dry non-humid areas in recommended temprature 15-25° , last for 7 months  , without cholesterol , HALAL",
-            "safety_level": 150,
-            "color": "green"
-          },
-          {
-            "id": 8,
-            "name": "SKOR 1KG",
-            "quantity": 8000,
-            "price": 90,
-            "description": "White refined sugar , stays in dry non-humid areas in recommended temprature 15-25° , last for 2 years  , HALAL , state supported",
-            "safety_level": 900,
-            "color": "green"
-          }
-        ]
-      }
-      
-    ]
-  }
+import Warehouse_info_card  from "@/prototyping_components/warehouse_info_card.tsx";
+type WarehouseType = 'Factory' | 'Warehouse';
 
-export default async function Page(){
-    const session = await getServerSession()
-    if(!session)
-        return<></>;
-    const factoriesWithType = Waredata.factories.map(factory => ({
-        ...factory,
-        type: 'Factory' as WarehouseType,
-      }));
-      
-      const warehousesWithType = Waredata.warehouses.map(warehouse => ({
-        ...warehouse,
-        type: 'Warehouse' as WarehouseType,
-      }));
-      
-      const MixedData = [...factoriesWithType, ...warehousesWithType]; 
+type Props={
+    warehouse_name:string;
+    long:number;
+    lat:number;
+    type: WarehouseType;
+}
+export default function Page(){
+const data:Props[] = [
+    {
+        type: 'Factory',
+        warehouse_name: "Factory Bejaia N1",
+        long: 5.0754,
+        lat: 36.7416
+    },
+    {
+        type: 'Warehouse',
+        warehouse_name: "Warehouse Oum El Bouaghi N2",
+        long: 7.1505,
+        lat: 35.8819
+    },
+    {
+        type: 'Warehouse',
+        warehouse_name: "Warehouse Mostaganem N3",
+        long: 0.1467,
+        lat: 35.9158
+    },
+    {
+        type: 'Warehouse',
+        warehouse_name: "Warehouse Ouargla N4",
+        long: 5.3345,
+        lat: 31.9526
+    }
+];
+
+	const cards=data.map((item)=>{
+		return <div className="mt-[1rem] mb-[1rem]"><Warehouse_info_card warehouse_name={item.warehouse_name} type={item.type} long={item.long} lat={item.lat}  /></div>
+	})
 	return(
 		<div className="flex flex-col  items-center rounded-lg border border-gray-500 bg-white text-gray-950 shadow-sm ">
-	      	<WrapperComponent session={session} WareList={MixedData}></WrapperComponent>
+	      	<button className="mt-[2vh] bg-blue-500 w-[12vw] p-[0.5rem] text-white rounded">Add warehouse or factory</button>
+            <div className="flex flex-col items-center">
+	        {cards}
+	        </div>
 		</div>
 	)
 }

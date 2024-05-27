@@ -15,7 +15,7 @@ interface WrapperComponentProps {
     WareList:MixedData[]
     session:Session;
 }
-export const WrapperComponent:React.FC<WrapperComponentProps> = ({WareList, session}) =>{
+export const WrapperComponent:React.FC<WrapperComponentProps> = ({WareList}) =>{
     const [warehouses, setWarehouses] = useState<MixedData[]>(WareList)
     return(
         <>
