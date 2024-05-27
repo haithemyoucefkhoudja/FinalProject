@@ -205,40 +205,46 @@ class three_consumer(AsyncWebsocketConsumer):
     async def connect(self, recieved_data):
         await self.accept()
         data = json.loads(recieved_data)
-        self.role = None
-        self.company = None
-        self.warehouse = None
-        self.user_id = None
-        self.group_name = None
-        await self.channel_layer.group_add("numbers_group", self.channel_name)
-        await self.send_all_numbers()
+        self.role = data.get('role')
+        self.company = data.get('company')
+        self.warehouse = data.get('warehouse')
+        self.user_id = data.get('user_id')
+        self.group_name = self.three_consumer_get_group_name()
+        await self.channel_layer.group_add(self.group_name, self.channel_name)
+        await self.get_innitial_data_to_connecting_consumer()
 
     async def disconnect(self, close_code):
-        await self.channel_layer.group_discard("numbers_group", self.channel_name)
+        await self.channel_layer.group_discard(self.group_name, self.channel_name)
 
     async def receive(self, text_data):
         pass
 
-    async def send_all_numbers(self):
+    async def get_innitial_data_to_connecting_consumer(self):
+        data_to_send_to_view = {
+            'company': self.company,
+            'warehouse': self.warehouse,
+            'role': self.role
+            # Add more key-value pairs as needed
+        }
         async with aiohttp.ClientSession() as session:
-            async with session.get('http://localhost:8000/api/numbers/') as response:
+            async with session.get('http://localhost:8000/get_json_for_consumer', data_to_send_to_view) as response:
                 data = await response.json()
                 print("yoooooooo ",data)  # To check the data being fetched
                 await self.channel_layer.group_send(
-                    'numbers_group',
+                    self.group_name,
                     {
                         'type': 'update_numbers',
                         'numbers': data,
                     }
                 )
 
-    async def view_updating_channel(self, channel_name):
+    async def updating_the_channel_when_api_is_called(self, channel_name):
         async with aiohttp.ClientSession() as session:
-            async with session.get('http://localhost:8000/api/numbers/') as response:
+            async with session.get('http://localhost:8000/get_json_for_consumer') as response:
                 data = await response.json()
                 print("yoooooooo ", data)  # To check the data being fetched
                 await self.channel_layer.group_send(
-                    'numbers_group',
+                    self.group_name,
                     {
                         'type': 'update_numbers',
                         'numbers': data,
@@ -252,3 +258,9 @@ class three_consumer(AsyncWebsocketConsumer):
 
 
 
+    def three_consumer_get_group_name(self):
+        can_see = ""
+        can_see = "all" if self.role in  ['admin', 'observer'] else None
+        can_see = "driver" if self.role == 'driver' else None
+        can_see = "worker" if self.role == 'worker' else None
+        return f"{self.company}_{self.warehouse}"

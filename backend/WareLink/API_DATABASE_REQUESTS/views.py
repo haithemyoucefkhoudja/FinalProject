@@ -1242,3 +1242,160 @@ def edit_warehouse(request):
             })
     else:
         return JsonResponse({'error': 'Only POST requests are allowed'}, status=400)
+
+
+
+
+
+@csrf_exempt
+def create_warehouse(request):
+    if request.method == 'POST':
+        success = False
+        message = ""
+        try:
+
+            data = json.loads(request.body)
+            # Extracting values from JSON and assigning them to variables
+            company_name = data.get('company_name')
+            warehouse_name = data.get('warehouse_name')
+            warehouse_type = data.get('warehouse_type')
+            warehouse_longitude = data.get('warehouse_longitude')
+            warehouse_latitude = data.get('warehouse_latitude')
+            # Process other data as needed
+
+            if Company.objects.filter(name=company_name).exists():
+                company_object = Company.objects.get(name=company_name)
+                if not Warehouse.objects.filter(id=warehouse_name, company_id=company_object).exists():
+                    new_warehouse_row = Warehouse.objects.create(name=warehouse_name, type=warehouse_type, longitude=warehouse_longitude, latitude=warehouse_latitude, company_id=company_object)
+                    # Save changes to the Model1 instance
+                    new_warehouse_row.save()
+                    company_object.num_warehouses = company_object.num_warehouses + 1
+                    company_object.save()
+                    if Warehouse.objects.filter(name=warehouse_name, type=warehouse_type, longitude=warehouse_longitude, latitude=warehouse_latitude).exists():
+                        message = "successful create warehouse operation"
+                        success = True
+                    else:
+                        message = "failed create warehouse operation"
+                else:
+                    message = "warehouse already exist"
+            else:
+                message = "warehouse already exist"
+
+
+
+            # Return response
+            return JsonResponse({
+                'success': success,
+                'message': message,
+            })
+        except Exception as e:
+            return JsonResponse({
+                'success': success,
+                'message' : str(e)
+            })
+    else:
+        return JsonResponse({'error': 'Only POST requests are allowed'}, status=400)
+
+
+
+
+
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+from asgiref.sync import sync_to_async
+
+def add_number(request):
+    if request.method == 'POST':
+        number_value = int(request.POST.get('number_value'))
+        new_number = Number(value=number_value)
+        new_number.save()
+
+        # Notify WebSocket clients about the new number
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            'numbers_group',
+            {
+                'type': 'updating_the_channel_when_api_is_called',
+            }
+        )
+
+
+    all_numbers = Number.objects.all()
+    return render(request, 'add_number.html', {'all_numbers': all_numbers})
+@csrf_exempt
+def get_all_json_data_for_three_consumer(request):
+    if request.method == 'GET':
+        '''
+        data = json.loads(request.body)
+        company_name = data.get('company')
+        warehouse = data.get('warehouse')
+        role = data.get('role')
+        '''
+        company_name = "CEVITAL"
+        print("1")
+        company = Company.objects.get(name=company_name)
+        print("1")
+        company_data = {}
+        company_products_array = []
+        aggregated_products = {}
+        warehouse_objects = Warehouse.objects.filter(company_id=company)
+        factory_array = []
+        warehouse_array = []
+        for warehouse in warehouse_objects:
+            warehouse_data = {}
+            warehouse_data['id'] = warehouse.id
+            warehouse_data['name'] = warehouse.name
+            warehouse_data['longitude'] = float(warehouse.longitude)
+            warehouse_data['latitude'] = float(warehouse.latitude)
+            warehouse_data['products'] = []
+            products = Product.objects.filter(warehouse_id=warehouse)
+            for product in products:
+                products_data = {}
+                products_data['id'] = product.id
+                products_data['name'] = product.product_type_id.name
+                products_data['quantity'] = product.quantity
+                products_data['price'] = product.price_per_unit
+                products_data['description'] = product.product_type_id.description
+                products_data['safety_level'] = product.quantity_warning_limit
+                if products_data['quantity'] < products_data['safety_level']:
+                    products_data['color'] = "red"
+                else:
+                    products_data['color'] = "green"
+                warehouse_data['products'].append(products_data)
+                product_type = product.product_type_id.name
+                if product_type in aggregated_products:
+                    aggregated_products[product_type]['quantity'] += product.quantity
+                    aggregated_products[product_type]['prices'].append(product.price_per_unit)
+                else:
+                    aggregated_products[product_type] = products_data
+                    aggregated_products[product_type]['prices'] = [product.price_per_unit]  # List to store prices
+
+            ######### where to add  factories or to warehouses ??
+            if warehouse.type == "Factory":
+                factory_array.append(warehouse_data)
+            if warehouse.type == "Warehouse":
+                warehouse_array.append(warehouse_data)
+            ######### where to add  factories or to warehouses ??
+            '''return JsonResponse({'warehouses': warehouse_array})'''
+
+
+        for product in aggregated_products.values():
+            prices = product['prices']
+            product['price'] = sum(prices) / len(prices)  # Calculate medium price
+
+            # Remove unnecessary key
+            del product['prices']
+
+
+
+        company_products_array = list(aggregated_products.values())
+
+        company_data = {"name": company_name,
+                        "longitude": "",
+                        "latitude": "",
+                        "products": company_products_array}
+
+        return JsonResponse({'company': company_data,
+                             'factories': factory_array,
+                             'warehouses' : warehouse_array})
+
