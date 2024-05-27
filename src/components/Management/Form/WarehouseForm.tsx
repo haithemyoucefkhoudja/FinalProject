@@ -1,7 +1,9 @@
+import editWarehouse from "@/actions/EditWarehouseData";
 import { Loading } from "@/components/ui/buttonLoading";
 import { Input } from "@/components/ui/input";
 import { useWareData } from "@/context/WarehouseContext";
 import { WarehouseFormSchema } from "@/schemas/Warehouse";
+import { UpdatedProps } from "@/types/WarehouseType";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,7 +12,13 @@ import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-export const WarehouseForm = (props:any) =>{
+interface WarehouseFormProps {
+  warehouse_own_id:number,
+  updateData: (ware_data: UpdatedProps) => void;
+  send: () => void; 
+  showMap: () => void; 
+}
+export const WarehouseForm = (props:WarehouseFormProps) =>{
   const data = useWareData()
   
   const Dropref = useRef<null | HTMLDivElement>(null)
@@ -40,16 +48,29 @@ export const WarehouseForm = (props:any) =>{
     },[data])
 
     const onSubmit = async (values: z.infer<typeof WarehouseFormSchema>) => {
-      return new Promise<void>((resolve) => {
-        setTimeout(() => {
-          console.log(values);
-          if(true){
-            props.updateData(values)
-            props.send()
-          }
-          resolve();
-        }, 2000); // Simulate a network request
-      });
+      console.log('Warehouse_id:', props.warehouse_own_id);
+      const Data = 
+      { warehouse_own_id: props.warehouse_own_id,
+        warehouse_name: values.warehouse_name,
+        warehouse_type: values.warehouse_type, 
+        warehouse_longitude: values.warehouse_Long,
+        warehouse_latitude: values.warehouse_Lat }
+      const BackData = await editWarehouse(Data)
+      if(!BackData.success)
+        {
+          if(BackData.error === '')
+            BackData.error = 'Something went Wrong'
+          setError('root', {message:BackData.error})
+          return;
+        }
+
+      props.updateData({
+        ...values,
+        warehouse_own_id:props.warehouse_own_id
+      })
+      props.send()
+      
+      alert(BackData.message)
       
     }
   

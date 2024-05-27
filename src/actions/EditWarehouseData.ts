@@ -4,7 +4,7 @@ import { getServerSession } from "@/app/utils/getServerSession";
 import { getURL } from "@/lib/backend_baseurl";
 import { Session } from "next-auth";
 
-export default async function editWarehouse(values: { warehouse_own_id: any; warehouse_name: string; warehouse_type: "Factory" | "Warehouse"; warehouse_longitude: number; warehouse_latitude: number; }){
+export default async function editWarehouse(values: { warehouse_own_id: number; warehouse_name: string; warehouse_type: "Factory" | "Warehouse"; warehouse_longitude: number; warehouse_latitude: number; }){
     try{
     const session:Session | null = await getServerSession();
     if(!session || !session.user)

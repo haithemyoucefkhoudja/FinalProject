@@ -1,12 +1,17 @@
 import { X } from "lucide-react"
 import { WarehouseForm } from "../Form/WarehouseForm"
-import { useState } from "react"
+import {  useState } from "react"
 import dynamic from 'next/dynamic';
 import { WareDataProvider } from "@/context/WarehouseContext";
+import { UpdatedProps } from "@/types/WarehouseType";
 const CreateMap = dynamic(() => import('@/components/Map/CreateWareHouse'), {
   ssr: false,
 });
-export  const  EditWarehouse = (props:any) =>  {
+interface EditWarehouse extends UpdatedProps {
+  updateData: (ware_data: UpdatedProps) => void;
+  send: () => void;
+}
+export  const  EditWarehouse:React.FC<EditWarehouse> = (props: EditWarehouse ) =>  {
     const [showMap, setShowMap] = useState(false);
     function updateState( ) {
         setShowMap(prev => !prev);

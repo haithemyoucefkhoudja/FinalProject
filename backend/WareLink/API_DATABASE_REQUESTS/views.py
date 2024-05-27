@@ -1213,7 +1213,9 @@ def edit_warehouse(request):
             warehouse_longitude = data.get('warehouse_longitude')
             warehouse_latitude = data.get('warehouse_latitude')
             # Process other data as needed
-
+            for ele in Warehouse.objects.all():
+                print(ele.id)
+                print(ele.name)
             if Warehouse.objects.filter(id=warehouse_own_id).exists():
                 warehouse_object = Warehouse.objects.get(id=warehouse_own_id)
                 warehouse_object.name = warehouse_name
