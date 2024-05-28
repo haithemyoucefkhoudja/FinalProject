@@ -6,22 +6,16 @@ import PaginationForm from "./DPForm/PaginationForm"
 import { useSession } from "next-auth/react"
 import { Loading } from "../ui/buttonLoading"
 import { DistributionForm } from "./DPForm/DistributionForm"
+import { Session } from "next-auth"
 
-export const TablesButton:React.FC = () =>{
+export const TablesButton:React.FC<{session:Session}> = ({session}) =>{
     const [showForm, setShowForm] = useState(false)
-    const [Text, setText] = useState('')
-    const {data, status} = useSession()
+    const Text = session.user.role == 'admin' ? 'Production': 'Distribution'
+    const {status} = useSession()
     useEffect(()=>{
         if(status !== "authenticated")
             return;
-        if(data)
-        {
-            if(data.user.role == 'worker')
-                setText('Distribution');
-            else if (data.user.role == "admin")
-                setText('Production');
-            }
-    },[data, status])
+    },[status])
     return(
         <>
     <div className="  sticky z-30 inset-0 w-100 flex ">
@@ -39,7 +33,7 @@ export const TablesButton:React.FC = () =>{
                     >
                     <X className="h-6 w-6"></X>
                     </button>
-                    {Text !== '' && Text == 'Production' ?  (<PaginationForm ></PaginationForm>): (<DistributionForm></DistributionForm>)}
+                    {session.user.role === 'admin'  ?  (<PaginationForm ></PaginationForm>): (<DistributionForm></DistributionForm>)}
                     
                 </div>
             </div>

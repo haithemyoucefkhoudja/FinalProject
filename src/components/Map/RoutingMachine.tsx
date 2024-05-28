@@ -10,23 +10,26 @@ import ReactDOM from "react-dom";
 function moveCoordsCloser(
   currentCoords: [number, number],
   targetCoords: [number, number],
-  fraction: number = 0.1
+  fraction: number = 0.1,
+  smallest_distance: number = 0.02
+
 ): [number, number] {
   const [currentLat, currentLng] = currentCoords;
   const [targetLat, targetLng] = targetCoords;
-
+  if(Math.abs(targetLat - currentLat) <=  smallest_distance || Math.abs(targetLng - currentLng) <= smallest_distance)
+    return[-1000, -1000]
   const newLat = currentLat + (targetLat - currentLat) * fraction;
   const newLng = currentLng + (targetLng - currentLng) * fraction;
 
   return [newLat, newLng];
 }
-const RoutingMachine = ({ fromcoords, data, tocoords, products, name, updateExternalState }:RoutingMachineProps) => {
+const RoutingMachine = ({ coords, session, shipment_id, tocoords, products, name, updateExternalState }:RoutingMachineProps) => {
   const routingControlRef = useRef<L.Routing.Control | null>(null);
   const map = useMap();
   useEffect(() => {
     // Initialize the Leaflet Routing Machine control
     const instance = L.Routing.control({
-      waypoints: [new L.LatLng(fromcoords[0], fromcoords[1]), new L.LatLng(tocoords[0], tocoords[1])],
+      waypoints: [new L.LatLng(coords[0], coords[1]), new L.LatLng(tocoords[0], tocoords[1])],
       lineOptions: {
         styles: [{ color: "#6FA1EC", weight: 4 }],
         extendToWaypoints: true,
@@ -37,7 +40,7 @@ const RoutingMachine = ({ fromcoords, data, tocoords, products, name, updateExte
         const isStart = i === 0;
         const icon = isStart
           ? L.icon({ iconUrl: '/marker-icon.png', iconSize: [24, 41] }): 
-          L.icon({ iconUrl: '/empty-icon.png', iconSize: [0, 0] });
+          L.icon({ iconUrl: '/marker-icon.png', iconSize: [0, 0] });
         const marker = L.marker((waypoint as any).latLng, { icon });
         const popupContent = document.createElement('div');
         ReactDOM.render(<LeafletTable Products={products} name={name} />, popupContent);
@@ -62,12 +65,15 @@ const RoutingMachine = ({ fromcoords, data, tocoords, products, name, updateExte
     };
   }, [map]);
   useEffect(() => {
+    let intervalId:NodeJS.Timeout | null = null;
     const updatewaypoints = () =>{
       if (routingControlRef.current) {
         const currentWaypoint = routingControlRef.current.getWaypoints()[0];
-        const Lat = currentWaypoint ? currentWaypoint.latLng.lat  : fromcoords[0];
-        const Lng = currentWaypoint ? currentWaypoint.latLng.lng  : fromcoords[1];
+        const Lat = currentWaypoint ? currentWaypoint.latLng.lat  : coords[0];
+        const Lng = currentWaypoint ? currentWaypoint.latLng.lng  : coords[1];
         const newCoords = moveCoordsCloser([Lat, Lng], tocoords)
+        if(newCoords[0] === -1000 && intervalId)
+          return clearInterval(intervalId);
         // Update the waypoints
         routingControlRef.current.setWaypoints(
           [
@@ -75,14 +81,36 @@ const RoutingMachine = ({ fromcoords, data, tocoords, products, name, updateExte
             L.latLng(tocoords[0], tocoords[1])
           ]
         );
-        updateExternalState(name, [newCoords[0], newCoords[1]])
+        updateExternalState(name,shipment_id, [newCoords[0], newCoords[1]])
       }
     }
     // Run the waypoint update every 10 seconds
-    const intervalId = setInterval(updatewaypoints, 10000);
-    // Cleanup the interval on component unmount
-    return () => clearInterval(intervalId);
-  }, []);
+    if(session.user.role == 'driver')
+    {  
+      intervalId = setInterval(updatewaypoints, 1000);
+      // Cleanup the interval on component unmount
+      return ()=>{
+        if (intervalId) {
+            clearInterval(intervalId);
+        }
+    };
+}
+    
+  }, [session]);
+  useEffect(()=>{
+    
+    if(!routingControlRef.current)
+      return;
+
+    if(session.user.role == 'driver')
+      return;
+    routingControlRef.current.setWaypoints(
+      [
+        L.latLng(coords[0], coords[1]),
+        L.latLng(tocoords[0], tocoords[1])
+      ]
+    );
+  }, [session, coords])
   return <div ></div>
 }
 

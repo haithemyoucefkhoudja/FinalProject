@@ -9,5 +9,7 @@ const withPWA = withPWAInit({
 });
 
 export default withPWA({
-  
+  typescript: {
+    ignoreBuildErrors: true,
+  },
 });

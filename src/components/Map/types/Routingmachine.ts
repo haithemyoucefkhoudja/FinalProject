@@ -1,12 +1,12 @@
-
 import { Session } from "next-auth";
-import { IProduct } from "./product";
+import { Product, ProductWareHouse } from "@/types/Data";
 
 export interface RoutingMachineProps {
-    data:Session| null;
+    session:Session;
     name:string;
-    products:IProduct[]
+    products:Product[]
     tocoords:[number, number];
-    fromcoords: [number, number];
-    updateExternalState: (driverId: string, newCords: [number, number]) => void;
+    coords: [number, number];
+    shipment_id: string;
+    updateExternalState: (driverId: string,shipment_id: string, newCords: [number, number]) => void;
   }

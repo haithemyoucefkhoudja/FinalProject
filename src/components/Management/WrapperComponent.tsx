@@ -3,7 +3,6 @@ import { ProductWareHouse, Warehouse, WarehouseType } from "@/types/Data";
 import { useState } from "react";
 import { WarehouseList } from "./WarehouseCollection";
 import { AddButton } from "./AddButton"
-import { UpdatedProps } from "@/types/WarehouseType";
 
 interface MixedData extends Warehouse{
     type: WarehouseType
@@ -15,7 +14,7 @@ export const WrapperComponent:React.FC<WrapperComponentProps> = ({WareList}) =>{
     const [warehouses, setWarehouses] = useState<MixedData[]>(WareList)
     return(
         <>
-            <AddButton warehouse_own_id={-1} updateWarehouses={({ware_data,mode})=>{ 
+            <AddButton warehouse_own_id={-1} updateWarehouses={({ware_data})=>{ 
                 setWarehouses(prev=> [...prev, {
                     id: ware_data.warehouse_own_id,
                     name: ware_data.warehouse_name,
@@ -28,7 +27,7 @@ export const WrapperComponent:React.FC<WrapperComponentProps> = ({WareList}) =>{
             } }></AddButton>
             <div className="flex flex-col items-center">
                 <WarehouseList updateData={
-                    ({ware_data,mode})=>{ 
+                    ({ware_data})=>{ 
                         setWarehouses(prevWarehouses => 
                             prevWarehouses.map(warehouse => 
                               warehouse.id === ware_data.warehouse_own_id ? { ...warehouse, 

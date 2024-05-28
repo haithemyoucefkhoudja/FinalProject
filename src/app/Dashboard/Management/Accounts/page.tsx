@@ -1,4 +1,4 @@
-import Account_info_card  from "@/prototyping_components/account_info_card.tsx";
+import Account_info_card  from "@/Oussamacomps/account_info_card.tsx";
 
 type Props={
 	Account_name:string;

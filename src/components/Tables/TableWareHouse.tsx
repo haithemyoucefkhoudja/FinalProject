@@ -4,7 +4,7 @@ import { X } from "lucide-react";
 import { useState } from "react";
 
   
-export const Table = ({Warehouse}:{Warehouse:Warehouse | undefined}) => {
+export const Table = ({Warehouse, company}:{Warehouse:Warehouse | undefined, company:string}) => {
     if(!Warehouse)
       return(
       <div className="w-full h-[80vh] rounded-md flex justify-center items-center drop-shadow-lg bg-slate-200">
@@ -30,9 +30,9 @@ export const Table = ({Warehouse}:{Warehouse:Warehouse | undefined}) => {
         'blue': 'bg-blue-200 p-4 align-middle border-r-2',
       };
     return(
-    <div className="rounded-lg border border-gray-500 bg-white text-gray-950 shadow-sm ">
+    <div className="rounded-lg border border-gray-500 bg-white text-gray-950 shadow-sm">
     <div className="flex p-6 flex-col space-y-2 items-center justify-center text-5xl">
-      <h3 className="font-semibold leading-none tracking-tight">Cevital Group</h3>
+      <h3 className="font-semibold leading-none tracking-tight">{company}</h3>
       <p className="text-sm text-gray-500">{Warehouse.name && Warehouse.name}</p>
     </div>
     <div className="p-6 pt-0">

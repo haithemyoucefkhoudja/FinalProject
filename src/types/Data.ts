@@ -1,24 +1,29 @@
-export type Product = {
+  export type Product = {
     id: number;
     name: string;
     quantity: number;
+  };
+  export type WarehouseType = 'Factory' | 'Warehouse'
+  export interface BaseProduct extends Product {
     description: string;
     safety_level: number;
-    color: string;
-  };
-export type WarehouseType = 'Factory' | 'Warehouse'
-  export interface ProductWareHouse extends Product {
-    price: number; 
   }
-  export interface ProductCompany extends Product {
+  export interface ProductWareHouse extends BaseProduct {
+    price: number; 
+    color: string;
+  }
+
+  export interface ProductCompany extends BaseProduct {
     mid_price: number; 
   }
-export  type Shipment = {
+
+  export  type Shipment = {
     id: number;
     name: string;
-    driver: string;
-    origin_factory_id: number;
-    products: ProductWareHouse[];
+    arrival_time:string
+    driver: string | null;
+    origin_factory: string;
+    products: Product[];
   };
   
 export   type Warehouse = {
@@ -27,7 +32,7 @@ export   type Warehouse = {
     longitude: number;
     latitude: number;
     products: ProductWareHouse[];
-    shipments?: Shipment[] | string; // Optional, can be array or empty string
+    shipments: Shipment[] | undefined; // Optional, can be array or empty string
   };
   
   export   type Factory = {
