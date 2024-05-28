@@ -82,7 +82,7 @@ const Admin_Observer_Data:Data = {
         {
           "id": 7,
           "name": "shipment to Oum El Bouaghi-7",
-          "driver": "cevital_driver_Bejaia_2",
+          "driver": "cevital_driver_Bejaia_1",
           "origin_factory": "Bejaia",
           "arrival_time": "2024-04-27T06:52:00Z",
           "products": [
@@ -329,7 +329,34 @@ const DriverData:Data = {
     "latitude": "",
     "products": []
   },
-  "factories": [],
+  "factories": [
+    {
+      "id": 1,
+      "name": "Bejaia",
+      "longitude": 5,
+      "latitude": 36.66,
+      "products": [
+        {
+          "id": 1,
+          "name": "ELIO 5L",
+          "quantity": 3407,
+          "price": 650,
+          "description": "Vegetable cooking oil , stays in dry non-humid areas in recommended temprature 15-25° , last for 7 months  , without cholesterol , HALAL",
+          "safety_level": 1000,
+          "color": "green"
+        },
+        {
+          "id": 5,
+          "name": "SKOR 1KG",
+          "quantity": 19900,
+          "price": 90,
+          "description": "White refined sugar , stays in dry non-humid areas in recommended temprature 15-25° , last for 2 years  , HALAL , state supported",
+          "safety_level": 5000,
+          "color": "green"
+        }
+      ]
+    }
+  ],
   "warehouses": [{
     "id": 2,
     "name": "Oum El Bouaghi",

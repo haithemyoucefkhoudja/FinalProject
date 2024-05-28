@@ -1,37 +1,21 @@
 'use client'
 
-import { Loading } from "../ui/buttonLoading";
+import { ExtendedShipment } from "@/types/Data";
 import { CancelButton } from "./CancelButton";
 import { CompleteButton } from "./ConfirmButton";
-
-interface Product {
-    id: number;
-    name: string;
-    quantity: number;
-    unit_price: number;
-  }
-  
-  interface Shipment {
-    id: number;
-    name: string;
-    driver: string;
-    origin_factory: string;
-    destination_warehouse: string;
-    longitude: number;
-    latitude: number;
-    products: Product[];
-    arrival: string,
-    progress:number
+import { User } from "next-auth";
+    interface ShipmentMapPoint extends ExtendedShipment {
+    coords:[number, number]
+    user:User | null,
+    progress:number;
   }
   interface ShipmentProps{
-    
     updateShipment: (d_id:number) => void;
     showProducts: (s_id:number) => void;
-    shipment:Shipment
+    shipment:ShipmentMapPoint
 
   }
 export const ShipmentInfoCard = (props:ShipmentProps) =>{
-    
     
     return(<section className="flex w-full h-fit rounded-lg border-2 border-gray-500 my-5">
         <div className="flex text-wrap max-w-48 text-center  flex-col items-center justify-center h-full space-y-2 p-4 ">
@@ -46,7 +30,7 @@ export const ShipmentInfoCard = (props:ShipmentProps) =>{
             <div className="flex space-x-1">
                 <label className="text-md ">Progress:</label>
                 <div className="w-full  border-2 rounded-full border-gray-600">
-                    <div className=" bg-blue-300 h-full rounded-full" style={{width:`${props.shipment.progress}%`}}></div>
+                    <div className=" bg-blue-300 h-full rounded-full" style={{width:`${props.shipment.progress == -1 ? 0: props.shipment.progress}%`}}></div>
                 </div>
             </div>
             <div className="my-5">
@@ -57,7 +41,7 @@ export const ShipmentInfoCard = (props:ShipmentProps) =>{
             <div className="flex space-x-2  items-end">
                 <div className="flex space-x-1 flex-1">
                 <label className="text-md ">To arrive at:</label>
-                <p className="text-md ">{props.shipment.arrival}</p>
+                <p className="text-md ">{props.shipment.arrival_time}</p>
                 </div>
                 
                 <CompleteButton updateShipment={props.updateShipment} id={props.shipment.id}/>

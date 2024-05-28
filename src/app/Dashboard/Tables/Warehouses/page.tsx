@@ -19,7 +19,7 @@ export default async  function Page() {
             <section>
             <ul className="space-y-4">
                 {
-                <Table company={session.user.company} Warehouse={Data.warehouses.find(warehouse => warehouse.name === session.user.warehouse)}></Table>                
+                <Table company={session.user.company} Warehouse={Data.warehouses[0]}></Table>                
                 }
             </ul>
             <TablesButton session={session}></TablesButton>

@@ -1,5 +1,5 @@
 "use client";
-import { CheckCircleIcon, ClockIcon, Copyright, CurlyBraces, HomeIcon, LineChartIcon,  MapPinIcon,  Package,  TabletsIcon,  TextIcon,  TruckIcon,  UserIcon,  UsersIcon, XCircleIcon } from 'lucide-react';
+import { CheckCircleIcon, ClockIcon, Copyright, CurlyBraces, HomeIcon, LineChartIcon,  MapPinIcon,  Package,  TabletsIcon,  TagsIcon,  TextIcon,  TruckIcon,  UserIcon,  UsersIcon, XCircleIcon } from 'lucide-react';
 import { createContext, useState, useContext, ReactNode, ReactElement } from 'react';
 
 interface SidebarItem {
@@ -35,11 +35,11 @@ export const SidebarProvider = ({ children }: { children: ReactNode }) => {
       { label: 'Reports', icon: <TextIcon className="h-4 w-4" />, href: '/Dashboard/Stats/Reports' }
     ],
     '/Dashboard/Management': [
-      { label: 'Company', icon: <TabletsIcon className="h-4 w-4" />, href: '/Dashboard/Management/Company' },
+      { label: 'Company', icon: <Copyright className="h-4 w-4" />, href: '/Dashboard/Management/Company' },
       { label: 'Warehouses', icon: <HomeIcon className="h-4 w-4" />, href: '/Dashboard/Management/Warehouses' },
       { label: 'Accounts', icon: <UserIcon className="h-4 w-4" />, href: '/Dashboard/Management/Accounts' },
       { label: 'Vehicles', icon: <TruckIcon className="h-4 w-4" />, href: '/Dashboard/Management/Vehicles' },
-      { label: 'Products', icon: <CurlyBraces className="h-4 w-4" />, href: '/Dashboard/Management/Products' }, 
+      { label: 'Products', icon: <TagsIcon className="h-4 w-4" />, href: '/Dashboard/Management/Products' }, 
     ],
   };
   return (

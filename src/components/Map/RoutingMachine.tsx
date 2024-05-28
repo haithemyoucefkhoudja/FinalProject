@@ -1,5 +1,5 @@
 'use client'
-import L, { Control } from "leaflet";
+import L from "leaflet";
 import "leaflet-routing-machine";
 import 'leaflet/dist/leaflet.css'
 import {  useEffect, useRef } from "react";
@@ -87,7 +87,7 @@ const RoutingMachine = ({ coords, session, shipment_id, tocoords, products, name
     // Run the waypoint update every 10 seconds
     if(session.user.role == 'driver')
     {  
-      intervalId = setInterval(updatewaypoints, 1000);
+      intervalId = setInterval(updatewaypoints, 10000);
       // Cleanup the interval on component unmount
       return ()=>{
         if (intervalId) {

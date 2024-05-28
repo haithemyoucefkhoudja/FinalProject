@@ -1,4 +1,3 @@
-'use client'
 import Bell from './Bell.tsx'
 import Map_dict from './map_dictionary.tsx'
 import SideBar from '@/components/component/SideBar.tsx'

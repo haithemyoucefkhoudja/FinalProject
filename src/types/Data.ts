@@ -3,6 +3,7 @@
     name: string;
     quantity: number;
   };
+  
   export type WarehouseType = 'Factory' | 'Warehouse'
   export interface BaseProduct extends Product {
     description: string;
@@ -42,7 +43,14 @@ export   type Warehouse = {
     latitude: number;
     products: ProductWareHouse[];
   };
-  
+  export interface ExtendedShipment extends Shipment {
+    destination_warehouse: string;
+    destination_warehouse_coords:[number, number];
+    origin_factory_coords:[number, number];
+  }
+  export interface DCShipment extends Shipment {
+    destination_warehouse: string;
+  }
   export type Company = {
     name: string;
     longitude: string;

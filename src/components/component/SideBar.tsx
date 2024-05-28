@@ -26,7 +26,9 @@ export default function SideBar({
   const routes = useRouterSegments();
   const pathName = routes?.pathname;
   const relevantItems = sidebarItems['/' + routes?.firstRoute + '/' + routes?.secondRoute] || [];
-  
+  useEffect(()=>{
+    setHidden(true)
+  },[routes?.secondRoute])
   // Width of the active window
   const  windowWidth = useWidth()
   

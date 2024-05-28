@@ -289,8 +289,10 @@ const Map = ({session, Ware_data}:{session:Session, Ware_data:Data}) => {
       <p className='mr-4'>{shipment.name}</p>
   <button  onClick={()=>{
     setCenter([shipment.coords[0], shipment.coords[1]])}} 
-    className="hover:bg-gray-200 hover:text-gray-900 rounded-full inline-flex items-center justify-center whitespace-nowrap p-1 text-sm font-medium ring-offset-white transition-colors ">
-    <Eye className='h-6 w-6 self-start'></Eye>
+    className="hover:bg-gray-200 hover:text-gray-900 rounded-full inline-flex items-center justify-center whitespace-nowrap p-1 text-sm font-medium ring-offset-white transition-colors " disabled={!shipment.user}>
+      
+    
+    <Eye className='h-6 w-6 self-start ' color={shipment.user ? '#00E2A2': '#FF1D5D'}></Eye>
   </button>
   
 </li>
