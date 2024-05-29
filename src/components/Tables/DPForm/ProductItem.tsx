@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 interface IProductInput {
     elements:string[];
     type:`products.${number}.name`  | `products.${number}.quantity`;
-
+    disabled?:boolean;
     InputType: string;
     Label: string;
     className?:string;
@@ -13,7 +13,7 @@ interface IProductInput {
   register:UseFormRegister<{ products: { name: string; quantity: number; }[]; }>
   watch:UseFormWatch<{ products: { name: string; quantity: number; }[]; }>
   }
-  export const ProductInput: React.FC<IProductInput> = ({elements, type,  InputType, Label, setValue,register, watch}) =>{
+  export const ProductInput: React.FC<IProductInput> = ({elements, type,  InputType, Label, setValue,register, watch, disabled=false}) =>{
     const [Elements, setElements ] = useState(elements) 
     
     const handleFocus = () => {
@@ -72,7 +72,7 @@ interface IProductInput {
     <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 w-1/2">
       {Label}:
     </label>
-    <Input    className={" rounded-sm ring-2 ring-gray-200 w-1/2 "} {...rest} type={InputType} {...InputType === "number" ? {} :{}} placeholder={Label} onFocus={handleFocus} ref={(e) => {
+    <Input  disabled={disabled}   className={" rounded-sm ring-2 ring-gray-200 w-1/2 "} {...rest} type={InputType} {...InputType === "number" ? {} :{}} placeholder={Label} onFocus={handleFocus} ref={(e) => {
   ref(e)
   Inputref.current = e 
   }}/>

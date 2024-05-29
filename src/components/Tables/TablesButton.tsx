@@ -1,21 +1,18 @@
 'use client'
 
 import { X } from "lucide-react"
-import { useEffect, useState } from "react"
+import {  useState } from "react"
 import PaginationForm from "./DPForm/PaginationForm"
 import { useSession } from "next-auth/react"
 import { Loading } from "../ui/buttonLoading"
 import { DistributionForm } from "./DPForm/DistributionForm"
 import { Session } from "next-auth"
+import { Warehouse } from "@/types/Data"
 
-export const TablesButton:React.FC<{session:Session}> = ({session}) =>{
+export const TablesButton:React.FC<{session:Session, Warehouses: Warehouse[]}> = ({session, Warehouses}) =>{
     const [showForm, setShowForm] = useState(false)
     const Text = session.user.role == 'admin' ? 'Production': 'Distribution'
     const {status} = useSession()
-    useEffect(()=>{
-        if(status !== "authenticated")
-            return;
-    },[status])
     return(
         <>
     <div className="  sticky z-30 inset-0 w-100 flex ">
@@ -33,7 +30,7 @@ export const TablesButton:React.FC<{session:Session}> = ({session}) =>{
                     >
                     <X className="h-6 w-6"></X>
                     </button>
-                    {session.user.role === 'admin'  ?  (<PaginationForm ></PaginationForm>): (<DistributionForm></DistributionForm>)}
+                    {session.user.role === 'admin'  ?  (<PaginationForm Warehouses={Warehouses}></PaginationForm>): (<DistributionForm updateShow={()=> {setShowForm(false)}} Warehouses={Warehouses}></DistributionForm>)}
                     
                 </div>
             </div>

@@ -1,8 +1,8 @@
 'use client';
 
-import Warehouse_info_card from "@/prototyping_components/warehouse_info_card";
 import { Warehouse } from "@/types/Data";
 import { UpdatedProps } from "@/types/WarehouseType";
+import WarehouseInfoCard from "./WarehouseInfoCard";
 
 type WarehouseType = 'Factory' | 'Warehouse';
 interface MixedData extends Warehouse{
@@ -10,12 +10,12 @@ interface MixedData extends Warehouse{
 }
 interface WareListProps {
     WareList:MixedData[];
-    updateData: ({ware_data, mode}:{mode:'Creation'|'Edit', ware_data: UpdatedProps}) => void;
+    updateData: ({ware_data}:{ware_data: UpdatedProps}) => void;
 }
 export const WarehouseList:React.FC<WareListProps> = ({WareList, updateData}) =>{
     return(WareList.map((item)=>{
 		return <div className="mt-[1rem] mb-[1rem]">
-                    <Warehouse_info_card warehouse_name={item.name} type={item.type} long={item.longitude} lat={item.latitude} id={item.id}  updateData={updateData}/>
+                    <WarehouseInfoCard warehouse_name={item.name} type={item.type} long={item.longitude} lat={item.latitude} id={item.id}  updateData={updateData}/>
                 </div>
 	}))
 }

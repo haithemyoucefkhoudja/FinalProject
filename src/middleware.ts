@@ -7,7 +7,6 @@ const secret = process.env.NEXTAUTH_SECRET;
 export default withAuth(
   async function middleware(req: NextRequest) {
     const pathname = req.nextUrl.pathname;
-
     // Manage route protection
     const Token = await getToken({ req, secret });
     const isLoginPage = pathname.startsWith('/login');

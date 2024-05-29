@@ -1,10 +1,10 @@
 'use client';
 import {useState } from "react";
 import { UpdatedProps } from "@/types/WarehouseType";
-import { EditWarehouse } from "./Popups/edit_warehouse";
+import { EditWarehouse } from "../Popups/edit_warehouse";
 
 interface ICancel {
-    updateWarehouses: ({ware_data, mode}:{mode:'Creation'|'Edit', ware_data: UpdatedProps}) => void
+    updateWarehouses: ({ware_data}:{ware_data: UpdatedProps}) => void
     warehouse_own_id:number;
 }
 export const AddButton:React.FC<ICancel> = ({updateWarehouses, warehouse_own_id})=>{

@@ -6,11 +6,16 @@ import { ProductsFormSchema } from "@/schemas/Product";
 
 import { Trash } from "lucide-react";
 import { ProductInput } from "./ProductItem";
+import distribution from "@/actions/Distribution";
+import { Warehouse } from "@/types/Data";
+import toast from "react-hot-toast";
   
 interface IDistributionForm {
-  
+  Warehouses:Warehouse[];
+  updateShow: ()=>void
+
 }
-export const DistributionForm:React.FC<IDistributionForm> = () => {
+export const DistributionForm:React.FC<IDistributionForm> = ({Warehouses, updateShow}) => {
     
     const {
         handleSubmit,
@@ -21,37 +26,36 @@ export const DistributionForm:React.FC<IDistributionForm> = () => {
         formState: { isSubmitting, errors },
       } = useForm<z.infer<typeof ProductsFormSchema>>({
         defaultValues:{
-            products:[]
+            products:Warehouses[0].products
         },
         resolver: zodResolver(ProductsFormSchema),
       });
 
       const onSubmit = async (values: z.infer<typeof ProductsFormSchema>) => {
-        try {
-            return new Promise<void>((resolve) => {
-                setTimeout(() => {
-                  console.log(values);
-                  resolve();
-                }, 2000); // Simulate a network request
-              });
-        } catch (error) {
-          setError('root', { message: 'An unexpected error occurred' });
+        const Warehouse = Warehouses[0]
+
+        const Data = 
+        { warehouse_id: Warehouse.id,
+          products:values.products
         }
+        const BackData = await distribution(Data)
+        if(!BackData.success)
+          {
+            if(BackData.error === '')
+              BackData.error = 'Something went Wrong'
+            setError('root', {message:BackData.error})
+            return;
+          }
+        
+          toast.success(BackData.message,{duration:2000});
+          updateShow()
+          
       };
       const products = watch("products");
       function removeProduct(d_index:number): void {
       setValue('products', products.filter((_, index) => index !== d_index));
       }
-      function addnewProduct(): void {
-        setValue('products',[...products, { name:'', quantity:0 }])
-      }
-        const product_names = [
-          "Elio 5L Olive Oil",
-          "Elio 2L Olive Oil",
-          "Skor 5kg Granulated Sugar",
-          "Skor 2kg Granulated Sugar",
-          "Skor 1kg Granulated Sugar"
-        ];
+      
       return(  
       
         
@@ -69,7 +73,7 @@ export const DistributionForm:React.FC<IDistributionForm> = () => {
                             </button>
                             </div>
                             <div className="flex space-x-2">
-                            <ProductInput elements={product_names} type={`products.${index}.name`}  setValue={setValue}  InputType='text' Label='Name' register={register} watch={watch} />
+                            <ProductInput disabled={true} elements={Warehouses[0].products.map(product=>product.name)} type={`products.${index}.name`}  setValue={setValue}  InputType='text' Label='Name' register={register} watch={watch} />
                             <ProductInput elements={[]} type={`products.${index}.quantity`}  InputType='number' setValue={setValue} register={register} watch={watch} Label='Quantity' />
                             </div>
                             <p className="text-red-500">
@@ -84,13 +88,13 @@ export const DistributionForm:React.FC<IDistributionForm> = () => {
                     
                 </div>
             </div>
-            <button
+            {/*<button
                     className="h-10 px-4 py-2 w-full bg-gray-100 border-2 border-gray-700 text-gray-700 hover:bg-gray-300 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors  disabled:pointer-events-none disabled:opacity-50"
                     disabled={isSubmitting}
                     onClick={()=>{addnewProduct()}}
                     type="button">
                         Add new Product
-            </button> 
+            </button> */}
             
             <button
                 className="h-10 px-4 py-2 w-full bg-gray-900 text-gray-50 hover:bg-gray-900/90 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors  disabled:pointer-events-none disabled:opacity-50"

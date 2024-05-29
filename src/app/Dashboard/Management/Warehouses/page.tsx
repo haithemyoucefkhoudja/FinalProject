@@ -1,6 +1,6 @@
 import FetchAllData from "@/actions/FetchData";
 import { getServerSession } from "@/app/utils/getServerSession";
-import { WrapperComponent } from "@/components/Management/WrapperComponent";
+import { WrapperComponent } from "@/components/Management/Warehouse/WarehouseWrapperComponent";
 import { NoData } from "@/components/ui/NoData";
 import {   WarehouseType } from "@/types/Data";
 

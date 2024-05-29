@@ -15,6 +15,8 @@ export default async  function Page() {
     if(!Data)
         return<NoData/>
     if(session.user.role === 'worker')
+    {
+        const WarehouseName_Id = Data.warehouses.find(warehouse=>warehouse.name == session.user.warehouse ? [{id:warehouse.id, name:warehouse.name}]:[])
         return(
             <section>
             <ul className="space-y-4">
@@ -22,9 +24,11 @@ export default async  function Page() {
                 <Table company={session.user.company} Warehouse={Data.warehouses[0]}></Table>                
                 }
             </ul>
-            <TablesButton session={session}></TablesButton>
+            
+            {WarehouseName_Id&& <TablesButton Warehouses={[WarehouseName_Id]} session={session}></TablesButton>}
             </section>
         )
+    }
     if(session.user.role === 'admin')
         return(    
         <section>
@@ -37,7 +41,7 @@ export default async  function Page() {
                 </li>   
             )})}    
             </ul>
-            <TablesButton session={session}></TablesButton>
+            <TablesButton Warehouses={Data.warehouses} session={session}></TablesButton>
         </section>
         )
     return(

@@ -77,7 +77,7 @@ export default  function  Popup_table_PSS(props:any) {
               >
                 <X></X>
               </button>
-              
+              <div className="flex justify-center">{props.price} | {props.safety_level}</div>
            
             </div>
           </div>

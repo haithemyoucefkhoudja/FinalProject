@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 
 import { MenuForm } from './ProductionForm';
 import { ProductForm } from './ProductForm';
+import { Warehouse } from '@/types/Data';
 
 
-const PaginationForm: React.FC = () => {
+const PaginationForm: React.FC<{Warehouses: Warehouse[]}> = ({Warehouses}) => {
   const [showProducts, setShowProducts] = useState(false);
 
   return (

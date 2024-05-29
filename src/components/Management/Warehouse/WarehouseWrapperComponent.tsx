@@ -2,7 +2,7 @@
 import { ProductWareHouse, Warehouse, WarehouseType } from "@/types/Data";
 import { useState } from "react";
 import { WarehouseList } from "./WarehouseCollection";
-import { AddButton } from "./AddButton"
+import { AddButton } from "./WarehouseAddButton"
 
 interface MixedData extends Warehouse{
     type: WarehouseType

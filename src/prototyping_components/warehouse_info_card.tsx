@@ -2,7 +2,6 @@
 import {faTrashCan} from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
-import Popup_form_edit_company from './popup_form_edit_warehouse.tsx' //delete
 import {  useState } from 'react'
 import { EditWarehouse } from "@/components/Management/Popups/edit_warehouse.tsx";
 import { WarehouseType } from "@/types/Data.ts";
@@ -13,7 +12,7 @@ type Props={
     lat:number;
     type:WarehouseType;
     id:number;
-    updateData:({ware_data, mode}:{mode:'Creation'|'Edit', ware_data: UpdatedProps})=>void;
+    updateData:({ware_data}:{ ware_data: UpdatedProps})=>void;
     
 }
 type UpdatedProps={
