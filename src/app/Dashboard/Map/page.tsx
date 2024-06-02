@@ -12,7 +12,7 @@ export default async function Home() {
   const session = await getServerSession()
   if(!session)
     return(<NoData/>)
-  const Data = await FetchAllData(session.user.role)
+  const Data = await FetchAllData(session)
   if(!Data)
     return<NoData/>
   return (

@@ -3,7 +3,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faPenToSquare} from "@fortawesome/free-solid-svg-icons";
 import { useState } from 'react'
-import Popup_form_edit_company  from "./popup_form_edit_company"
+import PopUpEditCompany from '@/components/Management/Company/EditCompanyPopup';
 
 type Props={
 	company_name:string;
@@ -23,7 +23,9 @@ export default function Company_info_card(props:Props){
 			<FontAwesomeIcon className="absolute right-[0] bottom-[0] m-[1rem]"  icon={faPenToSquare} /*replace this >*/onClick={()=>{setPop(true)}}/>
 		</div>
 	</div>
-         {pop && <Popup_form_edit_company {...Data} send={()=>{setPop(false)}} updateData={(newData:Props)=>{setData(newData)}} /> } 
+         {pop && <PopUpEditCompany updateCompanyName={function (newName: string): void {
+			setData({ company_name: newName })
+			} } {...Data} send={() => { setPop(false); } }/> } 
 	</>
 	);
 

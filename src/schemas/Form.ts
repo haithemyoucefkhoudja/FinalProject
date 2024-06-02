@@ -17,16 +17,25 @@ export const LoginFormSchema = z.object({
     ...LoginFormSchema.shape,
     username: z.string()
     .min(1, "Name is Required")
-    .max(30, "Name is Too Long")
-    .regex(new RegExp("^[a-zA-Z\\s]+$"), {message:"Name must contain Letters Only"})
-    .regex(new RegExp("[A-Z].*"), {message:"Name must start with capital letter"}),
+    .max(30, "Name is Too Long"),
     passwordConfirmation:z.string()
     .min(1, "Password confirmation is required!"),
     company_name: z.string()
     .min(1, "CompanyName is Required")
     .max(30, "CompanyName is Too Long")
     .regex(new RegExp("[A-Z].*"), {message:"CompanyName must start with capital letter"}),
-
+    warehouse_name:z.string()
+    .min(1, "WarehouseName is Required")
+    .max(30, "WarehouseName is Too Long")
+    .regex(new RegExp("[A-Z].*"), {message:"WarehouseName must start with capital letter"})
+    .optional()
+    .or(z.literal('')),
+    role:z.enum([
+      "driver",
+      "observer",
+      "admin",
+      'worker'
+  ]).optional().or(z.literal('')),
 }).refine((data) => data.password === data.passwordConfirmation, {
         message: "Passwords don't match",
         path: ["passwordConfirmation"],

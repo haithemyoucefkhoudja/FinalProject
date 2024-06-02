@@ -18,7 +18,7 @@ import { User } from "next-auth";
 export const ShipmentInfoCard = (props:ShipmentProps) =>{
     
     return(<section className="flex w-full h-fit rounded-lg border-2 border-gray-500 my-5">
-        <div className="flex text-wrap max-w-48 text-center  flex-col items-center justify-center h-full space-y-2 p-4 ">
+        <div className="flex text-wrap w-48 text-center  flex-col items-center justify-center h-full space-y-2 p-4 ">
             <label className="text-md ">From:</label>
             <p className="text-md ">{props.shipment.origin_factory}</p>
         </div>
@@ -48,7 +48,7 @@ export const ShipmentInfoCard = (props:ShipmentProps) =>{
                 <CancelButton updateShipment={props.updateShipment} id={props.shipment.id}/>
             </div>
         </div>
-        <div className="flex text-wrap max-w-48 text-center  flex-col items-center justify-center h-full space-y-2 p-4 ">
+        <div className="flex text-wrap w-48 text-center  flex-col items-center justify-center h-full space-y-2 p-4 ">
             <label className="text-md ">To:</label>
             <p className="text-md ">{props.shipment.destination_warehouse}</p>
         </div>

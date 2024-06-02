@@ -10,19 +10,18 @@ export default async  function Page() {
   const session = await getServerSession()
   if(!session)
     return(<NoData/>)
-  const Data = await FetchAllData(session.user.role)
+  const Data  = await FetchAllData(session)
     if(!Data)
       return<NoData/> 
     let Shipments:ExtendedShipment[] = [];
     Data.warehouses.map(warehouse=>{
       warehouse.shipments?.map(shipment=>{
-        const factory = Data.factories.find(factory=>factory.name == shipment.origin_factory)
-        if(!factory)
-          return [] as ExtendedShipment[]
-        Shipments.push({...shipment, destination_warehouse:warehouse.name,destination_warehouse_coords:[warehouse.latitude, warehouse.longitude], origin_factory_coords:[factory?.latitude,factory?.longitude]});
+        console.log(shipment)
+        if(shipment.arrival_time !== 'canceled' && shipment.arrival_time !== 'completed')
+        Shipments.push({...shipment, destination_warehouse:warehouse.name,destination_warehouse_coords:[warehouse.latitude, warehouse.longitude], origin_factory_coords:[shipment?.origin_latitude,shipment?.origin_longitude]});
       })
     })
     return(  
-      <CWrapperComponent shipments={Shipments} session={session}></CWrapperComponent>
+      <CWrapperComponent shipments={Shipments} Warehouses={Data.warehouses} Factories={Data.factories} session={session}></CWrapperComponent>
     )
 }

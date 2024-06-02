@@ -9,12 +9,14 @@ export default async  function Page() {
   const session = await getServerSession()
   if(!session)
     return(<NoData/>)
-  const Data = await FetchAllData(session.user.role)
+  const Data = await FetchAllData(session)
     if(!Data)
       return<NoData/> 
     let Shipments:DCShipment[] = [];
     Data.warehouses.map(warehouse=>{
       warehouse.shipments?.map(shipment=>{
+        console.log(shipment.arrival_time )
+        if(shipment.arrival_time == 'completed')
         Shipments.push({...shipment, destination_warehouse:warehouse.name });
       })
     })

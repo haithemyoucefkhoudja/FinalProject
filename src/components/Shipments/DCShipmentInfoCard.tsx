@@ -14,7 +14,7 @@ export const DoneShipmentInfoCard = (props: ShipmentProps) => {
           <label className="text-md ">From:</label>
           <p className="text-md ">{props.shipment.origin_factory}</p>
         </div>
-        <div className="flex flex-1 flex-col space-y-2 p-2 border-gray-300 border-l-2 border-r-2">
+        <div className="flex-1 flex-col space-y-2 p-2 border-gray-300 border-l-2 border-r-2">
           <div className="flex space-x-1">
             <label className="text-md ">Driver:</label>
             <p className="text-md ">{props.shipment.driver}</p>

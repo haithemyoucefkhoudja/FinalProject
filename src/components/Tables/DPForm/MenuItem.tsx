@@ -4,19 +4,19 @@ import { Input } from '@/components/ui/input';
 
 interface IMenuInput {
     elements:string[];
-    type:"warehouse";
+    type:"factory";
     errorMessage:string | undefined; 
     InputType: string;
     Label: string;
     className?:string;
     setValue: UseFormSetValue<{
-        warehouse:string
+      factory:string
   }>
   register:UseFormRegister<{
-    warehouse:string
+    factory:string
   }>
   watch:UseFormWatch<{
-    warehouse:string
+    factory:string
   }>
   }
   export const MenuInput: React.FC<IMenuInput> = ({elements, type, errorMessage, InputType, Label, className, setValue,register, watch}) =>{

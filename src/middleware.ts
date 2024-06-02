@@ -10,7 +10,6 @@ export default withAuth(
     // Manage route protection
     const Token = await getToken({ req, secret });
     const isLoginPage = pathname.startsWith('/login');
-    
     const isRegisterPage = pathname.startsWith('/register');
     const sensitiveRoutes = ['/Dashboard'];
 

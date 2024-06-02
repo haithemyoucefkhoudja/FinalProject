@@ -3,6 +3,7 @@
 import { Warehouse } from "@/types/Data";
 import { UpdatedProps } from "@/types/WarehouseType";
 import WarehouseInfoCard from "./WarehouseInfoCard";
+import { Session } from "next-auth";
 
 type WarehouseType = 'Factory' | 'Warehouse';
 interface MixedData extends Warehouse{
@@ -10,12 +11,12 @@ interface MixedData extends Warehouse{
 }
 interface WareListProps {
     WareList:MixedData[];
-    updateData: ({ware_data}:{ware_data: UpdatedProps}) => void;
+    session:Session
 }
-export const WarehouseList:React.FC<WareListProps> = ({WareList, updateData}) =>{
+export const WarehouseList:React.FC<WareListProps> = ({WareList, session}) =>{
     return(WareList.map((item)=>{
 		return <div className="mt-[1rem] mb-[1rem]">
-                    <WarehouseInfoCard warehouse_name={item.name} type={item.type} long={item.longitude} lat={item.latitude} id={item.id}  updateData={updateData}/>
+                    <WarehouseInfoCard session={session} warehouse_name={item.name} type={item.type} long={item.longitude} lat={item.latitude} id={item.id}  />
                 </div>
 	}))
 }

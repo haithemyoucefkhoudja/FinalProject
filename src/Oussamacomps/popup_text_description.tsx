@@ -21,7 +21,7 @@ import { X } from "lucide-react"
 import { useState } from "react"
 import dynamic from 'next/dynamic';
 
-export default  function  Popup_text_description (props:any) {
+export default  function  Popup_text_description (props:{descreption:string, send:()=>void}) {
 
     return(
         <div className="fixed inset-0 z-40  bg-gray-900 bg-opacity-50">
@@ -34,7 +34,7 @@ export default  function  Popup_text_description (props:any) {
               >
                 <X></X>
               </button>
-                              <p className="whitespace-normal">{props.product_desc}</p>
+                              <p className="whitespace-normal">{props.descreption}</p>
               
            
             </div>

@@ -1,5 +1,5 @@
 "use client";
-import { ExtendedShipment, Product } from "@/types/Data";
+import { ExtendedShipment, Product, Warehouse } from "@/types/Data";
 import { Session, User } from "next-auth";
 import { useEffect, useRef, useState } from "react";
 import { ShipmentInfoCard } from "./Shipment_info_card";
@@ -12,7 +12,7 @@ interface ShipmentMapPoint extends ExtendedShipment {
   user:User | null,
   progress:number;
 }
-export const CWrapperComponent:React.FC<{shipments:ExtendedShipment[], session:Session}> =({shipments, session})=>{
+export const CWrapperComponent:React.FC<{shipments:ExtendedShipment[], Warehouses:Warehouse[], Factories:Warehouse[],session:Session}> =({shipments, Warehouses, Factories,session})=>{
     const [showProducts, setShow] = useState(false)
     const [showForm, setShowForm] = useState(false);
     
@@ -35,7 +35,7 @@ export const CWrapperComponent:React.FC<{shipments:ExtendedShipment[], session:S
           })
         setShipments(AvailableShipments);
         if (!socket.current) {
-          socket.current = new WebSocket('ws://127.0.0.1:8000/ws/some_path/');
+          socket.current = new WebSocket('ws://127.0.0.1:8080/ws/some_path/');
           
           socket.current.onopen = () => {
             if (session.user.role === 'admin' || session.user.role === 'driver') {
@@ -158,7 +158,7 @@ export const CWrapperComponent:React.FC<{shipments:ExtendedShipment[], session:S
                     <X className="h-6 w-6"></X>
                     </button>
                     
-                    <ShipmentForm ></ShipmentForm>
+                    <ShipmentForm updateShow={()=>setShowForm(false)} Warehouses={Warehouses} Factories={Factories} ></ShipmentForm>
                 </div>
             </div>
     </div>

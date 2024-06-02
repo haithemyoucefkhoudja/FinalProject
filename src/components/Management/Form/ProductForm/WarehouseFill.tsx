@@ -2,17 +2,23 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
 import { z } from "zod";
 import { Loading } from "@/components/ui/buttonLoading";
-import { ProductManagementFormSchema } from "@/schemas/ProductManagement";
 import { Input } from "@/components/ui/input";
 import { ProductsWarehouseFormSchema } from "@/schemas/ProductWarehouse";
-import { Warehouse } from "@/types/Data";
+import { DataPerWarehouse, } from "@/types/Data";
 import toast from "react-hot-toast";
+import { useProductManag } from "@/context/ManagementProductContext";
+import { useSession } from "next-auth/react";
+import edit_product from "@/actions/editProduct";
+import { useRouter } from "next/navigation";
   
 interface IWarehouseFill {
-    Warehouses:Warehouse[]
+    Warehouses:DataPerWarehouse[]
+    send:()=>void
 }
-export const WarehouseFill:React.FC<IWarehouseFill> = ({Warehouses}) => {
+export const WarehouseFill:React.FC<IWarehouseFill> = ({Warehouses, send}) => {
 
+    const {name ,description, id} = useProductManag()
+    const router = useRouter()
     const {
         handleSubmit,
         setError,
@@ -22,15 +28,35 @@ export const WarehouseFill:React.FC<IWarehouseFill> = ({Warehouses}) => {
       } = useForm<z.infer<typeof ProductsWarehouseFormSchema>>({
         resolver: zodResolver(ProductsWarehouseFormSchema),
         defaultValues: {
-          products:Warehouses.map(warehouse=>{return({price:0, warehouse_name:warehouse.name, safety_level:0})})
+          products:Warehouses.map(warehouse=>{return({price:0, warehouse_name:warehouse.warehouse_name, safety_level:0})})
         },
       });
       const onSubmit = async (values: z.infer<typeof ProductsWarehouseFormSchema>) => {
-        try {
-          toast.success('You did it!');
-        } catch (error) {
-          setError('root', { message: 'An unexpected error occurred' });
+        
+        const mode = id == -1 ? 'create' : 'edit'
+        const Data = {
+          operation:mode,
+          product_type_name:name,
+          description:description,
+          products_info:values.products.map(p=>( {
+            warehouse_name:p.warehouse_name,
+            warehouse_safety_level:p.safety_level,
+            warehouse_price:p.price
+          })
+           )
+
         }
+        const BackData = await edit_product(Data)
+        if(!BackData.success)
+        {
+          if(BackData.error === '')
+            BackData.error = 'Something went Wrong'
+          setError('root', {message:BackData.error})
+          return;
+        }
+      send()
+      router.refresh()
+      toast.success(BackData.message, {duration:2000})
       };
       const { fields } = useFieldArray({
         control,
@@ -51,7 +77,9 @@ export const WarehouseFill:React.FC<IWarehouseFill> = ({Warehouses}) => {
             <div className="space-x-2 flex p-2">
               <div className="space-y-1 w-full">
                   <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Price:</label>
-                  <Input {...register(`products.${index}.price`)} className="w-1/2 rounded-sm ring-2 ring-gray-200 " type="number" placeholder="Price" />
+                  <Input {...register(`products.${index}.price`, {
+    valueAsNumber: true,
+  })} className="w-1/2 rounded-sm ring-2 ring-gray-200 " type="number" placeholder="Price" />
                   {errors.products && (
                 <div className="text-red-500">
                   {errors.products[index]?.price?.message}
@@ -60,7 +88,9 @@ export const WarehouseFill:React.FC<IWarehouseFill> = ({Warehouses}) => {
               </div>
               <div className="space-y-1 w-full">
                   <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Safety Level:</label>
-                      <Input className=" w-1/2  rounded-sm ring-2 ring-gray-200 " {...register(`products.${index}.safety_level`)} type="number" placeholder="Safety Level" />
+                      <Input className=" w-1/2  rounded-sm ring-2 ring-gray-200 " {...register(`products.${index}.safety_level`, {
+    valueAsNumber: true,
+  })} type="number" placeholder="Safety Level" />
                       {errors.products &&  (
                 <div className="text-red-500">
                   {errors.products[index]?.safety_level?.message}

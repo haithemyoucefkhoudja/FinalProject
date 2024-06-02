@@ -8,19 +8,20 @@ import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LocateFixedIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { z } from "zod";
 
 interface WarehouseFormProps {
   warehouse_own_id:number,
-  updateData: ({ware_data, mode}:{mode:'Creation'|'Edit', ware_data: UpdatedProps}) => void;
   send: () => void; 
   showMap: () => void; 
 }
 export const WarehouseForm = (props:WarehouseFormProps) =>{
   const data = useWareData()
-  
+  const router = useRouter()
   const Dropref = useRef<null | HTMLDivElement>(null)
 
     const {
@@ -64,17 +65,11 @@ export const WarehouseForm = (props:WarehouseFormProps) =>{
           return;
         }
       console.log("lat:",BackData.extra_data?.warehouse_latitude, "long:",BackData.extra_data?.warehouse_longitude)
-      props.updateData(
-        
-        {
-          mode:mode,
-          ware_data:{
-        ...values,
-        warehouse_own_id:mode == 'Creation' ? BackData.extra_data?.warehouse_id : props.warehouse_own_id
-      }})
-      props.send()
       
-      alert(BackData.message)
+      
+      props.send()
+      router.refresh()
+      toast.success(BackData.message, {duration:2000})
       
     }
   
@@ -143,8 +138,7 @@ export const WarehouseForm = (props:WarehouseFormProps) =>{
       <button onClick={()=> DropMenuEvent()} type="button" className="flex  justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none">
             {selectedOption}
             <svg className="-mr-1 ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-          </button>
-    
+        </button>
           <div ref={Dropref} className=" hidden absolute z-50 mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button">
           {WarehouseFormSchema.shape.warehouse_type.options.map((option) => (
             <button   type="button" onClick={()=> OptionEvent(option)} key={option} value={option} {...register("warehouse_type")} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md hover:text-gray-900" role="menuitem">{option}</button>

@@ -1,12 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {  UseFormRegister, UseFormSetValue, UseFormWatch } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
-import { number } from 'zod';
 
 interface IProductInput {
     elements:string[];
     type:`products.${number}.name`  | `products.${number}.quantity`;
-
     InputType: string;
     Label: string;
     className?:string;

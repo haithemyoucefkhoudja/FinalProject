@@ -1,5 +1,6 @@
 "use client"
 import Link from "next/link"
+<<<<<<< HEAD
 import { useEffect, useState } from "react"
 import { useWidth } from "@/hooks/windowWidth"
 import {Sidebar} from "lucide-react"
@@ -9,6 +10,14 @@ import { useSidebar } from "@/context/SideBarContext"
 import useRouterSegments from "@/hooks/pathhook"
 
 export default function SideBar({
+=======
+import { Button } from "@/components/ui/button"
+import { ResponsiveLine } from "@nivo/line"
+import { useState } from "react"
+import { useWidth } from "@/hooks/windowWidth"
+import {Sidebar, Package2Icon, LineChartIcon, UsersIcon, MapIcon, RouteIcon} from "lucide-react"
+export function SideBar({
+>>>>>>> parent of 4ad961c (add: Auth System)
   children, // will be a page or nested layout
 }: {
   children: React.ReactNode
@@ -73,10 +82,22 @@ export default function SideBar({
         </button>}
         <div className=" bg-gray-300 w-[2px] flex-1 " />
       </div>
+<<<<<<< HEAD
 
       <main className={`flex flex-col max-h-screen flex-grow overflow-hidden ${isHidden ? 'w-full' : ''}`}>
         <Header windowWidth={windowWidth} />
         <section className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6 overflow-auto ">
+=======
+      <div className="flex flex-col max-h-screen">
+        <header className="flex h-16 items-center gap-4 border-b bg-white px-6 ">
+        <Button className="ml-auto h-8 w-8" size="icon" variant="outline" onClick={()=> {setHidden(!isHidden)}}>
+              <Sidebar className="h-4 w-4" />
+        </Button>
+          <div className="w-full flex-1">
+          </div>
+        </header>
+        <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6 overflow-y-auto ">
+>>>>>>> parent of 4ad961c (add: Auth System)
           {children}
         </section>
       </main>

@@ -56,15 +56,13 @@ export default async function distribution(values: BackEndProps){
          }) 
     });
     const res_data = await response.json(); 
-    console.log(res_data)
     if (!res_data.success) {
-        console.log(res_data)
         throw new Error(res_data.error); 
     }
 
-    return {success:true, message:res_data.message}
+    return {success:true, message:res_data.message, type:'success'}
     }
     catch(error:any) {
-            return {success:false,"error":error.message} 
+            return {success:false,"error":error.message, type:'error'} 
     }
 }

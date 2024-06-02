@@ -5,12 +5,25 @@ import { Loading } from "@/components/ui/buttonLoading";
 import { ProductsFormSchema } from "@/schemas/Product";
 import { ProductInput } from "./ProductItem";
 import { Trash } from "lucide-react";
+import { useShipment } from "@/context/ShipmentContext";
+import { Factory } from "@/types/Data";
+import { NoData } from "@/components/ui/NoData";
+import createShipment from "@/actions/createShipment";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import { useSession } from "next-auth/react";
   
 interface IProductForm {
-  
+  Factories:Factory[]
+  updateshow:()=>void
 }
-export const ProductForm:React.FC<IProductForm> = () => {
-    
+export const ProductForm:React.FC<IProductForm> = ({Factories, updateshow}) => {
+    const props = useShipment()
+    const router = useRouter()
+    const {data:session, status}  = useSession();
+    const Availableproducts = Factories.find(factory=>(factory.name === props.origin_factory))?.products
+    if(!Availableproducts)
+      return<NoData></NoData>
     const {
         handleSubmit,
         setError,
@@ -24,33 +37,57 @@ export const ProductForm:React.FC<IProductForm> = () => {
         },
         resolver: zodResolver(ProductsFormSchema),
       });
-
       const onSubmit = async (values: z.infer<typeof ProductsFormSchema>) => {
-        try {
-            return new Promise<void>((resolve) => {
-                setTimeout(() => {
-                  console.log(values);
-                  resolve();
-                }, 2000); // Simulate a network request
-              });
-        } catch (error) {
-          setError('root', { message: 'An unexpected error occurred' });
-        }
+        if(!session)
+          return
+          let Products:{id:number, name:string, quantity:number}[] = []
+          for(let i = 0; i< values.products.length; i++)
+            {
+              for (let j = 0 ; j < Availableproducts.length; j++){
+                
+              if(values.products[i].name == Availableproducts[j].name)
+                {
+                  if(products[i].quantity > Availableproducts[i].quantity)
+                  {
+                    setError(`products.${i}.quantity`,{message:'quantity is over the available'})
+                    return;
+                  }
+                
+              Products.push({id:Availableproducts[j].id, ...values.products[i]})
+              }
+            }
+          }/*
+          
+    "company_name": "CEVITAL",
+    "driver": "cevital_driver_Bejaia_2",
+    "origin_factory": "Bejaia",
+    "origin_factory": "target_warehouse_name",
+    "arrival_time": "2024-04-27T06:52:00Z",
+    "vehicle": "cevital_truck_rouge_2",
+          */
+
+          const resp_data = await createShipment({driver:props.driver, origin_factory:props.origin_factory, mean_transportation:props.mean_transportation, destination_warehouse:props.destination_warehouse,arrival_time:props.arrival_time},{...Products}, session?.user.company)
+          if(!resp_data.success)
+            {
+              if(resp_data.error === '')
+                resp_data.error = 'Something went Wrong'
+              setError('root', {message:resp_data.error})
+              return;
+            }
+          window.location.reload()
+          toast.success(resp_data.message, {duration:2000})
       };
       const products = watch("products");
+
       function removeProduct(d_index:number): void {
       setValue('products', products.filter((_, index) => index !== d_index));
       }
       function addnewProduct(): void {
+        if(Availableproducts && Availableproducts.length <= products.length)
+          return;
         setValue('products',[...products, { name:'', quantity:0 }])
       }
-        const product_names = [
-          "Elio 5L Olive Oil",
-          "Elio 2L Olive Oil",
-          "Skor 5kg Granulated Sugar",
-          "Skor 2kg Granulated Sugar",
-          "Skor 1kg Granulated Sugar"
-        ];
+        const product_names = Availableproducts.map(p=> p.name)
       return(  
       
         

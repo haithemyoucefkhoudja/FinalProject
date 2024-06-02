@@ -11,7 +11,7 @@ export default async function Page(){
     if(!session)
         return <NoData></NoData>
 	
-    const Data = await FetchAllData(session.user.role)
+    const Data = await FetchAllData(session)
     if(!Data)
         return<NoData/>
 	

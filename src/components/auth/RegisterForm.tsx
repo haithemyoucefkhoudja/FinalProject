@@ -50,9 +50,9 @@ const RegisterForm = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-6">
         
       <p className="text-center text-md text-gray-600 mt-5">
-        If you don&apos;t have an account, please.
-        <Link className="text-blue-500 hover:underline ml-1" href="/signup">
-          Sign up
+        If you  have an account, please.
+        <Link className="text-blue-500 hover:underline ml-1" href="/login">
+          Sign in
         </Link>
             </p>
         <div className="space-y-2">

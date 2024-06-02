@@ -3,43 +3,23 @@ import { ProductWareHouse, Warehouse, WarehouseType } from "@/types/Data";
 import { useState } from "react";
 import { WarehouseList } from "./WarehouseCollection";
 import { AddButton } from "./WarehouseAddButton"
+import { Session } from "next-auth";
 
 interface MixedData extends Warehouse{
     type: WarehouseType
 }
 interface WrapperComponentProps {
     WareList:MixedData[]
+    session:Session
 }
-export const WrapperComponent:React.FC<WrapperComponentProps> = ({WareList}) =>{
-    const [warehouses, setWarehouses] = useState<MixedData[]>(WareList)
+export const WrapperComponent:React.FC<WrapperComponentProps> = ({WareList, session}) =>{
     return(
         <>
-            <AddButton warehouse_own_id={-1} updateWarehouses={({ware_data})=>{ 
-                setWarehouses(prev=> [...prev, {
-                    id: ware_data.warehouse_own_id,
-                    name: ware_data.warehouse_name,
-                    longitude: ware_data.warehouse_Long,
-                    latitude: ware_data.warehouse_Lat,
-                    products: [] as ProductWareHouse[],
-                    shipments: undefined,
-                    type:ware_data.warehouse_type
-                } as MixedData])
-            } }></AddButton>
+            <AddButton warehouse_own_id={-1}></AddButton>
             <div className="flex flex-col items-center">
-                <WarehouseList updateData={
-                    ({ware_data})=>{ 
-                        setWarehouses(prevWarehouses => 
-                            prevWarehouses.map(warehouse => 
-                              warehouse.id === ware_data.warehouse_own_id ? { ...warehouse, 
-                                latitude:ware_data.warehouse_Lat,
-                                longitude:ware_data.warehouse_Long,
-                                name:ware_data.warehouse_name,
-                                type:ware_data.warehouse_type
-                               } : warehouse
-                            )
-                          );
-                    }
-                } WareList={warehouses}/>
+                <WarehouseList 
+                session={session}
+                WareList={WareList}/>
             </div>
         </>
     )

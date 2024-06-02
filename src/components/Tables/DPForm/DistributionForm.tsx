@@ -9,14 +9,49 @@ import { ProductInput } from "./ProductItem";
 import distribution from "@/actions/Distribution";
 import { Warehouse } from "@/types/Data";
 import toast from "react-hot-toast";
-  
+import { signOut, useSession } from "next-auth/react";
+import  { checkChanges } from "@/actions/check";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import get_DistributionLimit from "@/actions/FetchDistributionLimit";
+
 interface IDistributionForm {
   Warehouses:Warehouse[];
   updateShow: ()=>void
 
 }
 export const DistributionForm:React.FC<IDistributionForm> = ({Warehouses, updateShow}) => {
-    
+  
+    const { data, status } = useSession();
+    const [LimitedProducts, setLimitedProducts] = useState([])
+    const router = useRouter()
+    if(!data)
+      return<></>
+    useEffect(()=>{
+      if(status !== 'authenticated')
+        return;
+    async function FetchProducts() {
+       if(!data)
+        return;
+      const Change = await checkChanges({user_id:data.user.id, role:data.user.role, company_name:data.user.company, warehouse_name:data.user.warehouse})
+      if(Change.change) {
+            router.refresh()
+      }
+      if(Change.deleted) {
+          signOut()
+      }
+      const Warehouse = Warehouses[0]
+      const LimitedProducts = await  get_DistributionLimit({warehouse_id:Warehouse.id})
+      if(!LimitedProducts.success)
+        {
+          toast.error(LimitedProducts.message,{duration:2000});
+          return;
+        }
+
+      setLimitedProducts(LimitedProducts.products);
+      }
+      FetchProducts()
+    },[status, data])
     const {
         handleSubmit,
         setError,
@@ -26,19 +61,40 @@ export const DistributionForm:React.FC<IDistributionForm> = ({Warehouses, update
         formState: { isSubmitting, errors },
       } = useForm<z.infer<typeof ProductsFormSchema>>({
         defaultValues:{
-            products:Warehouses[0].products
+            products:[]
         },
         resolver: zodResolver(ProductsFormSchema),
       });
 
       const onSubmit = async (values: z.infer<typeof ProductsFormSchema>) => {
         const Warehouse = Warehouses[0]
+        for(let i = 0; i< products.length; i++)
+          {
+            for (let j = 0 ; j < LimitedProducts.length; j++){
+              
+            if(products[i].name == (LimitedProducts[j] as any).name &&products[i].quantity > (LimitedProducts[i] as any).quantity)
+              {
+                setError(`products.${i}.quantity`,{message:'quantity is over the available'})
+                return;
+            }
+          }
 
+          }
         const Data = 
         { warehouse_id: Warehouse.id,
           products:values.products
         }
+        const Change = await checkChanges({user_id:data.user.id, role:data.user.role, company_name:data.user.company, warehouse_name:data.user.warehouse})
+        if(Change.change) {
+            router.refresh()
+        }
+        if(Change.deleted)
+          {
+            signOut()
+          } 
+        
         const BackData = await distribution(Data)
+        
         if(!BackData.success)
           {
             if(BackData.error === '')
@@ -49,6 +105,7 @@ export const DistributionForm:React.FC<IDistributionForm> = ({Warehouses, update
         
           toast.success(BackData.message,{duration:2000});
           updateShow()
+          router.refresh()
           
       };
       const products = watch("products");
@@ -56,6 +113,12 @@ export const DistributionForm:React.FC<IDistributionForm> = ({Warehouses, update
       setValue('products', products.filter((_, index) => index !== d_index));
       }
       
+  function addnewProduct() {
+    if(products.length >= LimitedProducts.length)
+      return;
+    setValue('products',[...products, { name:'', quantity:0 }])
+  }
+
       return(  
       
         
@@ -68,13 +131,13 @@ export const DistributionForm:React.FC<IDistributionForm> = ({Warehouses, update
                         <div key={index *200} className='border-y-2 border-gray-700 p-4 flex flex-col  space-y-1'>
                             <div className="flex justify-end">
                               
-                            <button type="button"  className="ml-auto h-8 w-8 border border-gray-200 bg-white hover:bg-gray-100 hover:text-gray-900 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 " onClick={()=> {removeProduct(index)}}>
-                                <Trash className="h-6 w-6"/>
-                            </button>
-                            </div>
+                              <button type="button"  className="ml-auto h-8 w-8 border border-gray-200 bg-white hover:bg-gray-100 hover:text-gray-900 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 " onClick={()=> {removeProduct(index)}}>
+                                  <Trash className="h-6 w-6"/>
+                              </button>
+                              </div>
                             <div className="flex space-x-2">
-                            <ProductInput disabled={true} elements={Warehouses[0].products.map(product=>product.name)} type={`products.${index}.name`}  setValue={setValue}  InputType='text' Label='Name' register={register} watch={watch} />
-                            <ProductInput elements={[]} type={`products.${index}.quantity`}  InputType='number' setValue={setValue} register={register} watch={watch} Label='Quantity' />
+                            <ProductInput  disabled={false} elements={Warehouses[0].products.map(product=>product.name)} type={`products.${index}.name`}  setValue={setValue}  InputType='text' Label='Name' register={register} watch={watch} />
+                            <ProductInput  elements={[]} type={`products.${index}.quantity`}  InputType='number' setValue={setValue} register={register} watch={watch} Label='Quantity' />
                             </div>
                             <p className="text-red-500">
                               {errors?.products?.[index]?.name?.message}
@@ -88,13 +151,13 @@ export const DistributionForm:React.FC<IDistributionForm> = ({Warehouses, update
                     
                 </div>
             </div>
-            {/*<button
+            <button
                     className="h-10 px-4 py-2 w-full bg-gray-100 border-2 border-gray-700 text-gray-700 hover:bg-gray-300 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors  disabled:pointer-events-none disabled:opacity-50"
                     disabled={isSubmitting}
                     onClick={()=>{addnewProduct()}}
                     type="button">
                         Add new Product
-            </button> */}
+            </button> 
             
             <button
                 className="h-10 px-4 py-2 w-full bg-gray-900 text-gray-50 hover:bg-gray-900/90 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors  disabled:pointer-events-none disabled:opacity-50"

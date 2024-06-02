@@ -1,32 +1,24 @@
-import Account_info_card  from "@/Oussamacomps/account_info_card.tsx";
-
-type Props={
-	Account_name:string;
-	role:string;
-	position:string;
-}
+import get_Accounts from "@/actions/FetchAccounts";
+import FetchAllData from "@/actions/FetchData";
+import { getServerSession } from "@/app/utils/getServerSession";
+import { AccountCard } from "@/components/Management/Accounts/AccountCard";
+import { AccountsWrapper } from "@/components/Management/Accounts/AccountWrapper";
+import { NoData } from "@/components/ui/NoData";
 
 export default async function Page(){
+	const session =await getServerSession()
+    if(!session)
+        return <NoData></NoData>
+    const WareData = await FetchAllData(session);
+	if(!WareData)
+		return(<NoData/>)
+    const Data = await get_Accounts(session.user.role, session.user.company)
+    if(!Data.success || !Data.accounts)
+        return<NoData/>
+	const Accounts = Data.accounts
 	
 	
-const data:Props[] = [
-    {
-    Account_name:"name 1",
-    role:"role 1",
-    position:"position 1"
-    },
-    ];
-	const cards=data.map((item)=>{
-		return <span className="m-[3vh]"><Account_info_card Account_name={item.Account_name} role={item.role} position={item.position} /></span>
-	})
 	return (
-	 <>
-	   <div className="flex flex-col  items-center rounded-lg border border-gray-500 bg-white text-gray-950 shadow-sm ">
-	    <button className="mt-[2vh] bg-blue-500 w-[7.5vw] p-[0.5rem] text-white rounded">Add account</button>
-	    <div className="flex flex-col items-center">
-	     {cards}
-	    </div>
-	   </div>
-	 </>
+		<AccountsWrapper accounts={Accounts} session={session}/>
 	)
 }

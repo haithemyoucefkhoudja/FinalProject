@@ -49,6 +49,7 @@ const RoutingMachine = ({ coords, session, shipment_id, tocoords, products, name
         } else {
           marker.bindPopup('');
         }
+      
         return marker;
       }
     });

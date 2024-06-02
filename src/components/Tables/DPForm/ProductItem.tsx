@@ -72,7 +72,7 @@ interface IProductInput {
     <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 w-1/2">
       {Label}:
     </label>
-    <Input  disabled={disabled}   className={" rounded-sm ring-2 ring-gray-200 w-1/2 "} {...rest} type={InputType} {...InputType === "number" ? {} :{}} placeholder={Label} onFocus={handleFocus} ref={(e) => {
+    <Input  disabled={disabled}    className={" rounded-sm ring-2 ring-gray-200 w-1/2 "} {...rest} type={InputType} {...InputType === "number" ? {} :{}} placeholder={Label} onFocus={handleFocus} ref={(e) => {
   ref(e)
   Inputref.current = e 
   }}/>

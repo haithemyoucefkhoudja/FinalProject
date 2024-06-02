@@ -31,7 +31,14 @@ export const authOptions: NextAuthOptions = {
       strategy: "jwt",
     },
     callbacks: {
-      async jwt({token, user }) {
+      async jwt({token, user, trigger, session }) {
+        if(trigger==='update' && session.update)
+          {
+            console.log('update:',session.update)
+            token.user.role = session.update.role
+            token.user.company = session.update.company
+            token.user.warehouse = session.update.warehouse
+          }
         if (user) {
           // assign the user object to the JWT TOKEN
           token.user = user;

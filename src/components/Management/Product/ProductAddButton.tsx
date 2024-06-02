@@ -1,19 +1,24 @@
 'use client';
 import {useState } from "react";
-import { ProductUpdatedProps } from "@/types/ProductType";
-
-interface ICancel {
-    updateWarehouses: ({product}:{product: ProductUpdatedProps}) => void
-    product_id:number;
+import {  } from "@/types/ProductType";
+import EditProduct from "../Popups/edit_product";
+import { DataPerWarehouse, ProductInfo, Warehouse } from "@/types/Data";
+interface WareListProps {
+    Products:ProductInfo[];
+    warehouses:Warehouse[];
 }
-export const AddButton:React.FC<ICancel> = ({updateWarehouses, product_id})=>{
+export const AddButton:React.FC<WareListProps> = ({Products,warehouses})=>{
     const [showForm, setShowForm] = useState(false)
-    const fakeData:ProductUpdatedProps = {
-        product_name:'',
-        price:-1,
-        safety_level:-1,
-        product_desc:'',
-        product_id:product_id
+    const fakeData:ProductInfo = {
+        name:'',
+        description:'',
+        id:-1,
+        data_per_warehouse:warehouses.map(w=>({
+            warehouse_id: w.id,
+            warehouse_name: w.name,
+            price: 0,
+            safety_level: 0,
+        })) as DataPerWarehouse[]
     }
     return(
         <>
@@ -21,7 +26,7 @@ export const AddButton:React.FC<ICancel> = ({updateWarehouses, product_id})=>{
                 onClick={()=>setShowForm(true)}>Add product</button>
 
             
-            {/*showForm && <EditProduct {...fakeData} send={()=>{setShowForm(false)}} updateData={updateWarehouses} /> */} 
+            {showForm && <EditProduct {...fakeData} send={()=>{setShowForm(false)}}  /> } 
         </>  
     )
 }

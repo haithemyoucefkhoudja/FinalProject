@@ -63,8 +63,9 @@ let safety_stocks_data = [
 import { X } from "lucide-react"
 import { useState } from "react"
 import dynamic from 'next/dynamic';
+import { DataPerWarehouse } from "@/types/Data";
 
-export default  function  Popup_table_PSS(props:any) {
+export default  function  Popup_table_PSS(props:{data:DataPerWarehouse[], send:()=>void}) {
 
     return(
         <div className="fixed inset-0 z-40  bg-gray-900 bg-opacity-50">
@@ -77,7 +78,11 @@ export default  function  Popup_table_PSS(props:any) {
               >
                 <X></X>
               </button>
-              <div className="flex justify-center">{props.price} | {props.safety_level}</div>
+              {props.data.map(ele=>{
+                return(
+              <div className="flex justify-center">{ele.price} | {ele.safety_level}</div>
+            )
+              })}
            
             </div>
           </div>

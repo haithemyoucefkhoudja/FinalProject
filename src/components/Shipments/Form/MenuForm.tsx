@@ -4,6 +4,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { MenuInput } from "./MenuItem";
 import { Loading } from "@/components/ui/buttonLoading";
+import { Factory, Warehouse } from "@/types/Data";
+import { useShipment } from "@/context/ShipmentContext";
 const persons: string[] = [
     "Alice",
     "Adam",
@@ -29,12 +31,15 @@ const persons: string[] = [
   ];
   
 interface IMenuForm {
-    updateShow: ()=>void
+    updateShow: ()=>void;
+    Warehouses:Warehouse[];
+    Factories:Factory[]
 }
-export const MenuForm:React.FC<IMenuForm> = ({updateShow}) => {
-  const Factory_Names = ["Factory Bejaia N1"]
-  const Warehouse_Names =  ["Warehouse Oum El Bouaghi N2", "Warehouse Mostaganem N3", "Warehouse Ouargla N4"]
+export const MenuForm:React.FC<IMenuForm> = ({updateShow, Warehouses, Factories}) => {
+  const Factory_Names = Factories.map(factory=>factory.name);
+  const Warehouse_Names =  Warehouses.map(warehouse=>warehouse.name);
   const Driver_Names =  ["cevitam_driver_Bejaia_3", "cevitam_driver_Bejaia_4"]
+  const {updateShipmentData} = useShipment()
     const {
         handleSubmit,
         setError,
@@ -52,15 +57,29 @@ export const MenuForm:React.FC<IMenuForm> = ({updateShow}) => {
           arrival_time: "",
         },
       });
+      
       const onSubmit = async (values: z.infer<typeof ShipmentFormSchema>) => {
         try {
-            return new Promise<void>((resolve) => {
-                setTimeout(() => {
-                  console.log(values);
-                  updateShow()  
-                  resolve();
-                }, 2000); // Simulate a network request
-              });
+            
+          if(!(Factory_Names.some(name=>values.origin_factory== name)))
+            {
+              setError('origin_factory',{message:'No Factory with this name'})
+              return;
+        }
+          if(!(Warehouse_Names.some(name=>values.destination_warehouse== name))){
+            setError('destination_warehouse',{message:'No Warehouse with this name'})
+            return;
+          }
+          updateShipmentData(values.origin_factory, 'origin_factory')
+          
+          updateShipmentData(values.destination_warehouse, 'destination_warehouse')
+          
+          updateShipmentData(values.driver, 'driver')
+          
+          updateShipmentData(values.mean_transportation, 'mean_transportation')
+          
+          updateShipmentData(values.arrival_time, 'arrival_time')
+          updateShow()
         } catch (error) {
           setError('root', { message: 'An unexpected error occurred' });
         }
@@ -74,8 +93,8 @@ export const MenuForm:React.FC<IMenuForm> = ({updateShow}) => {
       <div className="space-y-2 mb-3">
         <MenuInput elements={Factory_Names} type='origin_factory' errorMessage={errors?.origin_factory?.message} setValue={setValue}  InputType='text' Label='Origin Factory' register={register} watch={watch} />
         <MenuInput elements={Warehouse_Names} type='destination_warehouse' errorMessage={errors?.destination_warehouse?.message} InputType='text' setValue={setValue} register={register} watch={watch} Label='Destination Warehouse' />
-        <MenuInput elements={Driver_Names} type='driver' errorMessage={errors?.driver?.message} InputType='text' Label='Driver' setValue={setValue} register={register} watch={watch} />
-        <MenuInput elements={persons} type='mean_transportation' errorMessage={errors?.mean_transportation?.message} InputType='text' setValue={setValue} register={register} watch={watch} Label='Mean of Transportation' />
+        <MenuInput elements={[]} type='driver' errorMessage={errors?.driver?.message} InputType='text' Label='Driver' setValue={setValue} register={register} watch={watch} />
+        <MenuInput elements={[]} type='mean_transportation' errorMessage={errors?.mean_transportation?.message} InputType='text' setValue={setValue} register={register} watch={watch} Label='Mean of Transportation' />
         <MenuInput elements={[]} type='arrival_time' errorMessage={errors?.arrival_time?.message} Label='Arrival Time' InputType='datetime-local' setValue={setValue} watch={watch} register={register} />
       </div>
       <button

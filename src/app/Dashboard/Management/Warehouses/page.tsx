@@ -10,7 +10,7 @@ export default async function Page() {
     if(!session)
         return <NoData></NoData>
     
-    const Data = await FetchAllData(session.user.role)
+    const Data = await FetchAllData(session)
     if(!Data)
         return<NoData/>
     const factoriesWithType = Data.factories.map(factory => ({
@@ -27,7 +27,7 @@ export default async function Page() {
       const MixedData = [...factoriesWithType, ...warehousesWithType];
 	return(
 		<div className="flex flex-col  items-center rounded-lg border border-gray-500 bg-white text-gray-950 shadow-sm ">
-	      	<WrapperComponent WareList={MixedData} />
+	      	<WrapperComponent session={session} WareList={MixedData} />
 		</div>
 	)
 }

@@ -4,7 +4,7 @@ import { createContext, useState, useContext, ReactNode } from 'react';
 
 
 interface ProductionData {
-    warehouse_name: string;
+    factory_name: string;
     products:Product[]
 }
 
@@ -12,12 +12,12 @@ interface ProductionDataContextType extends ProductionData {
   updateProductionData: <K extends keyof ProductionData>(data: ProductionData[K], type: K) => void;
 }
 
-const WareDataContext = createContext<ProductionDataContextType | undefined>(undefined);
+const ProductionContext = createContext<ProductionDataContextType | undefined>(undefined);
 
 
-export const WareDataProvider = ({ children, warehouse_name, products }: { children: ReactNode, warehouse_name:string, products:Product[] }) => { 
+export const ProductionProvider = ({ children, factory_name, products }: { children: ReactNode, factory_name:string, products:Product[] }) => { 
     const [data, setData] = useState<ProductionData>({
-        warehouse_name,
+        factory_name,
         products
     });
     const updateProductionData = <K extends keyof ProductionData>(newData: ProductionData[K], type: K) => {
@@ -28,18 +28,18 @@ export const WareDataProvider = ({ children, warehouse_name, products }: { child
       };
 
   return (
-    <WareDataContext.Provider value={{
-        warehouse_name:data.warehouse_name,
+    <ProductionContext.Provider value={{
+        factory_name:data.factory_name,
         updateProductionData:updateProductionData,
         products:data.products
     }}>
       {children}
-    </WareDataContext.Provider>
+    </ProductionContext.Provider>
   );
 }
 
-export function useWareData(): ProductionDataContextType {
-    const context = useContext(WareDataContext);
+export function useProduction(): ProductionDataContextType {
+    const context = useContext(ProductionContext);
 
     if (!context) {
         throw new Error('useWareData must be used within a WareDataProvider');

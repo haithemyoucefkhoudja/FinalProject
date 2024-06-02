@@ -1,16 +1,17 @@
-import { ShipmentFormSchema } from "@/schemas/Shipment";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Loading } from "@/components/ui/buttonLoading";
 import { ProductManagementFormSchema } from "@/schemas/ProductManagement";
 import { Input } from "@/components/ui/input";
+import { ProductInfo } from "@/types/Data";
+import { useProductManag } from "@/context/ManagementProductContext";
   
-interface IMenuForm {
+interface IMenuForm extends ProductInfo {
     updateShow: ()=>void
 }
-export const MenuForm:React.FC<IMenuForm> = ({updateShow}) => {
-
+export const MenuForm:React.FC<IMenuForm> = ({updateShow, name, description}) => {
+  const {updateProductInfo} = useProductManag();
     const {
         handleSubmit,
         setError,
@@ -21,13 +22,16 @@ export const MenuForm:React.FC<IMenuForm> = ({updateShow}) => {
       } = useForm<z.infer<typeof ProductManagementFormSchema>>({
         resolver: zodResolver(ProductManagementFormSchema),
         defaultValues: {
-          name: "",
-          Descreption: "",
+          name: name,
+          Descreption: description,
         },
       });
       const onSubmit = async (values: z.infer<typeof ProductManagementFormSchema>) => {
         try {
             updateShow()
+            updateProductInfo(values.name,'name');
+            updateProductInfo(values.Descreption,'description');
+            
         } catch (error) {
           setError('root', { message: 'An unexpected error occurred' });
         }

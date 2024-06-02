@@ -4,12 +4,15 @@ import { z } from "zod";
 import { MenuInput } from "./MenuItem";
 import { Loading } from "@/components/ui/buttonLoading";
 import { DPFormSchema } from "@/schemas/DPoperation";
+import { Factory } from "@/types/Data";
+import { useProduction } from "@/context/ProductionContext";
 interface IMenuForm {
     updateShow: ()=>void
+    factorys:Factory[]
 }
-export const MenuForm:React.FC<IMenuForm> = ({updateShow}) => {
-  
-  const Warehouse_Names =  ["Warehouse Oum El Bouaghi N2", "Warehouse Mostaganem N3", "Warehouse Ouargla N4"]
+export const MenuForm:React.FC<IMenuForm> = ({updateShow, factorys}) => {
+  const {updateProductionData} =useProduction()
+  const factory_Names =  factorys.map(factory=>factory.name)
     const {
         handleSubmit,
         setError,
@@ -20,18 +23,19 @@ export const MenuForm:React.FC<IMenuForm> = ({updateShow}) => {
       } = useForm<z.infer<typeof DPFormSchema>>({
         resolver: zodResolver(DPFormSchema),
         defaultValues: {
-          warehouse: ""
+          factory: ""
         },
       });
       const onSubmit = async (values: z.infer<typeof DPFormSchema>) => {
         try {
-            return new Promise<void>((resolve) => {
-                setTimeout(() => {
-                  console.log(values);
-                  updateShow()  
-                  resolve();
-                }, 2000); // Simulate a network request
-              });
+          const isAvailable = factory_Names.some(factory=> factory == values.factory)
+          if(!isAvailable)
+            {
+              setError('factory',{message:'factory not found'})
+              return;
+        }
+          updateProductionData(values.factory, 'factory_name');
+          updateShow()
         } catch (error) {
           setError('root', { message: 'An unexpected error occurred' });
         }
@@ -43,7 +47,7 @@ export const MenuForm:React.FC<IMenuForm> = ({updateShow}) => {
         </p>
       </div>
       <div className="space-y-2 mb-3">
-        <MenuInput elements={Warehouse_Names} type='warehouse' errorMessage={errors?.warehouse?.message} InputType='text' setValue={setValue} register={register} watch={watch} Label='Warehouse' />
+        <MenuInput elements={factory_Names} type='factory' errorMessage={errors?.factory?.message} InputType='text' setValue={setValue} register={register} watch={watch} Label='factory' />
         
       </div>
       <button

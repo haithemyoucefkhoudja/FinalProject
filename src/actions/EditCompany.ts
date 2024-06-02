@@ -20,7 +20,7 @@ export default async function EditComapny(values: BackEndProps){
         throw new Error("you are not authenticated");
     if(session.user.role !== 'admin')
         throw new Error("you don't have enough permission for this action");
-    
+    console.log('Edit Company:',values);
     const path = 'p/edit_company';
     const DistributionURL = getURL(path); // Construct the URL
     const response = await fetch(DistributionURL, {
@@ -39,6 +39,6 @@ export default async function EditComapny(values: BackEndProps){
     return {success:true, message:res_data.message}
     }
     catch(error:any) {
-            return {success:false,"error":error.message} 
+            return {success:false,error:error.message} 
     }
 }

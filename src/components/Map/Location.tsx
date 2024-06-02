@@ -14,8 +14,9 @@ import { Data, Factory, Shipment, Warehouse } from '@/types/Data'
 interface WareHouseMarkerProps {
   externalmarker: Warehouse | Factory;
   icon: Icon<IconOptions> | undefined;
+  session:Session
 }
-  const WareHouseMarker: React.FC<WareHouseMarkerProps> = ({ externalmarker, icon }) => {
+  const WareHouseMarker: React.FC<WareHouseMarkerProps> = ({ externalmarker, icon, session }) => {
     
     return (
       <Marker
@@ -23,7 +24,11 @@ interface WareHouseMarkerProps {
         position={[externalmarker.latitude, externalmarker.longitude]}
         >
         <Popup minWidth={90} closeOnEscapeKey={true}>
-        <LeafletTable Products={externalmarker.products} name={externalmarker.name}></LeafletTable>
+          { session.user.role === 'admin' ?
+          (<LeafletTable Products={externalmarker.products} name={externalmarker.name}></LeafletTable>)
+          :(<div className='text-md'>{externalmarker.name}</div>)
+          }
+          
         </Popup>
       </Marker>
     )
@@ -103,7 +108,7 @@ const Map = ({session, Ware_data}:{session:Session, Ware_data:Data}) => {
       })
       setShipments(AvailableShipments);
       if (!socket.current) {
-        socket.current = new WebSocket('ws://127.0.0.1:8000/ws/some_path/');
+        socket.current = new WebSocket('ws://127.0.0.1:8080/ws/some_path/');
         
         socket.current.onopen = () => {
           if (session.user.role === 'admin' || session.user.role === 'driver') {
@@ -206,10 +211,10 @@ const Map = ({session, Ware_data}:{session:Session, Ware_data:Data}) => {
             <MapContainer className=' min-h-full flex-shrink flex-1' center={center} zoom={6} scrollWheelZoom={false}>
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                 {Ware_data.factories && Ware_data.factories.map((factory, index) => {
-      return (<WareHouseMarker externalmarker={factory} icon={customIcon} key={index}/>)
+      return (<WareHouseMarker session={session} externalmarker={factory} icon={customIcon} key={index}/>)
     })}
     {Ware_data.warehouses && Ware_data.warehouses.map((warehouse, index) => {
-      return (<WareHouseMarker externalmarker={warehouse} icon={customIcon} key={index}/>)
+      return (<WareHouseMarker session={session} externalmarker={warehouse} icon={customIcon} key={index}/>)
     })}
       {shipments.map(shipment=>{
         if(!shipment.driver)
