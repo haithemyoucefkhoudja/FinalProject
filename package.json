@@ -26,7 +26,6 @@
     "leaflet": "^1.9.4",
     "leaflet-routing-machine": "^3.2.12",
     "lucide-react": "^0.359.0",
-<<<<<<< HEAD
     "next": "^14.1.0",
     "next-auth": "^4.24.7",
     "radix": "^0.0.0",
@@ -34,11 +33,6 @@
     "react-dom": "^18",
     "react-hook-form": "^7.51.2",
     "react-hot-toast": "^2.4.1",
-=======
-    "next": "14.1.0",
-    "react": "^18.2.0",
-    "react-dom": "^18",
->>>>>>> parent of 4ad961c (add: Auth System)
     "react-leaflet": "^4.2.1",
     "react-leaflet-cluster": "^2.1.0",
     "react-leaflet-routing-machine": "^0.0.5",
